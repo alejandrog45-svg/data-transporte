@@ -1,6 +1,7 @@
 name: Actualizar datos
 on:
-  # Sin ejecucion diaria: los datos ya no cambian. Se actualiza solo a mano (Actions > Run workflow).
+  schedule:
+    - cron: "0 11 * * *"   # todos los dias 08:00 Chile
   workflow_dispatch:
 permissions:
   contents: write
