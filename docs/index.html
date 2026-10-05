@@ -181,8 +181,8 @@
     <span class="material-symbols-outlined text-primary text-lg hidden sm:inline">filter_alt</span>
     <label class="text-xs text-on-surface-variant flex items-center gap-1">Desde <input type="date" id="f-desde" class="fsel"></label>
     <label class="text-xs text-on-surface-variant flex items-center gap-1">Hasta <input type="date" id="f-hasta" class="fsel"></label>
-    <button data-rango="viajes" class="text-xs font-semibold px-2 py-1 rounded border border-white/10 text-on-surface-variant">Viajes 2025</button>
-    <button data-rango="fin" class="text-xs font-semibold px-2 py-1 rounded border border-white/10 text-on-surface-variant">Finanzas 2026</button>
+    <button data-rango="viajes" class="text-xs font-semibold px-2 py-1 rounded border border-white/10 text-on-surface-variant">Período de viajes</button>
+    <button data-rango="fin" class="text-xs font-semibold px-2 py-1 rounded border border-white/10 text-on-surface-variant">Período de finanzas</button>
     <button data-rango="todo" class="text-xs font-semibold px-2 py-1 rounded border border-white/10 text-on-surface-variant">Todo</button>
     <select id="f-conductor" data-label="Conductor" class="fsel"></select>
     <select id="f-pago" data-label="Medio de pago" class="fsel"></select>
@@ -212,7 +212,8 @@
 
     <!-- VENTAS -->
     <section id="v-ventas" class="view">
-      <div class="card p-5"><h3 class="font-semibold mb-1">Flujo de ventas (viajes 2025)</h3><p class="text-xs text-on-surface-variant mb-3">Cambia Día / Semana / Mes arriba a la derecha.</p><div style="height:320px"><canvas id="c-flujo"></canvas></div></div>
+      <div class="card p-5"><h3 class="font-semibold mb-1">Flujo de ventas (viajes realizados)</h3><p class="text-xs text-on-surface-variant mb-3">Cambia Día / Semana / Mes arriba a la derecha.</p><div style="height:320px"><canvas id="c-flujo"></canvas></div></div>
+      <div class="card p-5"><h3 class="font-semibold mb-1">Cruce por mes: ingresos de viajes vs ventas de la planilla</h3><p class="text-xs text-on-surface-variant mb-3">Compara las dos fuentes del mismo año. Si la planilla anual está por debajo, probablemente le falta cargar ventas de ese mes.</p><div style="height:260px"><canvas id="c-cruce"></canvas></div></div>
       <div class="card p-5"><h3 class="font-semibold mb-1">Ventas vs gastos 2026 (planilla anual)</h3><p class="text-xs text-on-surface-variant mb-3">Meses sin ventas cargadas aparecen en cero.</p><div style="height:300px"><canvas id="c-fin"></canvas></div></div>
     </section>
 
@@ -264,6 +265,17 @@
       <div class="grid lg:grid-cols-2 gap-4">
         <div class="card p-5"><h3 class="font-semibold mb-3">Por conductor</h3><div id="t-anulados-cond"></div></div>
         <div class="card p-5"><h3 class="font-semibold mb-3">Por sector</h3><div id="t-anulados-sec"></div></div>
+      </div>
+    </section>
+
+    <!-- RESERVAS -->
+    <section id="v-reservas" class="view">
+      <p class="text-sm text-on-surface-variant">Viajes ya agendados para fechas futuras (hojas de días que aún no ocurren). No cuentan como viajes realizados ni como ingresos hasta que pasen.</p>
+      <div id="k-reservas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <div class="card p-5"><h3 class="font-semibold mb-3">Reservas por día</h3><div style="height:260px"><canvas id="c-reservas-dia"></canvas></div></div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por conductor</h3><div id="t-reservas-cond"></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por sector</h3><div id="t-reservas-sec"></div></div>
       </div>
     </section>
 

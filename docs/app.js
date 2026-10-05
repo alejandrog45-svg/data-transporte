@@ -6,7 +6,7 @@ const NUM = (n) => Math.round(n).toLocaleString('es-CL');
 const C = { p: '#4cd7f6', s: '#4edea3', t: '#ffb2b7', a: '#F59E0B', g: '#869397', grid: 'rgba(255,255,255,.07)' };
 const VIEWS = [
   ['resumen', 'Resumen', 'dashboard'], ['ventas', 'Ventas', 'payments'], ['viajes', 'Viajes', 'route'],
-  ['clientes', 'Clientes', 'group'], ['sectores', 'Sectores', 'map'], ['convenios', 'Convenios', 'handshake'], ['anulados', 'Anulados', 'event_busy'], ['costos', 'Costos', 'account_balance_wallet'],
+  ['clientes', 'Clientes', 'group'], ['sectores', 'Sectores', 'map'], ['convenios', 'Convenios', 'handshake'], ['anulados', 'Anulados', 'event_busy'], ['reservas', 'Reservas', 'event_upcoming'], ['costos', 'Costos', 'account_balance_wallet'],
   ['marketing', 'Marketing', 'campaign'], ['calidad', 'Calidad de datos', 'database']];
 let D, gran = 'mes'; const charts = {};
 
@@ -94,7 +94,7 @@ function resumen() {
   $('#kpis').innerHTML =
     kpi('Ingresos por viajes', CLP(v.ingresos), `${D.meta.periodo_viajes[0]} al ${D.meta.periodo_viajes[1]}`, 'payments') +
     kpi('Viajes realizados', NUM(v.total), `${NUM(v.pasajeros)} pasajeros`, 'route') +
-    kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.convenios)} bajo convenio · ${NUM(D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0))} anulados aparte`, 'receipt_long') +
+    kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.convenios)} convenio · ${NUM(D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0))} anulados · ${NUM(D.cubo_futuras.rows.reduce((s, r) => s + r[6], 0))} reservas futuras (aparte)`, 'receipt_long') +
     (f.length ? kpi(`Margen ${f[0].nombre}-${f[f.length - 1].nombre} 2026`, CLP(vta - gas), `Ventas ${CLP(vta)} · Gastos ${CLP(gas)} (meses con ventas)`, 'account_balance') : kpi('Margen 2026', '—', 'sin datos de 2026 en el rango de fechas', 'account_balance'));
   const m = agrupar(v.por_dia, gran);
   $('#sub-ing').textContent = 'Agrupado por ' + { dia: 'día', semana: 'semana', mes: 'mes' }[gran];
@@ -112,6 +112,8 @@ function resumen() {
 function ventas() {
   const m = agrupar(W().por_dia, gran);
   draw('c-flujo', { click: (k) => detalleBucket(m[k].k, gran), tip: (k) => ['Ticket: ' + CLP(m[k].monto / Math.max(1, m[k].viajes))], type: gran === 'dia' ? 'line' : 'bar', data: { labels: m.map((x) => x.k), datasets: [{ label: 'Ingresos', data: m.map((x) => x.monto), backgroundColor: C.p, borderColor: C.p, borderRadius: 6, pointRadius: 0, tension: .3, yAxisID: 'y' }, { label: 'Viajes', type: 'line', data: m.map((x) => x.viajes), borderColor: C.a, pointRadius: 0, tension: .3, yAxisID: 'y2' }] }, options: { scales: { x: { grid: { display: false } }, y: { grid: { color: C.grid }, ticks: { callback: (x) => '$' + NUM(x / 1e6) + 'M' } }, y2: { position: 'right', grid: { display: false } } } } });
+  const pm = new Map(agrupar(W().por_dia, 'mes').map((x) => [+x.k.slice(5, 7), x])), fm = FIN().meses, meses = [...new Set([...pm.keys(), ...fm.map((x) => x.mes)])].sort((x, y) => x - y);
+  draw('c-cruce', { tip: (k) => { const x = pm.get(meses[k]), y = fm.find((q) => q.mes === meses[k]); return x && y && y.venta ? ['Diferencia: ' + CLP(x.monto - y.venta)] : []; }, type: 'bar', data: { labels: meses.map((m) => MESN[m]), datasets: [{ label: 'Ingresos de viajes', data: meses.map((m) => pm.get(m)?.monto || 0), backgroundColor: C.p, borderRadius: 4 }, { label: 'Ventas planilla anual', data: meses.map((m) => fm.find((q) => q.mes === m)?.venta || 0), backgroundColor: C.a, borderRadius: 4 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
   const f = FIN().meses;
   draw('c-fin', { click: (k) => detalleFin(f[k]), tip: (k) => ['Margen: ' + CLP(f[k].venta - f[k].gasto), 'Gastos / ventas: ' + pctS(f[k].gasto, f[k].venta)], type: 'bar', data: { labels: f.map((x) => x.nombre), datasets: [{ label: 'Ventas', data: f.map((x) => x.venta), backgroundColor: C.s, borderRadius: 6 }, { label: 'Gastos', data: f.map((x) => x.gasto), backgroundColor: C.t, borderRadius: 6 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
 }
@@ -236,7 +238,7 @@ function detalleGasto(cat) {
 /* clics delegados: filas de tablas, sectores y celdas del mapa de calor */
 document.addEventListener('click', (e) => {
   if (e.target.closest('[data-close]')) return cerrarModal();
-  const cube = (el) => (el.dataset.sub === 'anulados' ? D.cubo_anulados : D.cubo), extra = (el) => (el.dataset.sub === 'convenios' ? (r, i) => r[i.pago].startsWith('Convenio') : null);
+  const cube = (el) => (el.dataset.sub === 'anulados' ? D.cubo_anulados : el.dataset.sub === 'reservas' ? D.cubo_futuras : D.cubo), extra = (el) => (el.dataset.sub === 'convenios' ? (r, i) => r[i.pago].startsWith('Convenio') : null);
   const c = e.target.closest('[data-d][data-h]');
   if (c) { const d = +c.dataset.d, h = +c.dataset.h; return detalle(`${DOWN[d]} a las ${h}:00`, (r, i) => dowDe(r[i.fecha]) === d && r[i.hora] === h); }
   const s = e.target.closest('[data-sec]');
@@ -415,9 +417,19 @@ function subvista(p, cube, pred, anulado) {
   $('#t-' + p + '-sec').innerHTML = tabla(['Sector', 'Viajes', 'Tarifa'], top('sector', 12), at('sector', 'sec'));
   if (!anulado) $('#t-convenios-tipo').innerHTML = tabla(['Tipo', 'Viajes', 'Tarifa'], top('pago', 5));
 }
+
+function reservas() {
+  const v = W(D.cubo_futuras), dias = v.por_dia;
+  $('#k-reservas').innerHTML = kpi('Reservas futuras', NUM(v.total), dias.length ? `${dias[0].fecha} a ${dias[dias.length - 1].fecha}` : 'sin reservas en el rango', 'event_upcoming') +
+    kpi('Ingreso proyectado', CLP(v.ingresos), 'si todas se concretan', 'payments') + kpi('Tarifa promedio', CLP(v.ticket_promedio), 'por reserva', 'receipt_long') + kpi('Pasajeros', NUM(v.pasajeros), 'reservados', 'group');
+  draw('c-reservas-dia', { click: (k) => detalleBucket(dias[k].fecha, 'dia', D.cubo_futuras), tip: (k) => ['Ingreso proyectado: ' + CLP(dias[k].monto)], type: 'bar', data: { labels: dias.map((d) => d.fecha.slice(5)), datasets: [{ label: 'Reservas', data: dias.map((d) => d.viajes), backgroundColor: C.p, borderRadius: 4 }] }, options: { plugins: { legend: { display: false } }, scales: scales() } });
+  const g = (col, key) => v._g(col).sort((x, y) => y.viajes - x.viajes).slice(0, 12), at = (col, key) => g(col).map((x) => ` data-${key}="${esc(x.nombre)}" data-sub="reservas"`);
+  $('#t-reservas-cond').innerHTML = tabla(['Conductor', 'Reservas', 'Ingreso'], g('conductor').map((x) => [esc(x.nombre), NUM(x.viajes), CLP(x.monto)]), at('conductor', 'cond'));
+  $('#t-reservas-sec').innerHTML = tabla(['Sector', 'Reservas', 'Ingreso'], g('sector').map((x) => [esc(x.nombre), NUM(x.viajes), CLP(x.monto)]), at('sector', 'sec'));
+}
 const convenios = () => subvista('convenios', D.cubo, (r, i) => r[i.pago].startsWith('Convenio'), false);
 const anulados = () => subvista('anulados', D.cubo_anulados, null, true);
-const RENDER = { resumen, ventas, viajes, clientes, sectores, convenios, anulados, costos, marketing, calidad };
+const RENDER = { resumen, ventas, viajes, clientes, sectores, convenios, anulados, reservas, costos, marketing, calidad };
 function show(id) {
   if (!RENDER[id]) id = 'resumen';
   document.querySelectorAll('.view').forEach((e) => e.classList.toggle('active', e.id === 'v-' + id));
@@ -438,7 +450,7 @@ async function init() {
     el.addEventListener('change', () => { F[k] = el.value; $('#f-limpiar').style.display = Object.values(F).some(Boolean) ? '' : 'none'; show(location.hash.slice(1) || 'resumen'); });
   }
   const rango = { viajes: [D.meta.periodo_viajes[0], D.meta.periodo_viajes[1]], fin: [D.finanzas.dias[0]?.fecha || '', D.finanzas.dias[D.finanzas.dias.length - 1]?.fecha || ''], todo: ['', ''] };
-  $('#rango-nota').textContent = `Viajes: ${rango.viajes[0]} a ${rango.viajes[1]} (2025) · Finanzas: ${rango.fin[0]} a ${rango.fin[1]} (2026). Las fechas aplican a todos los menús; conductor, pago, sentido y sector aplican solo a viajes. Calidad de datos es del archivo completo.`;
+  $('#rango-nota').textContent = `Viajes: ${rango.viajes[0]} a ${rango.viajes[1]} · Finanzas: ${rango.fin[0]} a ${rango.fin[1]}. Las fechas aplican a todos los menús; conductor, pago, sentido y sector aplican solo a viajes. Calidad de datos es del archivo completo.`;
   const refrescar = () => { $('#f-limpiar').style.display = Object.values(F).some(Boolean) ? '' : 'none'; show(location.hash.slice(1) || 'resumen'); };
   for (const k of ['desde', 'hasta']) $('#f-' + k).addEventListener('change', (e) => { F[k] = e.target.value; refrescar(); });
   document.querySelectorAll('[data-rango]').forEach((bt) => bt.addEventListener('click', () => { [F.desde, F.hasta] = rango[bt.dataset.rango]; $('#f-desde').value = F.desde; $('#f-hasta').value = F.hasta; refrescar(); }));

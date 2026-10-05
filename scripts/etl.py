@@ -1,4 +1,4 @@
-"""ETL: Excel (viajes 2025 + ventas/gastos 2026) -> data/data.json (publico, agregado).
+"""ETL: Excel (viajes mayo-octubre 2026 + ventas/gastos 2026) -> data/data.json (publico, agregado).
 
 Datos personales (nombre/telefono) NUNCA van al JSON publico. Los clientes
 recurrentes se guardan en data/privado/ (ignorado por git) para uso interno.
@@ -15,7 +15,10 @@ OUT = ROOT / "data"
 OUT.mkdir(exist_ok=True)
 (OUT / "privado").mkdir(exist_ok=True)
 
-ANIO_VIAJES = 2025
+# La planilla se llama 'MARZO 2025' (plantilla original) pero sus hojas son de 2026: lo prueban los nombres
+# con dia de la semana (LUNES 27 JULIO cae lunes en 2026) y el control 'dia de la semana de las hojas'.
+ANIO_VIAJES = 2026
+DIAS_SEM = {"LUNES": 0, "MARTES": 1, "MIERCOLES": 2, "JUEVES": 3, "VIERNES": 4, "SABADO": 5, "DOMINGO": 6}
 MESES = {"ENERO": 1, "FEB": 2, "MARZO": 3, "ABRIL": 4, "MAYO": 5, "JUNIO": 6, "JULIO": 7,
          "AGOSTO": 8, "SEPT": 9, "OCT": 10, "NOV": 11, "DIC": 12}
 MES_NOMBRE = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
@@ -121,12 +124,12 @@ def conductor(v):
 
 def fecha_hoja(titulo):
     n = norm(titulo)
-    m = re.match(r"^(\d{1,2})\s*-?\s*([A-Z]+)", n)
+    m = re.match(r"^(?:(LUNES|MARTES|MIERCOLES|JUEVES|VIERNES|SABADO|DOMINGO)\s+)?(\d{1,2})\s*-?\s*([A-Z]+)", n)
     if not m:
         return None
-    d, mes = int(m.group(1)), None
+    d, mes = int(m.group(2)), None
     for k, v in MESES.items():
-        if m.group(2).startswith(k):
+        if m.group(3).startswith(k):
             mes = v
     if not mes:
         return None
@@ -134,6 +137,11 @@ def fecha_hoja(titulo):
         return dt.date(ANIO_VIAJES, mes, d)
     except ValueError:
         return None
+
+
+def dia_semana_hoja(titulo):
+    m = re.match(r"^(LUNES|MARTES|MIERCOLES|JUEVES|VIERNES|SABADO|DOMINGO)\b", norm(titulo))
+    return DIAS_SEM[m.group(1)] if m else None
 
 
 def num(v):
@@ -152,6 +160,11 @@ def viajes(path):
             calidad["hojas_ignoradas"] += 1
             continue
         calidad["hojas_procesadas"] += 1
+        ds = dia_semana_hoja(ws.title)
+        if ds is not None:
+            calidad["hojas_con_dia_semana"] += 1
+            if f.weekday() != ds:
+                calidad["hojas_dia_semana_distinto"] += 1
         if False:
             continue
         for i, r in enumerate(ws.iter_rows(values_only=True)):
@@ -190,8 +203,10 @@ def viajes(path):
     with open(OUT / "privado" / "duplicados_eliminados.csv", "w", newline="", encoding="utf-8-sig") as fh:
         csv.writer(fh).writerows([["fecha", "hoja", "nombre", "telefono", "hora", "pax", "origen", "destino", "vuelo", "tipo", "tarifa", "conductor", "pago", "equipaje", "arribo"]] + dups)
     anuladas = [x for x in filas if x["anulado"]]
-    filas = [x for x in filas if not x["anulado"]]
-    return filas, calidad, anuladas
+    hoy = dt.date.today()
+    futuras = [x for x in filas if not x["anulado"] and x["fecha"] > hoy]
+    filas = [x for x in filas if not x["anulado"] and x["fecha"] <= hoy]
+    return filas, calidad, anuladas, futuras
 
 
 def agg(filas, key):
@@ -274,14 +289,17 @@ def finanzas(hojas):
 
 
 
-def verificar(data, filas, anuladas, cal, cli):
+def verificar(data, filas, anuladas, futuras, cal, cli):
     """Controles de consistencia. critico=True bloquea la publicacion si falla."""
     v = data["viajes"]; fin = data["finanzas"]; res = []
     def chk(nombre, ok, detalle, critico=True):
         res.append(dict(control=nombre, ok=bool(ok), detalle=detalle, critico=critico))
     n = v["total"]
-    chk("Conservacion de registros", cal["filas_leidas"] == n + len(anuladas) + cal["duplicados_eliminados"],
-        f'{cal["filas_leidas"]} leidas = {n} viajes + {len(anuladas)} anulados + {cal["duplicados_eliminados"]} duplicados')
+    chk("Conservacion de registros", cal["filas_leidas"] == n + len(anuladas) + len(futuras) + cal["duplicados_eliminados"],
+        f'{cal["filas_leidas"]} leidas = {n} viajes + {len(anuladas)} anulados + {len(futuras)} reservas futuras + {cal["duplicados_eliminados"]} duplicados')
+    chk("Dia de la semana de las hojas coincide con el calendario", cal["hojas_dia_semana_distinto"] == 0,
+        f'{cal["hojas_con_dia_semana"]} hojas con dia en el nombre, {cal["hojas_dia_semana_distinto"]} no coinciden con {ANIO_VIAJES}')
+    chk("Reservas futuras separadas de los viajes realizados", all(x["fecha"] > dt.date.today() for x in futuras), f"{len(futuras)} reservas hasta {max((x['fecha'] for x in futuras), default=dt.date.today()).isoformat()}", critico=False)
     chk("Viajes: total = suma por mes = suma por dia", n == sum(m["viajes"] for m in v["por_mes"]) == sum(d["viajes"] for d in v["por_dia"]), f"{n} viajes")
     chk("Viajes: total = suma por dia de semana", n == sum(d["viajes"] for d in v["por_dow"]), f"{n} viajes")
     chk("Viajes: total = suma por medio de pago", n == sum(p["viajes"] for p in v["pagos"]), f"{n} viajes")
@@ -298,7 +316,7 @@ def verificar(data, filas, anuladas, cal, cli):
     chk("Finanzas: ventas por dia = por mes", sum(d["venta"] for d in dias) == sum(m["venta"] for m in meses), f'${sum(m["venta"] for m in meses):,}'.replace(",", "."))
     chk("Finanzas: gastos por dia = por mes", sum(d["gasto"] for d in dias) == sum(m["gasto"] for m in meses), f'${sum(m["gasto"] for m in meses):,}'.replace(",", "."))
     chk("Finanzas: gastos por categoria = gasto total", all(sum(m["gastos"].values()) == m["gasto"] for m in meses), f"{len(meses)} meses")
-    chk("Fechas de viajes dentro del periodo y no futuras", all(dt.date(2025, 1, 1) <= x["fecha"] <= dt.date.today() for x in filas), f'{v["por_dia"][0]["fecha"]} a {v["por_dia"][-1]["fecha"]}')
+    chk("Fechas de viajes dentro del periodo y no futuras", all(dt.date(ANIO_VIAJES, 1, 1) <= x["fecha"] <= dt.date.today() for x in filas), f'{v["por_dia"][0]["fecha"]} a {v["por_dia"][-1]["fecha"]}')
     chk("Horas validas (0-23)", all(x["hora"] is None or 0 <= x["hora"] <= 23 for x in filas), "")
     chk("Sin tarifas negativas", all(x["tarifa"] >= 0 for x in filas), "")
     # sin datos personales en el JSON publico
@@ -320,6 +338,12 @@ def verificar(data, filas, anuladas, cal, cli):
     sinv = [d for d in dias if d["venta"] == 0 and d["gasto"] > 0]
     chk("Dias de 2026 con gastos pero sin ventas", not sinv, f"{len(sinv)} dias", critico=False)
     chk("Ventas pendientes de carga en 2026", all(m["venta"] > 0 for m in meses), "meses sin ventas: " + (", ".join(m["nombre"] for m in meses if m["venta"] == 0) or "ninguno"), critico=False)
+    pm = {m["mes"]: m["monto"] for m in v["por_mes"]}
+    cruces = []
+    for m in meses:
+        if m["mes"] in pm and m["venta"] > 0 and abs(m["venta"] - pm[m["mes"]]) > 0.15 * pm[m["mes"]]:
+            cruces.append(f'{m["nombre"]}: viajes ${pm[m["mes"]]:,} vs planilla ${m["venta"]:,}'.replace(",", "."))
+    chk("Ingresos por viajes vs ventas de la planilla anual (mismo mes)", not cruces, "; ".join(cruces) if cruces else "dentro de +-15%", critico=False)
     return res
 
 
@@ -329,7 +353,7 @@ def main():
     ap.add_argument("--fin-xlsx", default=str(FIN_XLSX))
     ap.add_argument("--fin-json", default=None, help="JSON del Apps Script (hojas 2026)")
     a = ap.parse_args()
-    filas, cal, anuladas = viajes(a.viajes)
+    filas, cal, anuladas, futuras = viajes(a.viajes)
     total = sum(x["monto"] for x in filas)
     cobrados = [x for x in filas if x["monto"] > 0]
     por_mes = agg(filas, lambda x: x["fecha"].month)
@@ -367,7 +391,8 @@ def main():
         print("AVISO: sin fuente de finanzas, se conserva la anterior")
     data = dict(
         meta=dict(generado=dt.datetime.now().isoformat(timespec="seconds"),
-                  fuentes=["PLANILLA MATRIZ (viajes 2025)", "AÑO 2026 (ventas y gastos)"],
+                  fuentes=["PLANILLA MATRIZ (viajes, mayo-octubre 2026)", "AÑO 2026 (ventas y gastos)"],
+                  anio_viajes=ANIO_VIAJES, hoy=dt.date.today().isoformat(),
                   periodo_viajes=[min(por_dia), max(por_dia)],
                   calidad=dict(viajes=dict(cal), finanzas=dict(cal_fin),
                                sin_sector=sum(1 for x in filas if x["sector"] == "Sin identificar"),
@@ -391,8 +416,9 @@ def main():
         clientes_viajes=[sorted(c["v"]) for c in sorted(cli.values(), key=lambda c: (-c["n"], c["v"][0][0]))],
         cubo=cubo(filas),
         cubo_anulados=cubo(anuladas),
+        cubo_futuras=cubo(futuras),
         finanzas=dict(meses=meses_fin, dias=dias_fin))
-    ver = verificar(data, filas, anuladas, cal, cli)
+    ver = verificar(data, filas, anuladas, futuras, cal, cli)
     data["meta"]["verificaciones"] = ver
     falla = [c for c in ver if c["critico"] and not c["ok"]]
     for c in ver:
