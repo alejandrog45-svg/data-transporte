@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generado": "2026-10-05T03:56:49",
+  "generado": "2026-10-05T04:10:02",
   "fuentes": [
    "PLANILLA MATRIZ (viajes 2025)",
    "AÑO 2026 (ventas y gastos)"
@@ -17,7 +17,7 @@
     "hojas_ignoradas": 5
    },
    "finanzas": {
-    "texto_en_gastos(xxx)": 45
+    "texto_en_gastos(xxx)": 46
    },
    "sin_sector": 195,
    "pago_sin_dato": 103
