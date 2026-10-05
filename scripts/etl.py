@@ -151,10 +151,14 @@ def viajes(path):
         if not f:
             calidad["hojas_ignoradas"] += 1
             continue
+        calidad["hojas_procesadas"] += 1
+        if False:
+            continue
         for i, r in enumerate(ws.iter_rows(values_only=True)):
             if i == 0 or not r or r[0] is None:
                 continue
             r = tuple(r) + (None,) * 14
+            calidad["filas_leidas"] += 1
             clave = (f, tuple(str(x) for x in r[:13]))
             if clave in vistos:
                 calidad["duplicados_eliminados"] += 1
@@ -248,6 +252,7 @@ def finanzas(hojas):
             if len(r) > 1 and isinstance(r[1], str) and r[1].strip():
                 calidad["texto_en_venta"] += 1
             g_dia = 0.0
+            gd = collections.Counter()
             for i, c in cats.items():
                 if i < len(r):
                     x = num(r[i])
@@ -256,14 +261,66 @@ def finanzas(hojas):
                     if x:
                         gasto[c] += x
                         g_dia += x
+                        gd[c] += x
             if v or g_dia:
-                dias.append(dict(fecha=f"2026-{mes:02d}-{int(d):02d}", venta=round(v or 0), gasto=round(g_dia)))
+                dias.append(dict(fecha=f"2026-{mes:02d}-{int(d):02d}", venta=round(v or 0), gasto=round(g_dia),
+                                 gastos={k: round(x) for k, x in gd.items()}))
             venta_m += v or 0
         total_g = sum(gasto.values())
         meses.append(dict(mes=mes, nombre=MES_NOMBRE[mes], venta=round(venta_m), gasto=round(total_g),
                           margen=round(venta_m - total_g),
                           gastos={k: round(v) for k, v in gasto.most_common()}))
     return meses, dias, calidad
+
+
+
+def verificar(data, filas, anuladas, cal, cli):
+    """Controles de consistencia. critico=True bloquea la publicacion si falla."""
+    v = data["viajes"]; fin = data["finanzas"]; res = []
+    def chk(nombre, ok, detalle, critico=True):
+        res.append(dict(control=nombre, ok=bool(ok), detalle=detalle, critico=critico))
+    n = v["total"]
+    chk("Conservacion de registros", cal["filas_leidas"] == n + len(anuladas) + cal["duplicados_eliminados"],
+        f'{cal["filas_leidas"]} leidas = {n} viajes + {len(anuladas)} anulados + {cal["duplicados_eliminados"]} duplicados')
+    chk("Viajes: total = suma por mes = suma por dia", n == sum(m["viajes"] for m in v["por_mes"]) == sum(d["viajes"] for d in v["por_dia"]), f"{n} viajes")
+    chk("Viajes: total = suma por dia de semana", n == sum(d["viajes"] for d in v["por_dow"]), f"{n} viajes")
+    chk("Viajes: total = suma por medio de pago", n == sum(p["viajes"] for p in v["pagos"]), f"{n} viajes")
+    chk("Viajes: total = suma por sector", n == sum(x["viajes"] for x in tabla(agg(filas, lambda x: x["sector"]))), f"{n} viajes")
+    chk("Viajes: total = suma por conductor", n == sum(x["viajes"] for x in tabla(agg(filas, lambda x: x["conductor"]))), f"{n} viajes")
+    cb = data["cubo"]; ci = {c: k for k, c in enumerate(cb["cols"])}
+    chk("Cubo de datos = totales (viajes e ingresos)", sum(r[ci["viajes"]] for r in cb["rows"]) == n and sum(r[ci["monto"]] for r in cb["rows"]) == v["ingresos"],
+        f'{n} viajes, ${v["ingresos"]:,}'.replace(",", "."))
+    chk("Ingresos = suma por mes = suma por dia", v["ingresos"] == sum(m["monto"] for m in v["por_mes"]) == sum(d["monto"] for d in v["por_dia"]), f'${v["ingresos"]:,}'.replace(",", "."))
+    chk("Anulados no suman a ventas", all(r[ci["monto"]] == 0 for r in data["cubo_anulados"]["rows"]), f"{len(anuladas)} anulados")
+    chk("Convenios no suman a ventas", all(x["monto"] == 0 for x in filas if x["pago"].startswith("Convenio")), f'{v["convenios"]} convenios')
+    chk("Clientes: viajes por cliente = viajes con telefono", sum(len(c) for c in data["clientes_viajes"]) == sum(1 for x in filas if x["cliente"]), f'{len(data["clientes_viajes"])} clientes')
+    meses, dias = fin["meses"], fin["dias"]
+    chk("Finanzas: ventas por dia = por mes", sum(d["venta"] for d in dias) == sum(m["venta"] for m in meses), f'${sum(m["venta"] for m in meses):,}'.replace(",", "."))
+    chk("Finanzas: gastos por dia = por mes", sum(d["gasto"] for d in dias) == sum(m["gasto"] for m in meses), f'${sum(m["gasto"] for m in meses):,}'.replace(",", "."))
+    chk("Finanzas: gastos por categoria = gasto total", all(sum(m["gastos"].values()) == m["gasto"] for m in meses), f"{len(meses)} meses")
+    chk("Fechas de viajes dentro del periodo y no futuras", all(dt.date(2025, 1, 1) <= x["fecha"] <= dt.date.today() for x in filas), f'{v["por_dia"][0]["fecha"]} a {v["por_dia"][-1]["fecha"]}')
+    chk("Horas validas (0-23)", all(x["hora"] is None or 0 <= x["hora"] <= 23 for x in filas), "")
+    chk("Sin tarifas negativas", all(x["tarifa"] >= 0 for x in filas), "")
+    # sin datos personales en el JSON publico
+    txt = json.dumps(data, ensure_ascii=False).lower()
+    publicas = {x["conductor"].lower() for x in filas} | {x["sector"].lower() for x in filas}
+    nombres = {c["nombre"].strip().lower() for c in cli.values() if len(c["nombre"].strip()) >= 6} - publicas
+    tels = {c["tel"] for c in cli.values() if len(c["tel"]) >= 8}
+    fuga_n = [x for x in nombres if x in txt]; fuga_t = [x for x in tels if x in txt]
+    chk("Sin nombres ni telefonos de clientes en el JSON publico", not fuga_n and not fuga_t, f"{len(nombres)} nombres y {len(tels)} telefonos revisados (se omiten nombres iguales a un conductor o sector publico), {len(fuga_n) + len(fuga_t)} coincidencias")
+    # informativos
+    outl = [x for x in filas if x["tarifa"] > 300000]
+    chk("Tarifas atipicas (> $300.000)", not outl, f"{len(outl)} viajes", critico=False)
+    pxo = [x for x in filas if x["pax"] > 20]
+    chk("Pasajeros atipicos (> 20)", not pxo, f"{len(pxo)} viajes", critico=False)
+    dias_v = {dt.date.fromisoformat(d["fecha"]) for d in v["por_dia"]}
+    d0, d1 = min(dias_v), max(dias_v)
+    faltan = [d0 + dt.timedelta(k) for k in range((d1 - d0).days + 1) if d0 + dt.timedelta(k) not in dias_v]
+    chk("Dias del periodo sin viajes cargados", not faltan, f"{len(faltan)} dias" + (": " + ", ".join(x.isoformat() for x in faltan[:8]) if faltan else ""), critico=False)
+    sinv = [d for d in dias if d["venta"] == 0 and d["gasto"] > 0]
+    chk("Dias de 2026 con gastos pero sin ventas", not sinv, f"{len(sinv)} dias", critico=False)
+    chk("Ventas pendientes de carga en 2026", all(m["venta"] > 0 for m in meses), "meses sin ventas: " + (", ".join(m["nombre"] for m in meses if m["venta"] == 0) or "ninguno"), critico=False)
+    return res
 
 
 def main():
@@ -282,11 +339,11 @@ def main():
     for x in filas:
         if x["hora"] is not None:
             heat[x["fecha"].weekday()][x["hora"]] += 1
-    cli = collections.defaultdict(lambda: dict(n=0, monto=0.0, nombre="", tel=""))
+    cli = collections.defaultdict(lambda: dict(n=0, monto=0.0, nombre="", tel="", v=[]))
     for x in filas:
         if x["cliente"]:
             c = cli[x["cliente"]]
-            c["n"] += 1; c["monto"] += x["tarifa"]; c["nombre"] = x["nombre"]; c["tel"] = x["tel"]
+            c["n"] += 1; c["monto"] += x["monto"]; c["nombre"] = x["nombre"]; c["tel"] = x["tel"]; c["v"].append([x["fecha"].isoformat(), round(x["monto"])])
     recurrentes = sorted((c for c in cli.values() if c["n"] >= 2), key=lambda c: -c["n"])
     with open(OUT / "privado" / "clientes_recurrentes.csv", "w", newline="", encoding="utf-8-sig") as fh:
         w = csv.writer(fh)
@@ -322,9 +379,18 @@ def main():
                           viajes_de_recurrentes=sum(c["n"] for c in recurrentes),
                           top_anonimo=[dict(id=f"Cliente {i+1:02d}", viajes=c["n"], monto=round(c["monto"]))
                                        for i, c in enumerate(recurrentes[:10])])),
+        clientes_viajes=[sorted(c["v"]) for c in sorted(cli.values(), key=lambda c: (-c["n"], c["v"][0][0]))],
         cubo=cubo(filas),
         cubo_anulados=cubo(anuladas),
         finanzas=dict(meses=meses_fin, dias=dias_fin))
+    ver = verificar(data, filas, anuladas, cal, cli)
+    data["meta"]["verificaciones"] = ver
+    falla = [c for c in ver if c["critico"] and not c["ok"]]
+    for c in ver:
+        print(("OK   " if c["ok"] else ("FALLA" if c["critico"] else "AVISO")), c["control"], "-", c["detalle"])
+    if falla:
+        print("ERROR: hay controles criticos que fallan; no se actualiza data.json")
+        sys.exit(1)
     (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print("viajes:", len(filas), "| ingresos:", data["viajes"]["ingresos"], "| calidad:", data["meta"]["calidad"])
     print("meses fin:", [(m["nombre"], m["venta"], m["gasto"]) for m in meses_fin])

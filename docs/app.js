@@ -11,12 +11,12 @@ const VIEWS = [
 let D, gran = 'mes'; const charts = {};
 
 
-const F = { conductor: '', pago: '', sentido: '', sector: '' };
+const F = { conductor: '', pago: '', sentido: '', sector: '', desde: '', hasta: '' };
 const DOWN = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 /* Agregados de viajes calculados en el navegador desde el cubo, respetando los filtros. */
 function W(cube = D.cubo, pred = null) {
   const c = cube, i = Object.fromEntries(c.cols.map((n, k) => [n, k]));
-  const rows = c.rows.filter((r) => (!F.conductor || r[i.conductor] === F.conductor) && (!F.pago || r[i.pago] === F.pago) && (!F.sentido || r[i.sentido] === F.sentido) && (!F.sector || r[i.sector] === F.sector) && (!pred || pred(r, i)));
+  const rows = c.rows.filter((r) => (!F.conductor || r[i.conductor] === F.conductor) && (!F.pago || r[i.pago] === F.pago) && (!F.sentido || r[i.sentido] === F.sentido) && (!F.sector || r[i.sector] === F.sector) && (!F.desde || r[i.fecha] >= F.desde) && (!F.hasta || r[i.fecha] <= F.hasta) && (!pred || pred(r, i)));
   const grp = (key) => { const m = new Map(); for (const r of rows) { const k = key(r); const o = m.get(k) || { nombre: k, viajes: 0, monto: 0, tarifa: 0 }; o.viajes += r[i.viajes]; o.monto += r[i.monto]; o.tarifa += r[i.tarifa]; m.set(k, o); } return [...m.values()]; };
   const out = { total: 0, ingresos: 0, tarifa: 0, pasajeros: 0, convenios: 0, cobrados: 0 };
   const heat = DOWN.map(() => Array(24).fill(0)), dow = DOWN.map((n) => ({ nombre: n, viajes: 0, monto: 0 })), dia = new Map();
@@ -36,6 +36,27 @@ function W(cube = D.cubo, pred = null) {
   out.pagos = by(grp((r) => r[i.pago])); out.sectores = by(grp((r) => r[i.sector])); out.sentido = by(grp((r) => r[i.sentido]));
   out._g = (col) => grp((r) => r[i[col]]);
   return out;
+}
+
+/* Finanzas 2026 (ventas y gastos) dentro del rango de fechas. */
+function FIN() {
+  const dias = D.finanzas.dias.filter((d) => (!F.desde || d.fecha >= F.desde) && (!F.hasta || d.fecha <= F.hasta));
+  const m = new Map();
+  for (const d of dias) {
+    const k = +d.fecha.slice(5, 7), o = m.get(k) || { mes: k, nombre: MESN[k], venta: 0, gasto: 0, margen: 0, gastos: {} };
+    o.venta += d.venta; o.gasto += d.gasto;
+    for (const [c, x] of Object.entries(d.gastos || {})) o.gastos[c] = (o.gastos[c] || 0) + x;
+    m.set(k, o);
+  }
+  const meses = [...m.values()].sort((x, y) => x.mes - y.mes); meses.forEach((o) => (o.margen = o.venta - o.gasto));
+  return { dias, meses };
+}
+/* Clientes (anonimos) dentro del rango de fechas, desde las listas de viajes por cliente. */
+function CL() {
+  const ok = (f) => (!F.desde || f >= F.desde) && (!F.hasta || f <= F.hasta);
+  const lista = D.clientes_viajes.map((vs) => vs.filter((v) => ok(v[0]))).filter((vs) => vs.length), rec = lista.filter((vs) => vs.length >= 2);
+  return { unicos: lista.length, recurrentes: rec.length, viajes_de_recurrentes: rec.reduce((s, vs) => s + vs.length, 0), total: lista.reduce((s, vs) => s + vs.length, 0),
+    top_anonimo: [...rec].sort((x, y) => y.length - x.length).slice(0, 10).map((vs, i) => ({ id: 'Cliente ' + String(i + 1).padStart(2, '0'), viajes: vs.length, monto: vs.reduce((s, v) => s + v[1], 0) })) };
 }
 function opciones(col) { const i = D.cubo.cols.indexOf(col); return [...new Set(D.cubo.rows.map((r) => r[i]))].sort((a, b) => String(a).localeCompare(String(b))); }
 
@@ -64,25 +85,25 @@ const kpi = (t, v, sub, ic) => `<div class="card p-5 flex flex-col gap-3"><div c
 const tabla = (cols, rows) => `<table class="t"><thead><tr>${cols.map((c, i) => `<th class="${i ? 'n' : ''}">${c}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td class="${i ? 'n mono' : ''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 
 function resumen() {
-  const v = W(), f = D.finanzas.meses.filter((m) => m.venta > 0), vta = f.reduce((a, m) => a + m.venta, 0), gas = f.reduce((a, m) => a + m.gasto, 0);
+  const v = W(), f = FIN().meses.filter((m) => m.venta > 0), vta = f.reduce((a, m) => a + m.venta, 0), gas = f.reduce((a, m) => a + m.gasto, 0);
   $('#kpis').innerHTML =
     kpi('Ingresos por viajes', CLP(v.ingresos), `${D.meta.periodo_viajes[0]} al ${D.meta.periodo_viajes[1]}`, 'payments') +
     kpi('Viajes realizados', NUM(v.total), `${NUM(v.pasajeros)} pasajeros`, 'route') +
     kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.convenios)} bajo convenio · ${NUM(D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0))} anulados aparte`, 'receipt_long') +
-    kpi(`Margen ${f[0].nombre}-${f[f.length - 1].nombre} 2026`, CLP(vta - gas), `Ventas ${CLP(vta)} · Gastos ${CLP(gas)} (meses con ventas)`, 'account_balance');
+    (f.length ? kpi(`Margen ${f[0].nombre}-${f[f.length - 1].nombre} 2026`, CLP(vta - gas), `Ventas ${CLP(vta)} · Gastos ${CLP(gas)} (meses con ventas)`, 'account_balance') : kpi('Margen 2026', '—', 'sin datos de 2026 en el rango de fechas', 'account_balance'));
   const m = agrupar(v.por_dia, gran);
   $('#sub-ing').textContent = 'Agrupado por ' + { dia: 'día', semana: 'semana', mes: 'mes' }[gran];
   draw('c-ing', { type: gran === 'dia' ? 'line' : 'bar', data: { labels: m.map((x) => x.k), datasets: [{ label: 'Ingresos', data: m.map((x) => x.monto), backgroundColor: C.p, borderColor: C.p, borderRadius: 6, pointRadius: 0, tension: .3 }] }, options: { plugins: { legend: { display: false } }, scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
   const pagos = v.pagos.filter((p) => p.viajes);
   draw('c-pago', { type: 'doughnut', data: { labels: pagos.map((p) => p.nombre), datasets: [{ data: pagos.map((p) => p.viajes), backgroundColor: [C.p, C.s, C.a, C.g, C.t, '#a78bfa'], borderWidth: 0 }] }, options: { cutout: '65%', plugins: { legend: { position: 'bottom' } } } });
   draw('c-dow', { type: 'bar', data: { labels: v.por_dow.map((d) => d.nombre), datasets: [{ data: v.por_dow.map((d) => d.viajes), backgroundColor: C.s, borderRadius: 6 }] }, options: { plugins: { legend: { display: false } }, scales: scales() } });
-  const sec = v.sectores.filter((s) => s.nombre !== 'Sin identificar').slice(0, 6), mx = sec[0].viajes;
+  const sec = v.sectores.filter((s) => s.nombre !== 'Sin identificar').slice(0, 6), mx = sec[0]?.viajes || 1;
   $('#top-sec').innerHTML = sec.map((s) => `<div><div class="flex justify-between text-sm"><span>${esc(s.nombre)}</span><span class="mono text-primary">${NUM(s.viajes)}</span></div><div class="bar mt-1"><i style="width:${s.viajes / mx * 100}%"></i></div></div>`).join('');
 }
 function ventas() {
   const m = agrupar(W().por_dia, gran);
   draw('c-flujo', { type: gran === 'dia' ? 'line' : 'bar', data: { labels: m.map((x) => x.k), datasets: [{ label: 'Ingresos', data: m.map((x) => x.monto), backgroundColor: C.p, borderColor: C.p, borderRadius: 6, pointRadius: 0, tension: .3, yAxisID: 'y' }, { label: 'Viajes', type: 'line', data: m.map((x) => x.viajes), borderColor: C.a, pointRadius: 0, tension: .3, yAxisID: 'y2' }] }, options: { scales: { x: { grid: { display: false } }, y: { grid: { color: C.grid }, ticks: { callback: (x) => '$' + NUM(x / 1e6) + 'M' } }, y2: { position: 'right', grid: { display: false } } } } });
-  const f = D.finanzas.meses;
+  const f = FIN().meses;
   draw('c-fin', { type: 'bar', data: { labels: f.map((x) => x.nombre), datasets: [{ label: 'Ventas', data: f.map((x) => x.venta), backgroundColor: C.s, borderRadius: 6 }, { label: 'Gastos', data: f.map((x) => x.gasto), backgroundColor: C.t, borderRadius: 6 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
 }
 function viajes() {
@@ -95,29 +116,29 @@ function viajes() {
   draw('c-sent', { type: 'doughnut', data: { labels: s.map((x) => x.nombre), datasets: [{ data: s.map((x) => x.viajes), backgroundColor: [C.p, C.s, C.g], borderWidth: 0 }] }, options: { cutout: '65%', plugins: { legend: { position: 'bottom' } } } });
 }
 function clientes() {
-  const c = D.viajes.clientes;
+  const c = CL();
   $('#kpi-cli').innerHTML = kpi('Clientes únicos', NUM(c.unicos), 'identificados por teléfono', 'group') + kpi('Clientes recurrentes', NUM(c.recurrentes), '2 o más viajes', 'repeat') +
-    kpi('Viajes de recurrentes', Math.round(c.viajes_de_recurrentes / D.viajes.total * 100) + '%', `${NUM(c.viajes_de_recurrentes)} de ${NUM(D.viajes.total)} viajes`, 'percent');
+    kpi('Viajes de recurrentes', Math.round(c.viajes_de_recurrentes / Math.max(1, c.total) * 100) + '%', `${NUM(c.viajes_de_recurrentes)} de ${NUM(c.total)} viajes`, 'percent');
   $('#t-cli').innerHTML = tabla(['Cliente', 'Viajes', 'Gasto total'], c.top_anonimo.map((x) => [esc(x.id), x.viajes, CLP(x.monto)]));
 }
 function sectores() { $('#t-sec').innerHTML = tabla(['Sector', 'Viajes', 'Ingresos', 'Ticket prom.'], W().sectores.map((s) => [esc(s.nombre), NUM(s.viajes), CLP(s.monto), CLP(s.monto / s.viajes)])); }
 function costos() {
-  const tot = {}; D.finanzas.meses.forEach((m) => Object.entries(m.gastos).forEach(([k, v]) => (tot[k] = (tot[k] || 0) + v)));
+  const tot = {}; FIN().meses.forEach((m) => Object.entries(m.gastos).forEach(([k, v]) => (tot[k] = (tot[k] || 0) + v)));
   const e = Object.entries(tot).sort((a, b) => b[1] - a[1]);
   draw('c-gastos', { type: 'bar', data: { labels: e.map((x) => x[0]), datasets: [{ data: e.map((x) => x[1]), backgroundColor: C.t, borderRadius: 6 }] }, options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: C.grid }, ticks: { callback: (x) => '$' + NUM(x / 1e6) + 'M' } }, y: { grid: { display: false } } } } });
-  $('#t-mes').innerHTML = tabla(['Mes', 'Ventas', 'Gastos', 'Margen'], D.finanzas.meses.map((m) => [m.nombre, CLP(m.venta), CLP(m.gasto), `<span style="color:${m.margen < 0 ? '#fb7185' : '#34d399'}">${CLP(m.margen)}</span>`]));
+  $('#t-mes').innerHTML = tabla(['Mes', 'Ventas', 'Gastos', 'Margen'], FIN().meses.map((m) => [m.nombre, CLP(m.venta), CLP(m.gasto), `<span style="color:${m.margen < 0 ? '#fb7185' : '#34d399'}">${CLP(m.margen)}</span>`]));
 }
 function marketing() {
-  const v = W(), c = D.viajes.clientes, h = v.heatmap, horas = h.horas.map((x, i) => ({ x, n: h.valores.reduce((a, r) => a + r[i], 0) }));
+  const v = W(), c = CL(), h = v.heatmap, horas = h.horas.map((x, i) => ({ x, n: h.valores.reduce((a, r) => a + r[i], 0) }));
   const valle = horas.filter((o) => o.n > 0).sort((a, b) => a.n - b.n).slice(0, 3).map((o) => o.x + ':00').join(', ');
   const dow = [...v.por_dow].sort((a, b) => a.viajes - b.viajes)[0], dowTop = [...v.por_dow].sort((a, b) => b.viajes - a.viajes)[0];
   const sec = v.sectores.filter((s) => s.nombre !== 'Sin identificar').slice(0, 3).map((s) => s.nombre);
   const cv = W(D.cubo, (r, i) => r[i.pago].startsWith('Convenio')), an = W(D.cubo_anulados), totR = D.viajes.total;
   const op = [
-    ['repeat', 'Fidelizar clientes recurrentes', `${NUM(c.recurrentes)} clientes ya viajaron 2 o más veces y generan el ${Math.round(c.viajes_de_recurrentes / D.viajes.total * 100)}% de los viajes. Ofrece un descuento por el próximo viaje o un pase de ida y vuelta.`, `Hola, gracias por viajar con nosotros. Por ser cliente frecuente tienes un beneficio en tu próximo traslado al aeropuerto. ¿Te reservamos tu viaje?`],
+    ['repeat', 'Fidelizar clientes recurrentes', `${NUM(c.recurrentes)} clientes ya viajaron 2 o más veces y generan el ${Math.round(c.viajes_de_recurrentes / Math.max(1, c.total) * 100)}% de los viajes. Ofrece un descuento por el próximo viaje o un pase de ida y vuelta.`, `Hola, gracias por viajar con nosotros. Por ser cliente frecuente tienes un beneficio en tu próximo traslado al aeropuerto. ¿Te reservamos tu viaje?`],
     ['schedule', 'Promoción en horas valle', `Las horas con menos demanda son ${valle}. Una tarifa especial en esos horarios llena la flota sin competir con la hora punta.`, `Viaja entre las ${valle.split(',')[0]} y obtén tarifa preferente al aeropuerto. Reserva por WhatsApp.`],
     ['calendar_month', `Reforzar el día ${dow.nombre}`, `${dow.nombre} es el día más flojo (${NUM(dow.viajes)} viajes) y ${dowTop.nombre} el más fuerte (${NUM(dowTop.viajes)}). Lanza una oferta de ${dow.nombre} en redes sociales.`, `Los ${dow.nombre} tu traslado al aeropuerto con descuento. Reserva con anticipación.`],
-    ['map', 'Publicidad por sector', `Los sectores con más viajes son ${sec.join(', ')}. Segmenta anuncios de Google y Meta a esas comunas con la promesa de recogida en la puerta.`, `Traslados al aeropuerto desde ${sec[0]}: puntualidad y tarifa clara. Reserva hoy.`],
+    ['map', 'Publicidad por sector', `Los sectores con más viajes son ${sec.join(', ')}. Segmenta anuncios de Google y Meta a esas comunas con la promesa de recogida en la puerta.`, `Traslados al aeropuerto desde ${sec[0] || 'tu zona'}: puntualidad y tarifa clara. Reserva hoy.`],
     ['handshake', 'Convenios', `${NUM(cv.total)} viajes bajo convenio (${(cv.total / Math.max(1, totR) * 100).toFixed(1)}% de los viajes), valorizados en ${CLP(cv.tarifa)}. Renegocia tarifas de los convenios que más mueven, ofrece nuevos convenios a empresas y hoteles de los mismos sectores, y vigila que el pago diferido llegue a tiempo.`, null],
     ['event_busy', 'Reducir anulaciones', `${NUM(an.total)} viajes anulados (${(an.total / Math.max(1, totR + an.total) * 100).toFixed(1)}% de los registros). Reconfirma por WhatsApp 24 horas antes del viaje y ofrece reprogramar en vez de anular.`, `Hola, te recordamos tu traslado de mañana. ¿Nos confirmas la hora y la dirección? Si necesitas cambiarlo, lo reprogramamos sin problema.`],
     ['share', 'Contenido para redes sociales', `Publica el ranking de comunas más atendidas, tips de viaje al aeropuerto y testimonios de clientes recurrentes. Calendario sugerido: 3 publicaciones por semana, reforzando ${dow.nombre}.`, null]];
@@ -128,6 +149,9 @@ function calidad() {
   const q = D.meta.calidad, n = D.viajes.total;
   const filas = [['Viajes duplicados eliminados', q.viajes.duplicados_eliminados], ['Viajes sin tarifa', q.viajes.sin_tarifa], ['Viajes sin hora', q.viajes.sin_hora], ['Viajes anulados ("Nulo"), excluidos de ventas', q.viajes.anulados], ['Viajes sin sector identificado', q.sin_sector], ['Viajes sin medio de pago', q.pago_sin_dato], ['Celdas con texto (xxx) en gastos', q.finanzas['texto_en_gastos(xxx)'] || 0], ['Hojas ignoradas (ej. reservas futuras)', q.viajes.hojas_ignoradas]];
   $('#t-cal').innerHTML = tabla(['Control', 'Casos', '% de viajes'], filas.map(([a, b]) => [a, NUM(b || 0), (b / n * 100).toFixed(1) + '%']));
+  const ver = D.meta.verificaciones || [], ok = ver.filter((c) => c.ok).length;
+  $('#t-ver').innerHTML = `<p class="text-sm mb-3">${ok === ver.length ? '<span style="color:#34d399">Todos los controles pasaron</span>' : '<span style="color:#fbbf24">' + ok + ' de ' + ver.length + ' controles sin observaciones</span>'} (${ok}/${ver.length}). Se recalculan en cada actualización.</p>` +
+    tabla(['Control', 'Estado', 'Detalle'], ver.map((c) => [esc(c.control), c.ok ? '<span style="color:#34d399">OK</span>' : (c.critico ? '<span style="color:#fb7185">FALLA</span>' : '<span style="color:#fbbf24">Aviso</span>'), esc(c.detalle)]));
 }
 
 const MESN = ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -155,7 +179,7 @@ function show(id) {
   document.querySelectorAll('[data-v]').forEach((e) => e.classList.toggle('active', e.dataset.v === id));
   $('#titulo').textContent = VIEWS.find((x) => x[0] === id)[1];
   $('#gran').style.display = ['resumen', 'ventas'].includes(id) ? '' : 'none';
-  $('#filtros').style.display = ['resumen', 'ventas', 'viajes', 'sectores', 'convenios', 'anulados', 'marketing'].includes(id) ? '' : 'none';
+  $('#filtros').style.display = id !== 'calidad' ? '' : 'none';
   RENDER[id](); history.replaceState(null, '', '#' + id);
 }
 async function init() {
@@ -168,6 +192,12 @@ async function init() {
     const el = $('#f-' + k); el.innerHTML = '<option value="">' + el.dataset.label + ': todos</option>' + opciones(k).map((o) => `<option>${esc(o)}</option>`).join('');
     el.addEventListener('change', () => { F[k] = el.value; $('#f-limpiar').style.display = Object.values(F).some(Boolean) ? '' : 'none'; show(location.hash.slice(1) || 'resumen'); });
   }
+  const rango = { viajes: [D.meta.periodo_viajes[0], D.meta.periodo_viajes[1]], fin: [D.finanzas.dias[0]?.fecha || '', D.finanzas.dias[D.finanzas.dias.length - 1]?.fecha || ''], todo: ['', ''] };
+  $('#rango-nota').textContent = `Viajes: ${rango.viajes[0]} a ${rango.viajes[1]} (2025) · Finanzas: ${rango.fin[0]} a ${rango.fin[1]} (2026). Las fechas aplican a todos los menús; conductor, pago, sentido y sector aplican solo a viajes. Calidad de datos es del archivo completo.`;
+  const refrescar = () => { $('#f-limpiar').style.display = Object.values(F).some(Boolean) ? '' : 'none'; show(location.hash.slice(1) || 'resumen'); };
+  for (const k of ['desde', 'hasta']) $('#f-' + k).addEventListener('change', (e) => { F[k] = e.target.value; refrescar(); });
+  document.querySelectorAll('[data-rango]').forEach((bt) => bt.addEventListener('click', () => { [F.desde, F.hasta] = rango[bt.dataset.rango]; $('#f-desde').value = F.desde; $('#f-hasta').value = F.hasta; refrescar(); }));
+  $('#f-toggle').addEventListener('click', () => { const o = $('#filtros').classList.toggle('abierto'); $('#f-chev').textContent = o ? 'expand_less' : 'expand_more'; });
   $('#f-limpiar').addEventListener('click', () => { Object.keys(F).forEach((k) => { F[k] = ''; $('#f-' + k).value = ''; }); $('#f-limpiar').style.display = 'none'; show(location.hash.slice(1) || 'resumen'); });
   $('#gen').textContent = D.meta.generado.replace('T', ' ').slice(0, 16);
   show(location.hash.slice(1) || 'resumen');
