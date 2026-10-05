@@ -339,17 +339,26 @@ def main():
     for x in filas:
         if x["hora"] is not None:
             heat[x["fecha"].weekday()][x["hora"]] += 1
-    cli = collections.defaultdict(lambda: dict(n=0, monto=0.0, nombre="", tel="", v=[]))
+    cli = collections.defaultdict(lambda: dict(n=0, monto=0.0, nombre="", tel="", v=[], sec=collections.Counter()))
     for x in filas:
         if x["cliente"]:
             c = cli[x["cliente"]]
-            c["n"] += 1; c["monto"] += x["monto"]; c["nombre"] = x["nombre"]; c["tel"] = x["tel"]; c["v"].append([x["fecha"].isoformat(), round(x["monto"])])
+            c["n"] += 1; c["monto"] += x["monto"]; c["nombre"] = x["nombre"]; c["tel"] = x["tel"]; c["v"].append([x["fecha"].isoformat(), round(x["monto"])]); c["sec"][x["sector"]] += 1
     recurrentes = sorted((c for c in cli.values() if c["n"] >= 2), key=lambda c: -c["n"])
     with open(OUT / "privado" / "clientes_recurrentes.csv", "w", newline="", encoding="utf-8-sig") as fh:
         w = csv.writer(fh)
         w.writerow(["nombre", "telefono", "viajes", "monto_clp"])
         for c in recurrentes:
             w.writerow([c["nombre"], c["tel"], c["n"], round(c["monto"])])
+    fin_datos = max(x["fecha"] for x in filas)
+    corte = fin_datos - dt.timedelta(days=60)
+    with open(OUT / "privado" / "segmentos_whatsapp.csv", "w", newline="", encoding="utf-8-sig") as fh:
+        w = csv.writer(fh)
+        w.writerow(["nombre", "telefono", "segmento", "estado", "viajes", "monto_clp", "ultimo_viaje", "sector_principal"])
+        for c in sorted(cli.values(), key=lambda c: -c["n"]):
+            ult = max(v[0] for v in c["v"])
+            seg = "VIP" if c["n"] >= 6 else "Frecuente" if c["n"] >= 3 else "Ocasional" if c["n"] == 2 else "Nuevo"
+            w.writerow([c["nombre"], c["tel"], seg, "Inactivo" if ult < corte.isoformat() else "Activo", c["n"], round(c["monto"]), ult, c["sec"].most_common(1)[0][0]])
     if a.fin_json or Path(a.fin_xlsx).exists():
         meses_fin, dias_fin, cal_fin = finanzas(hojas_fin(a.fin_xlsx, a.fin_json))
     else:  # sin fuente de finanzas: conserva lo ultimo publicado

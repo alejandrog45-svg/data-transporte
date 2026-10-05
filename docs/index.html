@@ -130,6 +130,11 @@
   .hm [data-d]:hover{outline:1px solid #4cd7f6}
   .hint{font-size:.7rem;color:#869397}
   @media(max-width:640px){#modal{align-items:flex-end}#modal .sheet{width:100vw;max-height:94vh;border-radius:1rem 1rem 0 0}}
+  .mkin{background:#0a0e16;color:#dfe2ee;border:1px solid rgba(255,255,255,.12);border-radius:.5rem;padding:.45rem .6rem;font-size:.85rem;width:100%}
+  .mklab{font-size:.72rem;color:#869397;font-weight:600;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:.25rem}
+  .btnp{background:#06b6d4;color:#003640;font-weight:700;font-size:.85rem;padding:.5rem .9rem;border-radius:.5rem}
+  .btns{border:1px solid rgba(255,255,255,.18);color:#dfe2ee;font-weight:600;font-size:.85rem;padding:.5rem .9rem;border-radius:.5rem}
+  .outbox{background:#0a0e16;border:1px solid rgba(76,215,246,.25);border-radius:.75rem;padding:1rem;white-space:pre-wrap;font-size:.9rem;line-height:1.5}
   .view{display:none}.view.active{display:flex;flex-direction:column;gap:1.5rem}
   .seg button{padding:.25rem .75rem;border-radius:.375rem;font-size:.75rem;font-weight:600;color:#bcc9cd}
   .seg button.on{background:#06b6d4;color:#003640}
@@ -264,7 +269,20 @@
 
     <!-- MARKETING -->
     <section id="v-marketing" class="view">
-      <div id="ops" class="grid md:grid-cols-2 gap-4"></div>
+      <div id="mk-tabs" class="seg flex gap-1 bg-surface-container-low rounded-lg p-1 border border-outline-variant/30 w-fit max-w-full overflow-x-auto">
+        <button data-mk="ops" class="on whitespace-nowrap">Oportunidades</button>
+        <button data-mk="promo" class="whitespace-nowrap">Promociones</button>
+        <button data-mk="sim" class="whitespace-nowrap">Simulador</button>
+        <button data-mk="cal" class="whitespace-nowrap">Calendario redes</button>
+        <button data-mk="cli" class="whitespace-nowrap">Segmentos</button>
+        <button data-mk="sec" class="whitespace-nowrap">Sectores</button>
+      </div>
+      <div id="mk-ops" class="mk"><div id="ops" class="grid md:grid-cols-2 gap-4"></div><div id="mk-franjas" class="mt-4"></div></div>
+      <div id="mk-promo" class="mk" style="display:none"></div>
+      <div id="mk-sim" class="mk" style="display:none"></div>
+      <div id="mk-cal" class="mk" style="display:none"></div>
+      <div id="mk-cli" class="mk" style="display:none"></div>
+      <div id="mk-sec" class="mk" style="display:none"></div>
     </section>
 
     <!-- CALIDAD -->
