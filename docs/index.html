@@ -211,6 +211,29 @@
       </div>
     </section>
 
+    <!-- CONVENIOS -->
+    <section id="v-convenios" class="view">
+      <p class="text-sm text-on-surface-variant">Viajes sin cobro inmediato: convenios y cuentas con pago diferido (fin de mes o fecha acordada). No suman a los ingresos; se muestran valorizados a la tarifa registrada.</p>
+      <div id="k-convenios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <div class="card p-5"><h3 class="font-semibold mb-3">Viajes bajo convenio por mes</h3><div style="height:260px"><canvas id="c-convenios-mes"></canvas></div></div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por conductor</h3><div id="t-convenios-cond"></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por sector</h3><div id="t-convenios-sec"></div></div>
+      </div>
+      <div class="card p-5"><h3 class="font-semibold mb-3">Por tipo</h3><div id="t-convenios-tipo"></div></div>
+    </section>
+
+    <!-- ANULADOS -->
+    <section id="v-anulados" class="view">
+      <p class="text-sm text-on-surface-variant">Registros marcados "Nulo" en tarifa, conductor o medio de pago. Se excluyen de ventas y viajes realizados. Muchos no traen tarifa, por eso el monto es solo referencial.</p>
+      <div id="k-anulados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <div class="card p-5"><h3 class="font-semibold mb-3">Viajes anulados por mes</h3><div style="height:260px"><canvas id="c-anulados-mes"></canvas></div></div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por conductor</h3><div id="t-anulados-cond"></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por sector</h3><div id="t-anulados-sec"></div></div>
+      </div>
+    </section>
+
     <!-- MARKETING -->
     <section id="v-marketing" class="view">
       <div id="ops" class="grid md:grid-cols-2 gap-4"></div>

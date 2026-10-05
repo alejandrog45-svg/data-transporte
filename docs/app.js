@@ -6,7 +6,7 @@ const NUM = (n) => Math.round(n).toLocaleString('es-CL');
 const C = { p: '#4cd7f6', s: '#4edea3', t: '#ffb2b7', a: '#F59E0B', g: '#869397', grid: 'rgba(255,255,255,.07)' };
 const VIEWS = [
   ['resumen', 'Resumen', 'dashboard'], ['ventas', 'Ventas', 'payments'], ['viajes', 'Viajes', 'route'],
-  ['clientes', 'Clientes', 'group'], ['sectores', 'Sectores', 'map'], ['costos', 'Costos', 'account_balance_wallet'],
+  ['clientes', 'Clientes', 'group'], ['sectores', 'Sectores', 'map'], ['convenios', 'Convenios', 'handshake'], ['anulados', 'Anulados', 'event_busy'], ['costos', 'Costos', 'account_balance_wallet'],
   ['marketing', 'Marketing', 'campaign'], ['calidad', 'Calidad de datos', 'database']];
 let D, gran = 'mes'; const charts = {};
 
@@ -14,19 +14,19 @@ let D, gran = 'mes'; const charts = {};
 const F = { conductor: '', pago: '', sentido: '', sector: '' };
 const DOWN = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 /* Agregados de viajes calculados en el navegador desde el cubo, respetando los filtros. */
-function W() {
-  const c = D.cubo, i = Object.fromEntries(c.cols.map((n, k) => [n, k]));
-  const rows = c.rows.filter((r) => (!F.conductor || r[i.conductor] === F.conductor) && (!F.pago || r[i.pago] === F.pago) && (!F.sentido || r[i.sentido] === F.sentido) && (!F.sector || r[i.sector] === F.sector));
-  const grp = (key) => { const m = new Map(); for (const r of rows) { const k = key(r); const o = m.get(k) || { nombre: k, viajes: 0, monto: 0 }; o.viajes += r[i.viajes]; o.monto += r[i.monto]; m.set(k, o); } return [...m.values()]; };
-  const out = { total: 0, ingresos: 0, pasajeros: 0, no_cobrados: 0, cobrados: 0 };
+function W(cube = D.cubo, pred = null) {
+  const c = cube, i = Object.fromEntries(c.cols.map((n, k) => [n, k]));
+  const rows = c.rows.filter((r) => (!F.conductor || r[i.conductor] === F.conductor) && (!F.pago || r[i.pago] === F.pago) && (!F.sentido || r[i.sentido] === F.sentido) && (!F.sector || r[i.sector] === F.sector) && (!pred || pred(r, i)));
+  const grp = (key) => { const m = new Map(); for (const r of rows) { const k = key(r); const o = m.get(k) || { nombre: k, viajes: 0, monto: 0, tarifa: 0 }; o.viajes += r[i.viajes]; o.monto += r[i.monto]; o.tarifa += r[i.tarifa]; m.set(k, o); } return [...m.values()]; };
+  const out = { total: 0, ingresos: 0, tarifa: 0, pasajeros: 0, convenios: 0, cobrados: 0 };
   const heat = DOWN.map(() => Array(24).fill(0)), dow = DOWN.map((n) => ({ nombre: n, viajes: 0, monto: 0 })), dia = new Map();
   for (const r of rows) {
-    out.total += r[i.viajes]; out.ingresos += r[i.monto]; out.pasajeros += r[i.pax]; out.cobrados += r[i.cobrados];
-    if (r[i.pago] === 'No cobrado') out.no_cobrados += r[i.viajes];
+    out.total += r[i.viajes]; out.ingresos += r[i.monto]; out.pasajeros += r[i.pax]; out.cobrados += r[i.cobrados]; out.tarifa += r[i.tarifa];
+    if (r[i.pago].startsWith('Convenio')) out.convenios += r[i.viajes];
     const d = (new Date(r[i.fecha] + 'T00:00:00').getDay() + 6) % 7;
     dow[d].viajes += r[i.viajes]; dow[d].monto += r[i.monto];
     if (r[i.hora] !== null) heat[d][r[i.hora]] += r[i.viajes];
-    const o = dia.get(r[i.fecha]) || { fecha: r[i.fecha], viajes: 0, monto: 0 }; o.viajes += r[i.viajes]; o.monto += r[i.monto]; dia.set(r[i.fecha], o);
+    const o = dia.get(r[i.fecha]) || { fecha: r[i.fecha], viajes: 0, monto: 0, tarifa: 0 }; o.viajes += r[i.viajes]; o.monto += r[i.monto]; o.tarifa += r[i.tarifa]; dia.set(r[i.fecha], o);
   }
   out.ticket_promedio = out.cobrados ? out.ingresos / out.cobrados : 0;
   out.por_dia = [...dia.values()].sort((x, y) => x.fecha.localeCompare(y.fecha));
@@ -34,6 +34,7 @@ function W() {
   const by = (f) => f.sort((x, y) => y.viajes - x.viajes);
   out.conductores = grp((r) => r[i.conductor]).sort((x, y) => y.monto - x.monto).slice(0, 12);
   out.pagos = by(grp((r) => r[i.pago])); out.sectores = by(grp((r) => r[i.sector])); out.sentido = by(grp((r) => r[i.sentido]));
+  out._g = (col) => grp((r) => r[i[col]]);
   return out;
 }
 function opciones(col) { const i = D.cubo.cols.indexOf(col); return [...new Set(D.cubo.rows.map((r) => r[i]))].sort((a, b) => String(a).localeCompare(String(b))); }
@@ -67,7 +68,7 @@ function resumen() {
   $('#kpis').innerHTML =
     kpi('Ingresos por viajes', CLP(v.ingresos), `${D.meta.periodo_viajes[0]} al ${D.meta.periodo_viajes[1]}`, 'payments') +
     kpi('Viajes realizados', NUM(v.total), `${NUM(v.pasajeros)} pasajeros`, 'route') +
-    kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.no_cobrados)} viajes sin cobro`, 'receipt_long') +
+    kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.convenios)} bajo convenio · ${NUM(D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0))} anulados aparte`, 'receipt_long') +
     kpi(`Margen ${f[0].nombre}-${f[f.length - 1].nombre} 2026`, CLP(vta - gas), `Ventas ${CLP(vta)} · Gastos ${CLP(gas)} (meses con ventas)`, 'account_balance');
   const m = agrupar(v.por_dia, gran);
   $('#sub-ing').textContent = 'Agrupado por ' + { dia: 'día', semana: 'semana', mes: 'mes' }[gran];
@@ -111,30 +112,50 @@ function marketing() {
   const valle = horas.filter((o) => o.n > 0).sort((a, b) => a.n - b.n).slice(0, 3).map((o) => o.x + ':00').join(', ');
   const dow = [...v.por_dow].sort((a, b) => a.viajes - b.viajes)[0], dowTop = [...v.por_dow].sort((a, b) => b.viajes - a.viajes)[0];
   const sec = v.sectores.filter((s) => s.nombre !== 'Sin identificar').slice(0, 3).map((s) => s.nombre);
-  const pagoNo = v.pagos.find((p) => p.nombre === 'No cobrado');
+  const cv = W(D.cubo, (r, i) => r[i.pago].startsWith('Convenio')), an = W(D.cubo_anulados), totR = D.viajes.total;
   const op = [
     ['repeat', 'Fidelizar clientes recurrentes', `${NUM(c.recurrentes)} clientes ya viajaron 2 o más veces y generan el ${Math.round(c.viajes_de_recurrentes / D.viajes.total * 100)}% de los viajes. Ofrece un descuento por el próximo viaje o un pase de ida y vuelta.`, `Hola, gracias por viajar con nosotros. Por ser cliente frecuente tienes un beneficio en tu próximo traslado al aeropuerto. ¿Te reservamos tu viaje?`],
     ['schedule', 'Promoción en horas valle', `Las horas con menos demanda son ${valle}. Una tarifa especial en esos horarios llena la flota sin competir con la hora punta.`, `Viaja entre las ${valle.split(',')[0]} y obtén tarifa preferente al aeropuerto. Reserva por WhatsApp.`],
     ['calendar_month', `Reforzar el día ${dow.nombre}`, `${dow.nombre} es el día más flojo (${NUM(dow.viajes)} viajes) y ${dowTop.nombre} el más fuerte (${NUM(dowTop.viajes)}). Lanza una oferta de ${dow.nombre} en redes sociales.`, `Los ${dow.nombre} tu traslado al aeropuerto con descuento. Reserva con anticipación.`],
     ['map', 'Publicidad por sector', `Los sectores con más viajes son ${sec.join(', ')}. Segmenta anuncios de Google y Meta a esas comunas con la promesa de recogida en la puerta.`, `Traslados al aeropuerto desde ${sec[0]}: puntualidad y tarifa clara. Reserva hoy.`],
-    ['payments', 'Cobros pendientes o cortesías', pagoNo ? `${NUM(pagoNo.viajes)} viajes figuran como "no cobrado" (${CLP(pagoNo.monto)} en tarifa). Revisa si son convenios, cortesías o cobros por regularizar.` : 'Sin viajes marcados como no cobrados.', null],
+    ['handshake', 'Convenios', `${NUM(cv.total)} viajes bajo convenio (${(cv.total / Math.max(1, totR) * 100).toFixed(1)}% de los viajes), valorizados en ${CLP(cv.tarifa)}. Renegocia tarifas de los convenios que más mueven, ofrece nuevos convenios a empresas y hoteles de los mismos sectores, y vigila que el pago diferido llegue a tiempo.`, null],
+    ['event_busy', 'Reducir anulaciones', `${NUM(an.total)} viajes anulados (${(an.total / Math.max(1, totR + an.total) * 100).toFixed(1)}% de los registros). Reconfirma por WhatsApp 24 horas antes del viaje y ofrece reprogramar en vez de anular.`, `Hola, te recordamos tu traslado de mañana. ¿Nos confirmas la hora y la dirección? Si necesitas cambiarlo, lo reprogramamos sin problema.`],
     ['share', 'Contenido para redes sociales', `Publica el ranking de comunas más atendidas, tips de viaje al aeropuerto y testimonios de clientes recurrentes. Calendario sugerido: 3 publicaciones por semana, reforzando ${dow.nombre}.`, null]];
   $('#ops').innerHTML = op.map((o, i) => `<div class="card p-5 flex flex-col gap-3"><div class="flex items-center gap-2 text-primary"><span class="material-symbols-outlined">${o[0]}</span><h3 class="font-semibold">${o[1]}</h3></div><p class="text-sm text-on-surface-variant">${esc(o[2])}</p>${o[3] ? `<button data-i="${i}" class="cp self-start text-sm font-semibold px-3 py-2 rounded-lg bg-primary-container text-on-primary">Copiar mensaje de promoción</button>` : ''}</div>`).join('');
   document.querySelectorAll('.cp').forEach((b) => b.addEventListener('click', () => { navigator.clipboard.writeText(op[b.dataset.i][3]); b.textContent = '¡Copiado!'; setTimeout(() => (b.textContent = 'Copiar mensaje de promoción'), 1500); }));
 }
 function calidad() {
   const q = D.meta.calidad, n = D.viajes.total;
-  const filas = [['Viajes duplicados eliminados', q.viajes.duplicados_eliminados], ['Viajes sin tarifa', q.viajes.sin_tarifa], ['Viajes sin hora', q.viajes.sin_hora], ['Viajes con "Nulo" en conductor (posibles anulados)', q.viajes.marcados_nulo], ['Viajes sin sector identificado', q.sin_sector], ['Viajes sin medio de pago', q.pago_sin_dato], ['Celdas con texto (xxx) en gastos', q.finanzas['texto_en_gastos(xxx)'] || 0], ['Hojas ignoradas (ej. reservas futuras)', q.viajes.hojas_ignoradas]];
+  const filas = [['Viajes duplicados eliminados', q.viajes.duplicados_eliminados], ['Viajes sin tarifa', q.viajes.sin_tarifa], ['Viajes sin hora', q.viajes.sin_hora], ['Viajes anulados ("Nulo"), excluidos de ventas', q.viajes.anulados], ['Viajes sin sector identificado', q.sin_sector], ['Viajes sin medio de pago', q.pago_sin_dato], ['Celdas con texto (xxx) en gastos', q.finanzas['texto_en_gastos(xxx)'] || 0], ['Hojas ignoradas (ej. reservas futuras)', q.viajes.hojas_ignoradas]];
   $('#t-cal').innerHTML = tabla(['Control', 'Casos', '% de viajes'], filas.map(([a, b]) => [a, NUM(b || 0), (b / n * 100).toFixed(1) + '%']));
 }
-const RENDER = { resumen, ventas, viajes, clientes, sectores, costos, marketing, calidad };
+
+const MESN = ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+function subvista(p, cube, pred, anulado) {
+  const v = W(cube, pred), totalAnul = D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0);
+  const pct = v.total / (D.viajes.total + (anulado ? totalAnul : 0)) * 100;
+  $('#k-' + p).innerHTML =
+    kpi(anulado ? 'Viajes anulados' : 'Viajes bajo convenio', NUM(v.total), pct.toFixed(1) + '% de los registros', anulado ? 'event_busy' : 'handshake') +
+    kpi('Tarifa valorizada', CLP(v.tarifa), anulado ? 'solo los que traen tarifa' : 'a tarifa normal, no suma a ingresos', 'payments') +
+    kpi('Tarifa promedio', CLP(v.tarifa / Math.max(1, v.total)), 'por viaje registrado', 'receipt_long') +
+    kpi('Pasajeros', NUM(v.pasajeros), 'transportados o reservados', 'group');
+  const m = agrupar(v.por_dia.map((x) => ({ fecha: x.fecha, viajes: x.viajes, monto: x.tarifa })), 'mes');
+  draw('c-' + p + '-mes', { type: 'bar', data: { labels: m.map((x) => { const [y, mm] = x.k.split('-'); return MESN[+mm] + ' ' + y; }), datasets: [{ label: 'Viajes', data: m.map((x) => x.viajes), backgroundColor: anulado ? C.t : C.a, borderRadius: 6, yAxisID: 'y' }, { label: 'Tarifa valorizada', type: 'line', data: m.map((x) => x.monto), borderColor: C.p, tension: .3, yAxisID: 'y2' }] }, options: { scales: { x: { grid: { display: false } }, y: { grid: { color: C.grid } }, y2: { position: 'right', grid: { display: false }, ticks: { callback: (x) => '$' + NUM(x / 1e3) + 'k' } } } } });
+  const top = (col, n) => v._g(col).sort((x, y) => y.viajes - x.viajes).slice(0, n).map((x) => [esc(x.nombre), NUM(x.viajes), CLP(x.tarifa)]);
+  $('#t-' + p + '-cond').innerHTML = tabla(['Conductor', 'Viajes', 'Tarifa'], top('conductor', 12));
+  $('#t-' + p + '-sec').innerHTML = tabla(['Sector', 'Viajes', 'Tarifa'], top('sector', 12));
+  if (!anulado) $('#t-convenios-tipo').innerHTML = tabla(['Tipo', 'Viajes', 'Tarifa'], top('pago', 5));
+}
+const convenios = () => subvista('convenios', D.cubo, (r, i) => r[i.pago].startsWith('Convenio'), false);
+const anulados = () => subvista('anulados', D.cubo_anulados, null, true);
+const RENDER = { resumen, ventas, viajes, clientes, sectores, convenios, anulados, costos, marketing, calidad };
 function show(id) {
   if (!RENDER[id]) id = 'resumen';
   document.querySelectorAll('.view').forEach((e) => e.classList.toggle('active', e.id === 'v-' + id));
   document.querySelectorAll('[data-v]').forEach((e) => e.classList.toggle('active', e.dataset.v === id));
   $('#titulo').textContent = VIEWS.find((x) => x[0] === id)[1];
   $('#gran').style.display = ['resumen', 'ventas'].includes(id) ? '' : 'none';
-  $('#filtros').style.display = ['resumen', 'ventas', 'viajes', 'sectores', 'marketing'].includes(id) ? '' : 'none';
+  $('#filtros').style.display = ['resumen', 'ventas', 'viajes', 'sectores', 'convenios', 'anulados', 'marketing'].includes(id) ? '' : 'none';
   RENDER[id](); history.replaceState(null, '', '#' + id);
 }
 async function init() {

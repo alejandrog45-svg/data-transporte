@@ -71,7 +71,7 @@ def medio_pago(v):
     if not n:
         return "Sin dato"
     if "NO COBRAR" in n:
-        return "No cobrado"
+        return "Convenio (pago diferido)" if "PAGARAN" in n else "Convenio"
     if "EFECTIVO" in n:
         return "Efectivo"
     if "TARJETA" in n:
@@ -162,9 +162,10 @@ def viajes(path):
                 continue
             vistos.add(clave)
             tarifa = num(r[8])
-            if re.search(r"\bNULO\b", norm(r[9])):
-                calidad["marcados_nulo"] += 1
-            if tarifa is None:
+            anulado = any(re.search(r"\bNULO\b", norm(r[c])) for c in (8, 9, 10))
+            if anulado:
+                calidad["anulados"] += 1
+            elif tarifa is None:
                 calidad["sin_tarifa"] += 1
             hora = r[2].hour if hasattr(r[2], "hour") else None
             if hora is None:
@@ -174,7 +175,8 @@ def viajes(path):
             sale_aero = norm(origen).startswith("AEROP")
             filas.append(dict(
                 fecha=f, hora=hora, pax=num(r[3]) or 0, tarifa=tarifa or 0,
-                monto=0 if medio_pago(r[10]) == "No cobrado" else (tarifa or 0),
+                monto=0 if (anulado or medio_pago(r[10]).startswith("Convenio")) else (tarifa or 0),
+                anulado=anulado,
                 conductor=conductor(r[9]), pago=medio_pago(r[10]),
                 sentido="Desde aeropuerto" if sale_aero else ("Hacia aeropuerto" if norm(destino).startswith("AEROP") else "Otro"),
                 sector=sector(destino if sale_aero else origen, origen, destino),
@@ -183,7 +185,9 @@ def viajes(path):
                 nombre=str(r[0]).strip(), tel=tel))
     with open(OUT / "privado" / "duplicados_eliminados.csv", "w", newline="", encoding="utf-8-sig") as fh:
         csv.writer(fh).writerows([["fecha", "hoja", "nombre", "telefono", "hora", "pax", "origen", "destino", "vuelo", "tipo", "tarifa", "conductor", "pago", "equipaje", "arribo"]] + dups)
-    return filas, calidad
+    anuladas = [x for x in filas if x["anulado"]]
+    filas = [x for x in filas if not x["anulado"]]
+    return filas, calidad, anuladas
 
 
 def agg(filas, key):
@@ -204,12 +208,12 @@ def agg_t(filas, key):
 
 def cubo(filas):
     """Filas agregadas por (fecha, hora, conductor, pago, sector, sentido). Sin nombres ni telefonos."""
-    d = collections.defaultdict(lambda: [0, 0.0, 0.0, 0])
+    d = collections.defaultdict(lambda: [0, 0.0, 0.0, 0, 0.0])
     for x in filas:
         k = (x["fecha"].isoformat(), x["hora"], x["conductor"], x["pago"], x["sector"], x["sentido"])
-        d[k][0] += 1; d[k][1] += x["monto"]; d[k][2] += x["pax"]; d[k][3] += 1 if x["monto"] > 0 else 0
-    cols = ["fecha", "hora", "conductor", "pago", "sector", "sentido", "viajes", "monto", "pax", "cobrados"]
-    return dict(cols=cols, rows=[list(k) + [v[0], round(v[1]), round(v[2]), v[3]] for k, v in sorted(d.items(), key=lambda kv: (kv[0][0], kv[0][1] if kv[0][1] is not None else -1))])
+        d[k][0] += 1; d[k][1] += x["monto"]; d[k][2] += x["pax"]; d[k][3] += 1 if x["monto"] > 0 else 0; d[k][4] += x["tarifa"]
+    cols = ["fecha", "hora", "conductor", "pago", "sector", "sentido", "viajes", "monto", "pax", "cobrados", "tarifa"]
+    return dict(cols=cols, rows=[list(k) + [v[0], round(v[1]), round(v[2]), v[3], round(v[4])] for k, v in sorted(d.items(), key=lambda kv: (kv[0][0], kv[0][1] if kv[0][1] is not None else -1))])
 
 
 def tabla(d, n=None, orden="n"):
@@ -268,7 +272,7 @@ def main():
     ap.add_argument("--fin-xlsx", default=str(FIN_XLSX))
     ap.add_argument("--fin-json", default=None, help="JSON del Apps Script (hojas 2026)")
     a = ap.parse_args()
-    filas, cal = viajes(a.viajes)
+    filas, cal, anuladas = viajes(a.viajes)
     total = sum(x["monto"] for x in filas)
     cobrados = [x for x in filas if x["monto"] > 0]
     por_mes = agg(filas, lambda x: x["fecha"].month)
@@ -304,7 +308,7 @@ def main():
                                pago_sin_dato=sum(1 for x in filas if x["pago"] == "Sin dato"))),
         viajes=dict(
             total=len(filas), ingresos=round(total), ticket_promedio=round(total / max(len(cobrados), 1)),
-            no_cobrados=sum(1 for x in filas if x["pago"] == "No cobrado"),
+            convenios=sum(1 for x in filas if x["pago"].startswith("Convenio")),
             pasajeros=round(sum(x["pax"] for x in filas)),
             por_mes=[dict(mes=k, nombre=MES_NOMBRE[k], viajes=v[0], monto=round(v[1])) for k, v in sorted(por_mes.items())],
             por_dia=[dict(fecha=k, viajes=v[0], monto=round(v[1])) for k, v in sorted(por_dia.items())],
@@ -319,6 +323,7 @@ def main():
                           top_anonimo=[dict(id=f"Cliente {i+1:02d}", viajes=c["n"], monto=round(c["monto"]))
                                        for i, c in enumerate(recurrentes[:10])])),
         cubo=cubo(filas),
+        cubo_anulados=cubo(anuladas),
         finanzas=dict(meses=meses_fin, dias=dias_fin))
     (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print("viajes:", len(filas), "| ingresos:", data["viajes"]["ingresos"], "| calidad:", data["meta"]["calidad"])
