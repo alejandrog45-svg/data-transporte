@@ -154,12 +154,14 @@ def viajes(path):
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     calidad = collections.Counter()
     filas, vistos, dups = [], set(), []
+    dif_hojas = []
     for ws in wb.worksheets:
         f = fecha_hoja(ws.title)
         if not f:
             calidad["hojas_ignoradas"] += 1
             continue
         calidad["hojas_procesadas"] += 1
+        suma_hoja, tot_hoja = 0.0, None
         ds = dia_semana_hoja(ws.title)
         if ds is not None:
             calidad["hojas_con_dia_semana"] += 1
@@ -168,10 +170,14 @@ def viajes(path):
         if False:
             continue
         for i, r in enumerate(ws.iter_rows(values_only=True)):
+            if i > 0 and r and r[0] is None and tot_hoja is None and len(r) > 8 and isinstance(r[8], (int, float)) and r[8] > 0:
+                tot_hoja = float(r[8])  # total del dia que escribe la propia planilla
             if i == 0 or not r or r[0] is None:
                 continue
             r = tuple(r) + (None,) * 14
             calidad["filas_leidas"] += 1
+            if isinstance(r[8], (int, float)):
+                suma_hoja += r[8]
             clave = (f, tuple(str(x) for x in r[:13]))
             if clave in vistos:
                 calidad["duplicados_eliminados"] += 1
@@ -200,8 +206,17 @@ def viajes(path):
                 tipo=str(r[7]).strip().title() if r[7] and str(r[7]).strip() not in (".", "") else "",
                 cliente=hashlib.sha256(tel.encode()).hexdigest()[:8] if len(tel) >= 8 else None,
                 nombre=str(r[0]).strip(), tel=tel))
+        if tot_hoja is None:
+            calidad["hojas_sin_total"] += 1
+        else:
+            calidad["hojas_con_total"] += 1
+            if abs(suma_hoja - tot_hoja) < 1:
+                calidad["hojas_total_coincide"] += 1
+            else:
+                dif_hojas.append(f"{ws.title.strip()} (suma {int(suma_hoja):,} vs total {int(tot_hoja):,})".replace(",", "."))
     with open(OUT / "privado" / "duplicados_eliminados.csv", "w", newline="", encoding="utf-8-sig") as fh:
         csv.writer(fh).writerows([["fecha", "hoja", "nombre", "telefono", "hora", "pax", "origen", "destino", "vuelo", "tipo", "tarifa", "conductor", "pago", "equipaje", "arribo"]] + dups)
+    calidad.dif_hojas = dif_hojas
     anuladas = [x for x in filas if x["anulado"]]
     hoy = dt.date.today()
     futuras = [x for x in filas if not x["anulado"] and x["fecha"] > hoy]
@@ -338,6 +353,10 @@ def verificar(data, filas, anuladas, futuras, cal, cli):
     sinv = [d for d in dias if d["venta"] == 0 and d["gasto"] > 0]
     chk("Dias de 2026 con gastos pero sin ventas", not sinv, f"{len(sinv)} dias", critico=False)
     chk("Ventas pendientes de carga en 2026", all(m["venta"] > 0 for m in meses), "meses sin ventas: " + (", ".join(m["nombre"] for m in meses if m["venta"] == 0) or "ninguno"), critico=False)
+    con, ok = cal["hojas_con_total"], cal["hojas_total_coincide"]
+    dh = getattr(cal, "dif_hojas", [])
+    chk("Total diario de cada hoja vs suma de sus viajes (la planilla incluye convenios)", con == ok,
+        f'{ok} de {con} hojas cuadran exacto; {cal["hojas_sin_total"]} hojas sin total propio' + (". Difieren: " + "; ".join(dh[:6]) + (f" y {len(dh) - 6} mas" if len(dh) > 6 else "") if dh else ""), critico=False)
     pm = {m["mes"]: m["monto"] for m in v["por_mes"]}
     cruces = []
     for m in meses:
@@ -398,7 +417,7 @@ def main():
                                sin_sector=sum(1 for x in filas if x["sector"] == "Sin identificar"),
                                pago_sin_dato=sum(1 for x in filas if x["pago"] == "Sin dato"))),
         viajes=dict(
-            total=len(filas), ingresos=round(total), ticket_promedio=round(total / max(len(cobrados), 1)),
+            total=len(filas), ingresos=round(total), venta_bruta=round(sum(x["tarifa"] for x in filas)), ticket_promedio=round(total / max(len(cobrados), 1)),
             convenios=sum(1 for x in filas if x["pago"].startswith("Convenio")),
             pasajeros=round(sum(x["pax"] for x in filas)),
             por_mes=[dict(mes=k, nombre=MES_NOMBRE[k], viajes=v[0], monto=round(v[1])) for k, v in sorted(por_mes.items())],

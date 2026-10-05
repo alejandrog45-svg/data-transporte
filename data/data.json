@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generado": "2026-10-05T05:01:53",
+  "generado": "2026-10-05T02:23:32",
   "fuentes": [
    "PLANILLA MATRIZ (viajes, mayo-octubre 2026)",
    "AÑO 2026 (ventas y gastos)"
@@ -16,14 +16,17 @@
     "hojas_procesadas": 173,
     "filas_leidas": 2425,
     "anulados": 47,
+    "hojas_con_total": 156,
+    "hojas_total_coincide": 143,
     "duplicados_eliminados": 12,
     "sin_tarifa": 41,
     "sin_hora": 43,
     "hojas_con_dia_semana": 4,
+    "hojas_sin_total": 17,
     "hojas_ignoradas": 1
    },
    "finanzas": {
-    "texto_en_gastos(xxx)": 46
+    "texto_en_gastos(xxx)": 45
    },
    "sin_sector": 79,
    "pago_sin_dato": 69
@@ -180,6 +183,12 @@
     "critico": false
    },
    {
+    "control": "Total diario de cada hoja vs suma de sus viajes (la planilla incluye convenios)",
+    "ok": false,
+    "detalle": "143 de 156 hojas cuadran exacto; 17 hojas sin total propio. Difieren: 07 MAYO (suma 454.000 vs total 226.000); 20 MAYO (suma 774.000 vs total 533.000); 24 MAYO (suma 737.000 vs total 500.000); 31 MAYO (suma 461.000 vs total 409.000); 04 JUNIO (suma 540.680 vs total 367.840); 06 JUNIO (suma 544.000 vs total 511.000) y 7 mas",
+    "critico": false
+   },
+   {
     "control": "Ingresos por viajes vs ventas de la planilla anual (mismo mes)",
     "ok": false,
     "detalle": "May: viajes $17.145.700 vs planilla $7.645.150; Jun: viajes $16.278.760 vs planilla $12.653.670",
@@ -190,6 +199,7 @@
  "viajes": {
   "total": 2334,
   "ingresos": 85764250,
+  "venta_bruta": 90849250,
   "ticket_promedio": 39946,
   "convenios": 149,
   "pasajeros": 6057,

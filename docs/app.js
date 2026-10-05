@@ -97,7 +97,7 @@ const tabla = (cols, rows, attrs) => `<table class="t"><thead><tr>${cols.map((c,
 function resumen() {
   const v = W(), f = FIN().meses.filter((m) => m.venta > 0), vta = f.reduce((a, m) => a + m.venta, 0), gas = f.reduce((a, m) => a + m.gasto, 0);
   $('#kpis').innerHTML =
-    kpi('Ingresos por viajes', CLP(v.ingresos), `${D.meta.periodo_viajes[0]} al ${D.meta.periodo_viajes[1]}`, 'payments') +
+    kpi('Ingresos por viajes', CLP(v.ingresos), `Venta bruta con convenios: ${CLP(v.tarifa)}`, 'payments') +
     kpi('Viajes realizados', NUM(v.total), `${NUM(v.pasajeros)} pasajeros`, 'route') +
     kpi('Ticket promedio', CLP(v.ticket_promedio), `${NUM(v.convenios)} convenio · ${NUM(D.cubo_anulados.rows.reduce((s, r) => s + r[6], 0))} anulados · ${NUM(D.cubo_futuras.rows.reduce((s, r) => s + r[6], 0))} reservas futuras (aparte)`, 'receipt_long') +
     (f.length ? kpi(`Margen ${f[0].nombre}-${f[f.length - 1].nombre} 2026`, CLP(vta - gas), `Ventas ${CLP(vta)} · Gastos ${CLP(gas)} (meses con ventas)`, 'account_balance') : kpi('Margen 2026', '—', 'sin datos de 2026 en el rango de fechas', 'account_balance'));
