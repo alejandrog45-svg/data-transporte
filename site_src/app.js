@@ -78,6 +78,11 @@ function semanaISO(fecha) {
   const d = new Date(fecha + 'T00:00:00'); const dia = (d.getDay() + 6) % 7; d.setDate(d.getDate() - dia);
   return d.toISOString().slice(0, 10);
 }
+function agruparFin(dias, g) {
+  const m = new Map();
+  for (const d of dias) { const k = g === 'dia' ? d.fecha : g === 'semana' ? semanaISO(d.fecha) : d.fecha.slice(0, 7); const o = m.get(k) || { k, venta: 0, gasto: 0 }; o.venta += d.venta; o.gasto += d.gasto; m.set(k, o); }
+  return [...m.values()].sort((x, y) => x.k.localeCompare(y.k));
+}
 function agrupar(rows, g) {
   const m = new Map();
   for (const r of rows) {
@@ -114,6 +119,8 @@ function ventas() {
   draw('c-flujo', { click: (k) => detalleBucket(m[k].k, gran), tip: (k) => ['Ticket: ' + CLP(m[k].monto / Math.max(1, m[k].viajes))], type: gran === 'dia' ? 'line' : 'bar', data: { labels: m.map((x) => x.k), datasets: [{ label: 'Ingresos', data: m.map((x) => x.monto), backgroundColor: C.p, borderColor: C.p, borderRadius: 6, pointRadius: 0, tension: .3, yAxisID: 'y' }, { label: 'Viajes', type: 'line', data: m.map((x) => x.viajes), borderColor: C.a, pointRadius: 0, tension: .3, yAxisID: 'y2' }] }, options: { scales: { x: { grid: { display: false } }, y: { grid: { color: C.grid }, ticks: { callback: (x) => '$' + NUM(x / 1e6) + 'M' } }, y2: { position: 'right', grid: { display: false } } } } });
   const pm = new Map(agrupar(W().por_dia, 'mes').map((x) => [+x.k.slice(5, 7), x])), fm = FIN().meses, meses = [...new Set([...pm.keys(), ...fm.map((x) => x.mes)])].sort((x, y) => x - y);
   draw('c-cruce', { tip: (k) => { const x = pm.get(meses[k]), y = fm.find((q) => q.mes === meses[k]); return x && y && y.venta ? ['Diferencia: ' + CLP(x.monto - y.venta)] : []; }, type: 'bar', data: { labels: meses.map((m) => MESN[m]), datasets: [{ label: 'Ingresos de viajes', data: meses.map((m) => pm.get(m)?.monto || 0), backgroundColor: C.p, borderRadius: 4 }, { label: 'Ventas planilla anual', data: meses.map((m) => fm.find((q) => q.mes === m)?.venta || 0), backgroundColor: C.a, borderRadius: 4 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
+  const ff = agruparFin(FIN().dias, gran);
+  draw('c-finflujo', { click: (k) => detalleFinBucket(ff[k].k, gran), tip: (k) => ['Margen: ' + CLP(ff[k].venta - ff[k].gasto), 'Gastos / ventas: ' + pctS(ff[k].gasto, ff[k].venta)], type: gran === 'dia' ? 'line' : 'bar', data: { labels: ff.map((x) => x.k), datasets: [{ label: 'Ventas', data: ff.map((x) => x.venta), backgroundColor: C.s, borderColor: C.s, borderRadius: 4, pointRadius: 0, tension: .3 }, { label: 'Gastos', data: ff.map((x) => x.gasto), backgroundColor: C.t, borderColor: C.t, borderRadius: 4, pointRadius: 0, tension: .3 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
   const f = FIN().meses;
   draw('c-fin', { click: (k) => detalleFin(f[k]), tip: (k) => ['Margen: ' + CLP(f[k].venta - f[k].gasto), 'Gastos / ventas: ' + pctS(f[k].gasto, f[k].venta)], type: 'bar', data: { labels: f.map((x) => x.nombre), datasets: [{ label: 'Ventas', data: f.map((x) => x.venta), backgroundColor: C.s, borderRadius: 6 }, { label: 'Gastos', data: f.map((x) => x.gasto), backgroundColor: C.t, borderRadius: 6 }] }, options: { scales: scales((x) => '$' + NUM(x / 1e6) + 'M') } });
 }
@@ -216,11 +223,16 @@ function detalle(titulo, pred, cube = D.cubo) {
   draw('m-hora', { type: 'bar', data: { labels: horas.map((_, h) => h + 'h'), datasets: [{ data: horas, backgroundColor: C.p, borderRadius: 4 }] }, options: { plugins: { legend: { display: false } }, scales: scales() } });
   draw('m-mes', { type: 'bar', data: { labels: meses.map((x) => { const [y, mm] = x.k.split('-'); return MESN[+mm] + ' ' + y.slice(2); }), datasets: [{ data: meses.map((x) => x.monto), backgroundColor: C.s, borderRadius: 4 }] }, options: { plugins: { legend: { display: false } }, scales: scales((x) => '$' + NUM(x / 1e6) + 'M') }, tip: (j) => ['Viajes: ' + NUM(meses[j].viajes)] });
 }
-function detalleFin(m) {
-  const dias = FIN().dias.filter((d) => +d.fecha.slice(5, 7) === m.mes), cats = Object.entries(m.gastos).sort((x, y) => y[1] - x[1]);
+function detalleFinBucket(k, g) {
+  const r = rangoBucket(k, g), dias = FIN().dias.filter((d) => d.fecha >= r.a && d.fecha <= r.b), m = { venta: 0, gasto: 0, margen: 0, gastos: {}, mes: 0 };
+  for (const d of dias) { m.venta += d.venta; m.gasto += d.gasto; for (const [c, x] of Object.entries(d.gastos || {})) m.gastos[c] = (m.gastos[c] || 0) + x; }
+  m.margen = m.venta - m.gasto; detalleFin(m, dias, r.t);
+}
+function detalleFin(m, diasSel, titulo) {
+  const dias = diasSel || FIN().dias.filter((d) => +d.fecha.slice(5, 7) === m.mes), cats = Object.entries(m.gastos).sort((x, y) => y[1] - x[1]);
   const k = (t, val, sub) => `<div class="card p-4"><div class="text-[11px] text-on-surface-variant uppercase font-semibold">${t}</div><div class="mono text-xl font-semibold mt-1">${val}</div><div class="text-xs text-on-surface-variant mt-1">${sub}</div></div>`;
   const mejores = [...dias].sort((x, y) => y.venta - x.venta).slice(0, 5);
-  abrirModal(MESL[m.mes] + ' 2026', 'Ventas y gastos de la planilla anual',
+  abrirModal(titulo || MESL[m.mes] + ' 2026', 'Ventas y gastos de la planilla anual',
     `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">` + k('Ventas', CLP(m.venta), dias.filter((d) => d.venta > 0).length + ' días con ventas') + k('Gastos', CLP(m.gasto), pctS(m.gasto, m.venta) + ' de las ventas') +
       k('Margen', `<span style="color:${m.margen < 0 ? '#fb7185' : '#34d399'}">${CLP(m.margen)}</span>`, pctS(m.margen, m.venta) + ' de las ventas') + k('Venta diaria promedio', CLP(m.venta / Math.max(1, dias.filter((d) => d.venta > 0).length)), 'solo días con ventas') + `</div>` +
     `<div class="grid lg:grid-cols-2 gap-3"><div class="card p-4"><h4 class="font-semibold mb-2 text-sm">Ventas vs gastos por día</h4><div style="height:210px"><canvas id="m-dia"></canvas></div></div>` +
