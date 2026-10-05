@@ -1,0 +1,14 @@
+# Datos personales y privados: NUNCA subir
+*.xlsx
+*.xls
+*.csv
+*.zip
+data/privado/
+.env
+*.env
+# Interno
+_inventario/
+.claude/
+diseno/referencia-stitch/
+node_modules/
+__pycache__/

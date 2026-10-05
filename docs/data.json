@@ -1,0 +1,2612 @@
+{
+ "meta": {
+  "generado": "2026-10-05T00:39:16",
+  "fuentes": [
+   "PLANILLA MATRIZ (viajes 2025)",
+   "AÑO 2026 (ventas y gastos)"
+  ],
+  "periodo_viajes": [
+   "2025-05-01",
+   "2025-10-24"
+  ],
+  "calidad": {
+   "viajes": {
+    "sin_tarifa": 78,
+    "duplicados_eliminados": 12,
+    "sin_hora": 36,
+    "hojas_ignoradas": 5
+   },
+   "finanzas": {
+    "texto_en_gastos(xxx)": 45
+   },
+   "sin_sector": 195,
+   "pago_sin_dato": 103
+  }
+ },
+ "viajes": {
+  "total": 2346,
+  "ingresos": 84850130,
+  "ticket_promedio": 40061,
+  "no_cobrados": 152,
+  "pasajeros": 6156,
+  "por_mes": [
+   {
+    "mes": 5,
+    "nombre": "May",
+    "viajes": 474,
+    "monto": 17187700
+   },
+   {
+    "mes": 6,
+    "nombre": "Jun",
+    "viajes": 471,
+    "monto": 16989760
+   },
+   {
+    "mes": 7,
+    "nombre": "Jul",
+    "viajes": 392,
+    "monto": 16095580
+   },
+   {
+    "mes": 8,
+    "nombre": "Ago",
+    "viajes": 428,
+    "monto": 17285940
+   },
+   {
+    "mes": 9,
+    "nombre": "Sep",
+    "viajes": 494,
+    "monto": 18419150
+   },
+   {
+    "mes": 10,
+    "nombre": "Oct",
+    "viajes": 87,
+    "monto": 3965000
+   }
+  ],
+  "por_dia": [
+   {
+    "fecha": "2025-05-01",
+    "viajes": 17,
+    "monto": 878000
+   },
+   {
+    "fecha": "2025-05-02",
+    "viajes": 12,
+    "monto": 487000
+   },
+   {
+    "fecha": "2025-05-03",
+    "viajes": 14,
+    "monto": 630000
+   },
+   {
+    "fecha": "2025-05-04",
+    "viajes": 22,
+    "monto": 832650
+   },
+   {
+    "fecha": "2025-05-05",
+    "viajes": 13,
+    "monto": 427700
+   },
+   {
+    "fecha": "2025-05-06",
+    "viajes": 20,
+    "monto": 770700
+   },
+   {
+    "fecha": "2025-05-07",
+    "viajes": 17,
+    "monto": 454000
+   },
+   {
+    "fecha": "2025-05-08",
+    "viajes": 17,
+    "monto": 816000
+   },
+   {
+    "fecha": "2025-05-09",
+    "viajes": 20,
+    "monto": 806000
+   },
+   {
+    "fecha": "2025-05-10",
+    "viajes": 12,
+    "monto": 579000
+   },
+   {
+    "fecha": "2025-05-11",
+    "viajes": 18,
+    "monto": 625000
+   },
+   {
+    "fecha": "2025-05-12",
+    "viajes": 14,
+    "monto": 384000
+   },
+   {
+    "fecha": "2025-05-13",
+    "viajes": 10,
+    "monto": 235000
+   },
+   {
+    "fecha": "2025-05-14",
+    "viajes": 21,
+    "monto": 758000
+   },
+   {
+    "fecha": "2025-05-15",
+    "viajes": 24,
+    "monto": 782000
+   },
+   {
+    "fecha": "2025-05-16",
+    "viajes": 16,
+    "monto": 549000
+   },
+   {
+    "fecha": "2025-05-17",
+    "viajes": 19,
+    "monto": 835000
+   },
+   {
+    "fecha": "2025-05-18",
+    "viajes": 19,
+    "monto": 462000
+   },
+   {
+    "fecha": "2025-05-19",
+    "viajes": 14,
+    "monto": 467000
+   },
+   {
+    "fecha": "2025-05-20",
+    "viajes": 20,
+    "monto": 663000
+   },
+   {
+    "fecha": "2025-05-21",
+    "viajes": 4,
+    "monto": 100000
+   },
+   {
+    "fecha": "2025-05-22",
+    "viajes": 11,
+    "monto": 399000
+   },
+   {
+    "fecha": "2025-05-23",
+    "viajes": 13,
+    "monto": 503000
+   },
+   {
+    "fecha": "2025-05-24",
+    "viajes": 16,
+    "monto": 547000
+   },
+   {
+    "fecha": "2025-05-25",
+    "viajes": 19,
+    "monto": 696650
+   },
+   {
+    "fecha": "2025-05-26",
+    "viajes": 8,
+    "monto": 270000
+   },
+   {
+    "fecha": "2025-05-27",
+    "viajes": 12,
+    "monto": 342000
+   },
+   {
+    "fecha": "2025-05-28",
+    "viajes": 13,
+    "monto": 401000
+   },
+   {
+    "fecha": "2025-05-29",
+    "viajes": 10,
+    "monto": 348000
+   },
+   {
+    "fecha": "2025-05-30",
+    "viajes": 15,
+    "monto": 679000
+   },
+   {
+    "fecha": "2025-05-31",
+    "viajes": 14,
+    "monto": 461000
+   },
+   {
+    "fecha": "2025-06-01",
+    "viajes": 12,
+    "monto": 371000
+   },
+   {
+    "fecha": "2025-06-02",
+    "viajes": 13,
+    "monto": 385030
+   },
+   {
+    "fecha": "2025-06-03",
+    "viajes": 7,
+    "monto": 248000
+   },
+   {
+    "fecha": "2025-06-04",
+    "viajes": 17,
+    "monto": 540680
+   },
+   {
+    "fecha": "2025-06-05",
+    "viajes": 19,
+    "monto": 744000
+   },
+   {
+    "fecha": "2025-06-06",
+    "viajes": 14,
+    "monto": 544000
+   },
+   {
+    "fecha": "2025-06-07",
+    "viajes": 13,
+    "monto": 403000
+   },
+   {
+    "fecha": "2025-06-08",
+    "viajes": 17,
+    "monto": 529420
+   },
+   {
+    "fecha": "2025-06-09",
+    "viajes": 13,
+    "monto": 546170
+   },
+   {
+    "fecha": "2025-06-10",
+    "viajes": 17,
+    "monto": 466000
+   },
+   {
+    "fecha": "2025-06-11",
+    "viajes": 11,
+    "monto": 329000
+   },
+   {
+    "fecha": "2025-06-12",
+    "viajes": 18,
+    "monto": 676900
+   },
+   {
+    "fecha": "2025-06-13",
+    "viajes": 13,
+    "monto": 479100
+   },
+   {
+    "fecha": "2025-06-14",
+    "viajes": 18,
+    "monto": 619000
+   },
+   {
+    "fecha": "2025-06-15",
+    "viajes": 15,
+    "monto": 510650
+   },
+   {
+    "fecha": "2025-06-16",
+    "viajes": 14,
+    "monto": 477000
+   },
+   {
+    "fecha": "2025-06-17",
+    "viajes": 7,
+    "monto": 242000
+   },
+   {
+    "fecha": "2025-06-18",
+    "viajes": 16,
+    "monto": 844500
+   },
+   {
+    "fecha": "2025-06-19",
+    "viajes": 20,
+    "monto": 746000
+   },
+   {
+    "fecha": "2025-06-20",
+    "viajes": 18,
+    "monto": 626000
+   },
+   {
+    "fecha": "2025-06-21",
+    "viajes": 16,
+    "monto": 746000
+   },
+   {
+    "fecha": "2025-06-22",
+    "viajes": 17,
+    "monto": 561000
+   },
+   {
+    "fecha": "2025-06-23",
+    "viajes": 15,
+    "monto": 415000
+   },
+   {
+    "fecha": "2025-06-24",
+    "viajes": 22,
+    "monto": 696160
+   },
+   {
+    "fecha": "2025-06-25",
+    "viajes": 16,
+    "monto": 585000
+   },
+   {
+    "fecha": "2025-06-26",
+    "viajes": 17,
+    "monto": 852500
+   },
+   {
+    "fecha": "2025-06-27",
+    "viajes": 16,
+    "monto": 549000
+   },
+   {
+    "fecha": "2025-06-28",
+    "viajes": 14,
+    "monto": 565650
+   },
+   {
+    "fecha": "2025-06-29",
+    "viajes": 25,
+    "monto": 811000
+   },
+   {
+    "fecha": "2025-06-30",
+    "viajes": 21,
+    "monto": 881000
+   },
+   {
+    "fecha": "2025-07-01",
+    "viajes": 16,
+    "monto": 490080
+   },
+   {
+    "fecha": "2025-07-02",
+    "viajes": 20,
+    "monto": 661000
+   },
+   {
+    "fecha": "2025-07-03",
+    "viajes": 14,
+    "monto": 600000
+   },
+   {
+    "fecha": "2025-07-04",
+    "viajes": 21,
+    "monto": 721000
+   },
+   {
+    "fecha": "2025-07-05",
+    "viajes": 19,
+    "monto": 760000
+   },
+   {
+    "fecha": "2025-07-06",
+    "viajes": 17,
+    "monto": 706650
+   },
+   {
+    "fecha": "2025-07-07",
+    "viajes": 7,
+    "monto": 209000
+   },
+   {
+    "fecha": "2025-07-08",
+    "viajes": 14,
+    "monto": 470000
+   },
+   {
+    "fecha": "2025-07-09",
+    "viajes": 12,
+    "monto": 506900
+   },
+   {
+    "fecha": "2025-07-10",
+    "viajes": 14,
+    "monto": 599000
+   },
+   {
+    "fecha": "2025-07-11",
+    "viajes": 9,
+    "monto": 285000
+   },
+   {
+    "fecha": "2025-07-12",
+    "viajes": 15,
+    "monto": 575000
+   },
+   {
+    "fecha": "2025-07-13",
+    "viajes": 11,
+    "monto": 688000
+   },
+   {
+    "fecha": "2025-07-14",
+    "viajes": 11,
+    "monto": 709000
+   },
+   {
+    "fecha": "2025-07-15",
+    "viajes": 12,
+    "monto": 631000
+   },
+   {
+    "fecha": "2025-07-16",
+    "viajes": 22,
+    "monto": 1060000
+   },
+   {
+    "fecha": "2025-07-17",
+    "viajes": 8,
+    "monto": 246000
+   },
+   {
+    "fecha": "2025-07-18",
+    "viajes": 6,
+    "monto": 245000
+   },
+   {
+    "fecha": "2025-07-19",
+    "viajes": 16,
+    "monto": 669000
+   },
+   {
+    "fecha": "2025-07-20",
+    "viajes": 13,
+    "monto": 542000
+   },
+   {
+    "fecha": "2025-07-21",
+    "viajes": 11,
+    "monto": 412000
+   },
+   {
+    "fecha": "2025-07-22",
+    "viajes": 8,
+    "monto": 271000
+   },
+   {
+    "fecha": "2025-07-23",
+    "viajes": 10,
+    "monto": 364000
+   },
+   {
+    "fecha": "2025-07-24",
+    "viajes": 17,
+    "monto": 835000
+   },
+   {
+    "fecha": "2025-07-25",
+    "viajes": 9,
+    "monto": 492000
+   },
+   {
+    "fecha": "2025-07-26",
+    "viajes": 13,
+    "monto": 579650
+   },
+   {
+    "fecha": "2025-07-28",
+    "viajes": 4,
+    "monto": 166000
+   },
+   {
+    "fecha": "2025-07-29",
+    "viajes": 21,
+    "monto": 775000
+   },
+   {
+    "fecha": "2025-07-30",
+    "viajes": 11,
+    "monto": 462000
+   },
+   {
+    "fecha": "2025-07-31",
+    "viajes": 11,
+    "monto": 365300
+   },
+   {
+    "fecha": "2025-08-01",
+    "viajes": 17,
+    "monto": 601000
+   },
+   {
+    "fecha": "2025-08-02",
+    "viajes": 15,
+    "monto": 481750
+   },
+   {
+    "fecha": "2025-08-03",
+    "viajes": 11,
+    "monto": 431000
+   },
+   {
+    "fecha": "2025-08-04",
+    "viajes": 13,
+    "monto": 567000
+   },
+   {
+    "fecha": "2025-08-05",
+    "viajes": 14,
+    "monto": 471000
+   },
+   {
+    "fecha": "2025-08-06",
+    "viajes": 8,
+    "monto": 280000
+   },
+   {
+    "fecha": "2025-08-07",
+    "viajes": 17,
+    "monto": 786000
+   },
+   {
+    "fecha": "2025-08-08",
+    "viajes": 19,
+    "monto": 909300
+   },
+   {
+    "fecha": "2025-08-09",
+    "viajes": 15,
+    "monto": 680000
+   },
+   {
+    "fecha": "2025-08-11",
+    "viajes": 12,
+    "monto": 457000
+   },
+   {
+    "fecha": "2025-08-12",
+    "viajes": 10,
+    "monto": 560000
+   },
+   {
+    "fecha": "2025-08-13",
+    "viajes": 14,
+    "monto": 645200
+   },
+   {
+    "fecha": "2025-08-14",
+    "viajes": 18,
+    "monto": 687500
+   },
+   {
+    "fecha": "2025-08-15",
+    "viajes": 15,
+    "monto": 712000
+   },
+   {
+    "fecha": "2025-08-16",
+    "viajes": 2,
+    "monto": 85000
+   },
+   {
+    "fecha": "2025-08-17",
+    "viajes": 14,
+    "monto": 401000
+   },
+   {
+    "fecha": "2025-08-18",
+    "viajes": 11,
+    "monto": 263000
+   },
+   {
+    "fecha": "2025-08-19",
+    "viajes": 10,
+    "monto": 280000
+   },
+   {
+    "fecha": "2025-08-20",
+    "viajes": 13,
+    "monto": 386000
+   },
+   {
+    "fecha": "2025-08-21",
+    "viajes": 13,
+    "monto": 314500
+   },
+   {
+    "fecha": "2025-08-22",
+    "viajes": 16,
+    "monto": 688000
+   },
+   {
+    "fecha": "2025-08-23",
+    "viajes": 13,
+    "monto": 593000
+   },
+   {
+    "fecha": "2025-08-24",
+    "viajes": 17,
+    "monto": 611000
+   },
+   {
+    "fecha": "2025-08-25",
+    "viajes": 13,
+    "monto": 411000
+   },
+   {
+    "fecha": "2025-08-26",
+    "viajes": 22,
+    "monto": 1012750
+   },
+   {
+    "fecha": "2025-08-27",
+    "viajes": 15,
+    "monto": 572000
+   },
+   {
+    "fecha": "2025-08-28",
+    "viajes": 12,
+    "monto": 583290
+   },
+   {
+    "fecha": "2025-08-29",
+    "viajes": 18,
+    "monto": 826000
+   },
+   {
+    "fecha": "2025-08-30",
+    "viajes": 17,
+    "monto": 794000
+   },
+   {
+    "fecha": "2025-08-31",
+    "viajes": 24,
+    "monto": 1196650
+   },
+   {
+    "fecha": "2025-09-01",
+    "viajes": 14,
+    "monto": 405000
+   },
+   {
+    "fecha": "2025-09-02",
+    "viajes": 15,
+    "monto": 425000
+   },
+   {
+    "fecha": "2025-09-03",
+    "viajes": 17,
+    "monto": 629000
+   },
+   {
+    "fecha": "2025-09-04",
+    "viajes": 14,
+    "monto": 788400
+   },
+   {
+    "fecha": "2025-09-05",
+    "viajes": 17,
+    "monto": 1150000
+   },
+   {
+    "fecha": "2025-09-06",
+    "viajes": 16,
+    "monto": 883000
+   },
+   {
+    "fecha": "2025-09-07",
+    "viajes": 14,
+    "monto": 491000
+   },
+   {
+    "fecha": "2025-09-08",
+    "viajes": 17,
+    "monto": 460000
+   },
+   {
+    "fecha": "2025-09-09",
+    "viajes": 25,
+    "monto": 785000
+   },
+   {
+    "fecha": "2025-09-10",
+    "viajes": 29,
+    "monto": 911000
+   },
+   {
+    "fecha": "2025-09-11",
+    "viajes": 17,
+    "monto": 528000
+   },
+   {
+    "fecha": "2025-09-12",
+    "viajes": 14,
+    "monto": 636000
+   },
+   {
+    "fecha": "2025-09-13",
+    "viajes": 16,
+    "monto": 578000
+   },
+   {
+    "fecha": "2025-09-15",
+    "viajes": 12,
+    "monto": 370000
+   },
+   {
+    "fecha": "2025-09-16",
+    "viajes": 14,
+    "monto": 487000
+   },
+   {
+    "fecha": "2025-09-17",
+    "viajes": 21,
+    "monto": 711000
+   },
+   {
+    "fecha": "2025-09-18",
+    "viajes": 21,
+    "monto": 657000
+   },
+   {
+    "fecha": "2025-09-19",
+    "viajes": 18,
+    "monto": 630000
+   },
+   {
+    "fecha": "2025-09-20",
+    "viajes": 10,
+    "monto": 461000
+   },
+   {
+    "fecha": "2025-09-21",
+    "viajes": 28,
+    "monto": 902000
+   },
+   {
+    "fecha": "2025-09-22",
+    "viajes": 14,
+    "monto": 433000
+   },
+   {
+    "fecha": "2025-09-23",
+    "viajes": 9,
+    "monto": 360000
+   },
+   {
+    "fecha": "2025-09-24",
+    "viajes": 19,
+    "monto": 598000
+   },
+   {
+    "fecha": "2025-09-25",
+    "viajes": 13,
+    "monto": 491000
+   },
+   {
+    "fecha": "2025-09-26",
+    "viajes": 18,
+    "monto": 839000
+   },
+   {
+    "fecha": "2025-09-27",
+    "viajes": 15,
+    "monto": 594000
+   },
+   {
+    "fecha": "2025-09-28",
+    "viajes": 23,
+    "monto": 711000
+   },
+   {
+    "fecha": "2025-09-29",
+    "viajes": 13,
+    "monto": 473650
+   },
+   {
+    "fecha": "2025-09-30",
+    "viajes": 21,
+    "monto": 1032100
+   },
+   {
+    "fecha": "2025-10-01",
+    "viajes": 20,
+    "monto": 707270
+   },
+   {
+    "fecha": "2025-10-02",
+    "viajes": 8,
+    "monto": 322650
+   },
+   {
+    "fecha": "2025-10-03",
+    "viajes": 12,
+    "monto": 1016000
+   },
+   {
+    "fecha": "2025-10-04",
+    "viajes": 15,
+    "monto": 727000
+   },
+   {
+    "fecha": "2025-10-06",
+    "viajes": 8,
+    "monto": 199080
+   },
+   {
+    "fecha": "2025-10-07",
+    "viajes": 5,
+    "monto": 130000
+   },
+   {
+    "fecha": "2025-10-08",
+    "viajes": 5,
+    "monto": 160000
+   },
+   {
+    "fecha": "2025-10-10",
+    "viajes": 1,
+    "monto": 42000
+   },
+   {
+    "fecha": "2025-10-12",
+    "viajes": 2,
+    "monto": 55000
+   },
+   {
+    "fecha": "2025-10-13",
+    "viajes": 1,
+    "monto": 26000
+   },
+   {
+    "fecha": "2025-10-15",
+    "viajes": 1,
+    "monto": 37000
+   },
+   {
+    "fecha": "2025-10-16",
+    "viajes": 1,
+    "monto": 36000
+   },
+   {
+    "fecha": "2025-10-17",
+    "viajes": 1,
+    "monto": 46000
+   },
+   {
+    "fecha": "2025-10-20",
+    "viajes": 1,
+    "monto": 30000
+   },
+   {
+    "fecha": "2025-10-23",
+    "viajes": 5,
+    "monto": 385000
+   },
+   {
+    "fecha": "2025-10-24",
+    "viajes": 1,
+    "monto": 46000
+   }
+  ],
+  "por_dow": [
+   {
+    "nombre": "Lun",
+    "viajes": 287,
+    "monto": 9843630
+   },
+   {
+    "nombre": "Mar",
+    "viajes": 331,
+    "monto": 11842790
+   },
+   {
+    "nombre": "Mié",
+    "viajes": 352,
+    "monto": 12702550
+   },
+   {
+    "nombre": "Jue",
+    "viajes": 356,
+    "monto": 14467040
+   },
+   {
+    "nombre": "Vie",
+    "viajes": 349,
+    "monto": 15106400
+   },
+   {
+    "nombre": "Sáb",
+    "viajes": 333,
+    "monto": 13846050
+   },
+   {
+    "nombre": "Dom",
+    "viajes": 338,
+    "monto": 12134670
+   }
+  ],
+  "heatmap": {
+   "dias": [
+    "Lun",
+    "Mar",
+    "Mié",
+    "Jue",
+    "Vie",
+    "Sáb",
+    "Dom"
+   ],
+   "horas": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "valores": [
+    [
+     8,
+     11,
+     16,
+     25,
+     18,
+     20,
+     27,
+     12,
+     17,
+     7,
+     4,
+     6,
+     6,
+     4,
+     5,
+     9,
+     7,
+     6,
+     16,
+     4,
+     5,
+     11,
+     10,
+     25
+    ],
+    [
+     5,
+     18,
+     16,
+     20,
+     20,
+     18,
+     30,
+     18,
+     30,
+     9,
+     10,
+     5,
+     3,
+     3,
+     4,
+     9,
+     11,
+     12,
+     16,
+     10,
+     13,
+     9,
+     9,
+     28
+    ],
+    [
+     4,
+     16,
+     19,
+     21,
+     17,
+     28,
+     25,
+     13,
+     31,
+     12,
+     14,
+     4,
+     6,
+     9,
+     5,
+     10,
+     11,
+     11,
+     20,
+     8,
+     14,
+     14,
+     11,
+     25
+    ],
+    [
+     12,
+     22,
+     17,
+     19,
+     21,
+     23,
+     19,
+     17,
+     19,
+     10,
+     9,
+     8,
+     8,
+     9,
+     9,
+     14,
+     18,
+     14,
+     12,
+     11,
+     14,
+     10,
+     7,
+     28
+    ],
+    [
+     14,
+     18,
+     18,
+     26,
+     16,
+     17,
+     17,
+     20,
+     13,
+     5,
+     6,
+     13,
+     9,
+     14,
+     11,
+     16,
+     17,
+     15,
+     8,
+     11,
+     16,
+     15,
+     10,
+     20
+    ],
+    [
+     7,
+     12,
+     17,
+     20,
+     29,
+     42,
+     35,
+     21,
+     12,
+     6,
+     4,
+     2,
+     9,
+     2,
+     11,
+     12,
+     5,
+     15,
+     14,
+     8,
+     15,
+     17,
+     4,
+     10
+    ],
+    [
+     9,
+     15,
+     24,
+     39,
+     27,
+     39,
+     11,
+     28,
+     16,
+     9,
+     4,
+     6,
+     6,
+     7,
+     8,
+     7,
+     10,
+     11,
+     7,
+     10,
+     11,
+     5,
+     4,
+     20
+    ]
+   ]
+  },
+  "conductores": [
+   {
+    "nombre": "Rafael",
+    "viajes": 802,
+    "monto": 30887440
+   },
+   {
+    "nombre": "Stefano",
+    "viajes": 567,
+    "monto": 24494270
+   },
+   {
+    "nombre": "Externo",
+    "viajes": 110,
+    "monto": 5429680
+   },
+   {
+    "nombre": "Hanz",
+    "viajes": 82,
+    "monto": 2626730
+   },
+   {
+    "nombre": "Daniel",
+    "viajes": 61,
+    "monto": 2180650
+   },
+   {
+    "nombre": "Emanuel",
+    "viajes": 49,
+    "monto": 1896830
+   },
+   {
+    "nombre": "Cesar",
+    "viajes": 58,
+    "monto": 1863380
+   },
+   {
+    "nombre": "Sin dato",
+    "viajes": 58,
+    "monto": 1767080
+   },
+   {
+    "nombre": "Jonatan Sandoval",
+    "viajes": 55,
+    "monto": 1756200
+   },
+   {
+    "nombre": "Brayan",
+    "viajes": 49,
+    "monto": 1751000
+   },
+   {
+    "nombre": "Jonathan S",
+    "viajes": 45,
+    "monto": 1402000
+   },
+   {
+    "nombre": "Alejandro",
+    "viajes": 36,
+    "monto": 1136000
+   }
+  ],
+  "pagos": [
+   {
+    "nombre": "Efectivo",
+    "viajes": 1113,
+    "monto": 38850900
+   },
+   {
+    "nombre": "Transferencia",
+    "viajes": 707,
+    "monto": 30997140
+   },
+   {
+    "nombre": "Tarjeta",
+    "viajes": 173,
+    "monto": 7935500
+   },
+   {
+    "nombre": "No cobrado",
+    "viajes": 152,
+    "monto": 5093000
+   },
+   {
+    "nombre": "Sin dato",
+    "viajes": 103,
+    "monto": 2279240
+   },
+   {
+    "nombre": "Otro",
+    "viajes": 98,
+    "monto": 4787350
+   }
+  ],
+  "sectores": [
+   {
+    "nombre": "Santiago Centro",
+    "viajes": 240,
+    "monto": 7867730
+   },
+   {
+    "nombre": "Las Condes",
+    "viajes": 233,
+    "monto": 9354510
+   },
+   {
+    "nombre": "Providencia",
+    "viajes": 216,
+    "monto": 8205070
+   },
+   {
+    "nombre": "Sin identificar",
+    "viajes": 195,
+    "monto": 10169200
+   },
+   {
+    "nombre": "Ñuñoa",
+    "viajes": 185,
+    "monto": 7153500
+   },
+   {
+    "nombre": "Quilicura",
+    "viajes": 163,
+    "monto": 5284000
+   },
+   {
+    "nombre": "La Florida",
+    "viajes": 86,
+    "monto": 3138000
+   },
+   {
+    "nombre": "Maipú",
+    "viajes": 86,
+    "monto": 2504200
+   },
+   {
+    "nombre": "Vitacura",
+    "viajes": 73,
+    "monto": 2589140
+   },
+   {
+    "nombre": "San Miguel",
+    "viajes": 69,
+    "monto": 2106000
+   },
+   {
+    "nombre": "Colina",
+    "viajes": 63,
+    "monto": 2671680
+   },
+   {
+    "nombre": "San Bernardo",
+    "viajes": 62,
+    "monto": 2701270
+   },
+   {
+    "nombre": "Padre Hurtado",
+    "viajes": 53,
+    "monto": 2049610
+   },
+   {
+    "nombre": "Lo Barnechea",
+    "viajes": 48,
+    "monto": 1968000
+   },
+   {
+    "nombre": "Puente Alto",
+    "viajes": 48,
+    "monto": 1961000
+   }
+  ],
+  "sentido": [
+   {
+    "nombre": "Hacia aeropuerto",
+    "viajes": 1369,
+    "monto": 46874940
+   },
+   {
+    "nombre": "Desde aeropuerto",
+    "viajes": 496,
+    "monto": 18696590
+   },
+   {
+    "nombre": "Otro",
+    "viajes": 481,
+    "monto": 24371600
+   }
+  ],
+  "clientes": {
+   "unicos": 1473,
+   "recurrentes": 426,
+   "viajes_de_recurrentes": 1276,
+   "top_anonimo": [
+    {
+     "id": "Cliente 01",
+     "viajes": 70,
+     "monto": 2869000
+    },
+    {
+     "id": "Cliente 02",
+     "viajes": 65,
+     "monto": 1575000
+    },
+    {
+     "id": "Cliente 03",
+     "viajes": 23,
+     "monto": 658000
+    },
+    {
+     "id": "Cliente 04",
+     "viajes": 23,
+     "monto": 782000
+    },
+    {
+     "id": "Cliente 05",
+     "viajes": 19,
+     "monto": 1830000
+    },
+    {
+     "id": "Cliente 06",
+     "viajes": 16,
+     "monto": 480000
+    },
+    {
+     "id": "Cliente 07",
+     "viajes": 15,
+     "monto": 413000
+    },
+    {
+     "id": "Cliente 08",
+     "viajes": 14,
+     "monto": 350000
+    },
+    {
+     "id": "Cliente 09",
+     "viajes": 12,
+     "monto": 432000
+    },
+    {
+     "id": "Cliente 10",
+     "viajes": 11,
+     "monto": 373000
+    }
+   ]
+  }
+ },
+ "finanzas": {
+  "meses": [
+   {
+    "mes": 1,
+    "nombre": "Ene",
+    "venta": 21955890,
+    "gasto": 23212110,
+    "margen": -1256220,
+    "gastos": {
+     "EXTERNOS": 4891130,
+     "PUBLICIDAD": 2783850,
+     "SUELDOS": 2550000,
+     "CUOTA LORENA": 2300000,
+     "COMBUSTIBLE": 1860000,
+     "RAFAEL": 1275000,
+     "GASTOS VARIOS": 1100000,
+     "FONDO E": 1009800,
+     "TAG MAXUS": 873435,
+     "IMPOSICIONES": 793000,
+     "TAG JAC": 768855,
+     "PAPA H1": 750000,
+     "ARR MAXUS": 750000,
+     "TAG H1": 500840,
+     "INFORMATICO": 320000,
+     "MANTENCIONES": 205000,
+     "TELEFONOS": 169000,
+     "SEGURO": 166200,
+     "IVA": 146000
+    }
+   },
+   {
+    "mes": 2,
+    "nombre": "Feb",
+    "venta": 19758990,
+    "gasto": 22881669,
+    "margen": -3122679,
+    "gastos": {
+     "SUELDOS": 4910500,
+     "EXTERNOS": 4373000,
+     "RAFAEL": 3170000,
+     "PUBLICIDAD": 2727000,
+     "COMBUSTIBLE": 1445390,
+     "FONDO E": 1344000,
+     "TAG MAXUS": 1132459,
+     "CUOTA LORENA": 1000000,
+     "IMPOSICIONES": 797200,
+     "ARR MAXUS": 750000,
+     "MANTENCIONES": 462000,
+     "PAPA H1": 250000,
+     "SEGURO": 186200,
+     "GASTOS VARIOS": 120000,
+     "TELEFONOS": 112620,
+     "IVA": 101300
+    }
+   },
+   {
+    "mes": 3,
+    "nombre": "Mar",
+    "venta": 19169860,
+    "gasto": 22574800,
+    "margen": -3404940,
+    "gastos": {
+     "SUELDOS": 4862000,
+     "EXTERNOS": 3524360,
+     "COMBUSTIBLE": 2787000,
+     "CUOTA LORENA": 1942860,
+     "CUOTA JAC": 1242650,
+     "RAFAEL": 1238000,
+     "PUBLICIDAD": 1175000,
+     "FONDO E": 1138800,
+     "TAG MAXUS": 993000,
+     "IMPOSICIONES": 797200,
+     "ARR MAXUS": 750000,
+     "FONDO TAG": 530000,
+     "PAPA H1": 500000,
+     "INFORMATICO": 300000,
+     "MANTENCIONES": 230000,
+     "SEGURO": 186700,
+     "GASTOS VARIOS": 160000,
+     "TELEFONOS": 120000,
+     "IVA": 97230
+    }
+   },
+   {
+    "mes": 4,
+    "nombre": "Abr",
+    "venta": 16880650,
+    "gasto": 16988391,
+    "margen": -107741,
+    "gastos": {
+     "SUELDOS": 3836000,
+     "EXTERNOS": 3072000,
+     "PUBLICIDAD": 2680000,
+     "CUOTA LORENA": 1550000,
+     "RAFAEL": 1200000,
+     "FONDO E": 1045440,
+     "ARR MAXUS": 750000,
+     "IMPOSICIONES": 747200,
+     "TAG JAC": 590000,
+     "COMBUSTIBLE": 417000,
+     "MANTENCIONES": 275000,
+     "FONDO TAG": 250000,
+     "PAPA H1": 250000,
+     "SEGURO": 187891,
+     "TELEFONOS": 137860
+    }
+   },
+   {
+    "mes": 5,
+    "nombre": "May",
+    "venta": 7645150,
+    "gasto": 13317900,
+    "margen": -5672750,
+    "gastos": {
+     "SUELDOS": 3055000,
+     "EXTERNOS": 2195900,
+     "PUBLICIDAD": 2155000,
+     "FONDO E": 1264640,
+     "IMPOSICIONES": 799600,
+     "ARR MAXUS": 750000,
+     "RAFAEL": 720500,
+     "CUOTA JAC": 620000,
+     "CUOTA LORENA": 600000,
+     "MANTENCIONES": 328000,
+     "IVA": 313630,
+     "PAPA H1": 215000,
+     "COMBUSTIBLE": 160000,
+     "TELEFONOS": 140630
+    }
+   },
+   {
+    "mes": 6,
+    "nombre": "Jun",
+    "venta": 12653670,
+    "gasto": 13600000,
+    "margen": -946330,
+    "gastos": {
+     "EXTERNOS": 4014250,
+     "SUELDOS": 2212000,
+     "PUBLICIDAD": 1985000,
+     "FONDO E": 1264640,
+     "RAFAEL": 850500,
+     "IMPOSICIONES": 799600,
+     "ARR MAXUS": 750000,
+     "CUOTA JAC": 620000,
+     "SEGURO": 300090,
+     "PAPA H1": 215000,
+     "TAG H1": 142500,
+     "TELEFONOS": 115420,
+     "INFORMATICO": 100000,
+     "IVA": 99000,
+     "TAG MAXUS": 92000,
+     "COMBUSTIBLE": 40000
+    }
+   },
+   {
+    "mes": 7,
+    "nombre": "Jul",
+    "venta": 0,
+    "gasto": 8240160,
+    "margen": -8240160,
+    "gastos": {
+     "SUELDOS": 1850000,
+     "PUBLICIDAD": 1470000,
+     "ARR MAXUS": 750000,
+     "FONDO E": 731440,
+     "RAFAEL": 730000,
+     "CUOTA LORENA": 700000,
+     "MANTENCIONES": 650000,
+     "MERCADO PAGO": 600000,
+     "SEGURO": 219720,
+     "INFORMATICO": 200000,
+     "IVA": 146000,
+     "TELEFONOS": 120000,
+     "COMBUSTIBLE": 73000
+    }
+   },
+   {
+    "mes": 8,
+    "nombre": "Ago",
+    "venta": 0,
+    "gasto": 50000,
+    "margen": -50000,
+    "gastos": {
+     "PUBLICIDAD": 50000
+    }
+   }
+  ],
+  "dias": [
+   {
+    "fecha": "2026-01-01",
+    "venta": 850000,
+    "gasto": 1848850
+   },
+   {
+    "fecha": "2026-01-02",
+    "venta": 851000,
+    "gasto": 371000
+   },
+   {
+    "fecha": "2026-01-03",
+    "venta": 719000,
+    "gasto": 395000
+   },
+   {
+    "fecha": "2026-01-04",
+    "venta": 940000,
+    "gasto": 702000
+   },
+   {
+    "fecha": "2026-01-05",
+    "venta": 573650,
+    "gasto": 4147100
+   },
+   {
+    "fecha": "2026-01-06",
+    "venta": 544540,
+    "gasto": 420900
+   },
+   {
+    "fecha": "2026-01-07",
+    "venta": 751000,
+    "gasto": 379000
+   },
+   {
+    "fecha": "2026-01-08",
+    "venta": 665000,
+    "gasto": 422000
+   },
+   {
+    "fecha": "2026-01-09",
+    "venta": 789000,
+    "gasto": 484000
+   },
+   {
+    "fecha": "2026-01-10",
+    "venta": 624550,
+    "gasto": 224750
+   },
+   {
+    "fecha": "2026-01-11",
+    "venta": 503000,
+    "gasto": 319000
+   },
+   {
+    "fecha": "2026-01-12",
+    "venta": 622420,
+    "gasto": 2346350
+   },
+   {
+    "fecha": "2026-01-13",
+    "venta": 660200,
+    "gasto": 966300
+   },
+   {
+    "fecha": "2026-01-14",
+    "venta": 790000,
+    "gasto": 125000
+   },
+   {
+    "fecha": "2026-01-15",
+    "venta": 894000,
+    "gasto": 2345000
+   },
+   {
+    "fecha": "2026-01-16",
+    "venta": 830000,
+    "gasto": 569000
+   },
+   {
+    "fecha": "2026-01-17",
+    "venta": 762000,
+    "gasto": 289000
+   },
+   {
+    "fecha": "2026-01-18",
+    "venta": 731000,
+    "gasto": 878000
+   },
+   {
+    "fecha": "2026-01-19",
+    "venta": 622650,
+    "gasto": 1446600
+   },
+   {
+    "fecha": "2026-01-20",
+    "venta": 654000,
+    "gasto": 267000
+   },
+   {
+    "fecha": "2026-01-21",
+    "venta": 637750,
+    "gasto": 198630
+   },
+   {
+    "fecha": "2026-01-22",
+    "venta": 533130,
+    "gasto": 195000
+   },
+   {
+    "fecha": "2026-01-23",
+    "venta": 924000,
+    "gasto": 321000
+   },
+   {
+    "fecha": "2026-01-24",
+    "venta": 693000,
+    "gasto": 357000
+   },
+   {
+    "fecha": "2026-01-25",
+    "venta": 586000,
+    "gasto": 611625
+   },
+   {
+    "fecha": "2026-01-26",
+    "venta": 493000,
+    "gasto": 625180
+   },
+   {
+    "fecha": "2026-01-27",
+    "venta": 679000,
+    "gasto": 210000
+   },
+   {
+    "fecha": "2026-01-28",
+    "venta": 705000,
+    "gasto": 311000
+   },
+   {
+    "fecha": "2026-01-29",
+    "venta": 801000,
+    "gasto": 246000
+   },
+   {
+    "fecha": "2026-01-30",
+    "venta": 757000,
+    "gasto": 957825
+   },
+   {
+    "fecha": "2026-01-31",
+    "venta": 770000,
+    "gasto": 233000
+   },
+   {
+    "fecha": "2026-02-01",
+    "venta": 489000,
+    "gasto": 550000
+   },
+   {
+    "fecha": "2026-02-02",
+    "venta": 697000,
+    "gasto": 3877500
+   },
+   {
+    "fecha": "2026-02-03",
+    "venta": 549000,
+    "gasto": 150000
+   },
+   {
+    "fecha": "2026-02-04",
+    "venta": 777000,
+    "gasto": 645000
+   },
+   {
+    "fecha": "2026-02-05",
+    "venta": 1201000,
+    "gasto": 1276000
+   },
+   {
+    "fecha": "2026-02-06",
+    "venta": 503000,
+    "gasto": 1022000
+   },
+   {
+    "fecha": "2026-02-07",
+    "venta": 676000,
+    "gasto": 194000
+   },
+   {
+    "fecha": "2026-02-08",
+    "venta": 762000,
+    "gasto": 256000
+   },
+   {
+    "fecha": "2026-02-09",
+    "venta": 701650,
+    "gasto": 430000
+   },
+   {
+    "fecha": "2026-02-10",
+    "venta": 782000,
+    "gasto": 690000
+   },
+   {
+    "fecha": "2026-02-11",
+    "venta": 451000,
+    "gasto": 2130620
+   },
+   {
+    "fecha": "2026-02-12",
+    "venta": 642000,
+    "gasto": 970000
+   },
+   {
+    "fecha": "2026-02-13",
+    "venta": 858000,
+    "gasto": 2446200
+   },
+   {
+    "fecha": "2026-02-14",
+    "venta": 765000,
+    "gasto": 547000
+   },
+   {
+    "fecha": "2026-02-15",
+    "venta": 619000,
+    "gasto": 244000
+   },
+   {
+    "fecha": "2026-02-16",
+    "venta": 861000,
+    "gasto": 1996000
+   },
+   {
+    "fecha": "2026-02-17",
+    "venta": 593000,
+    "gasto": 758000
+   },
+   {
+    "fecha": "2026-02-18",
+    "venta": 593000,
+    "gasto": 858000
+   },
+   {
+    "fecha": "2026-02-19",
+    "venta": 651000,
+    "gasto": 119000
+   },
+   {
+    "fecha": "2026-02-20",
+    "venta": 808000,
+    "gasto": 280200
+   },
+   {
+    "fecha": "2026-02-21",
+    "venta": 603000,
+    "gasto": 215390
+   },
+   {
+    "fecha": "2026-02-22",
+    "venta": 669130,
+    "gasto": 414000
+   },
+   {
+    "fecha": "2026-02-23",
+    "venta": 715750,
+    "gasto": 231300
+   },
+   {
+    "fecha": "2026-02-24",
+    "venta": 1079000,
+    "gasto": 1583459
+   },
+   {
+    "fecha": "2026-02-25",
+    "venta": 522000,
+    "gasto": 180000
+   },
+   {
+    "fecha": "2026-02-26",
+    "venta": 572460,
+    "gasto": 220000
+   },
+   {
+    "fecha": "2026-02-27",
+    "venta": 856000,
+    "gasto": 105000
+   },
+   {
+    "fecha": "2026-02-28",
+    "venta": 763000,
+    "gasto": 493000
+   },
+   {
+    "fecha": "2026-03-01",
+    "venta": 689000,
+    "gasto": 963650
+   },
+   {
+    "fecha": "2026-03-02",
+    "venta": 539000,
+    "gasto": 207000
+   },
+   {
+    "fecha": "2026-03-03",
+    "venta": 549000,
+    "gasto": 686000
+   },
+   {
+    "fecha": "2026-03-04",
+    "venta": 450130,
+    "gasto": 163000
+   },
+   {
+    "fecha": "2026-03-05",
+    "venta": 399000,
+    "gasto": 1742860
+   },
+   {
+    "fecha": "2026-03-06",
+    "venta": 499000,
+    "gasto": 621000
+   },
+   {
+    "fecha": "2026-03-07",
+    "venta": 466000,
+    "gasto": 713000
+   },
+   {
+    "fecha": "2026-03-08",
+    "venta": 784000,
+    "gasto": 988000
+   },
+   {
+    "fecha": "2026-03-09",
+    "venta": 620110,
+    "gasto": 823410
+   },
+   {
+    "fecha": "2026-03-10",
+    "venta": 719750,
+    "gasto": 159000
+   },
+   {
+    "fecha": "2026-03-11",
+    "venta": 679000,
+    "gasto": 157000
+   },
+   {
+    "fecha": "2026-03-12",
+    "venta": 646000,
+    "gasto": 1103000
+   },
+   {
+    "fecha": "2026-03-13",
+    "venta": 513000,
+    "gasto": 984200
+   },
+   {
+    "fecha": "2026-03-14",
+    "venta": 897220,
+    "gasto": 821250
+   },
+   {
+    "fecha": "2026-03-15",
+    "venta": 754750,
+    "gasto": 621700
+   },
+   {
+    "fecha": "2026-03-16",
+    "venta": 489000,
+    "gasto": 282000
+   },
+   {
+    "fecha": "2026-03-17",
+    "venta": 397000,
+    "gasto": 786000
+   },
+   {
+    "fecha": "2026-03-18",
+    "venta": 334000,
+    "gasto": 1579000
+   },
+   {
+    "fecha": "2026-03-19",
+    "venta": 699000,
+    "gasto": 288000
+   },
+   {
+    "fecha": "2026-03-20",
+    "venta": 524700,
+    "gasto": 1358230
+   },
+   {
+    "fecha": "2026-03-21",
+    "venta": 794000,
+    "gasto": 648000
+   },
+   {
+    "fecha": "2026-03-22",
+    "venta": 577000,
+    "gasto": 543000
+   },
+   {
+    "fecha": "2026-03-23",
+    "venta": 612000,
+    "gasto": 415000
+   },
+   {
+    "fecha": "2026-03-24",
+    "venta": 608000,
+    "gasto": 1126000
+   },
+   {
+    "fecha": "2026-03-25",
+    "venta": 618000,
+    "gasto": 232200
+   },
+   {
+    "fecha": "2026-03-26",
+    "venta": 634000,
+    "gasto": 410000
+   },
+   {
+    "fecha": "2026-03-27",
+    "venta": 602000,
+    "gasto": 459500
+   },
+   {
+    "fecha": "2026-03-28",
+    "venta": 878000,
+    "gasto": 460000
+   },
+   {
+    "fecha": "2026-03-29",
+    "venta": 868000,
+    "gasto": 334000
+   },
+   {
+    "fecha": "2026-03-30",
+    "venta": 624200,
+    "gasto": 1327000
+   },
+   {
+    "fecha": "2026-03-31",
+    "venta": 706000,
+    "gasto": 1572800
+   },
+   {
+    "fecha": "2026-04-01",
+    "venta": 559000,
+    "gasto": 1680000
+   },
+   {
+    "fecha": "2026-04-02",
+    "venta": 602000,
+    "gasto": 870000
+   },
+   {
+    "fecha": "2026-04-03",
+    "venta": 932100,
+    "gasto": 1459000
+   },
+   {
+    "fecha": "2026-04-04",
+    "venta": 597000,
+    "gasto": 92000
+   },
+   {
+    "fecha": "2026-04-05",
+    "venta": 737000,
+    "gasto": 1060000
+   },
+   {
+    "fecha": "2026-04-06",
+    "venta": 765600,
+    "gasto": 145000
+   },
+   {
+    "fecha": "2026-04-07",
+    "venta": 1012800,
+    "gasto": 308000
+   },
+   {
+    "fecha": "2026-04-08",
+    "venta": 312000,
+    "gasto": 774000
+   },
+   {
+    "fecha": "2026-04-09",
+    "venta": 524000,
+    "gasto": 25000
+   },
+   {
+    "fecha": "2026-04-10",
+    "venta": 795000,
+    "gasto": 322000
+   },
+   {
+    "fecha": "2026-04-11",
+    "venta": 715000,
+    "gasto": 342860
+   },
+   {
+    "fecha": "2026-04-12",
+    "venta": 867000,
+    "gasto": 889000
+   },
+   {
+    "fecha": "2026-04-13",
+    "venta": 362600,
+    "gasto": 1541320
+   },
+   {
+    "fecha": "2026-04-14",
+    "venta": 170000,
+    "gasto": 548000
+   },
+   {
+    "fecha": "2026-04-15",
+    "venta": 724000,
+    "gasto": 388000
+   },
+   {
+    "fecha": "2026-04-16",
+    "venta": 382000,
+    "gasto": 25000
+   },
+   {
+    "fecha": "2026-04-17",
+    "venta": 606000,
+    "gasto": 265000
+   },
+   {
+    "fecha": "2026-04-18",
+    "venta": 589000,
+    "gasto": 274000
+   },
+   {
+    "fecha": "2026-04-19",
+    "venta": 417000,
+    "gasto": 809000
+   },
+   {
+    "fecha": "2026-04-20",
+    "venta": 409700,
+    "gasto": 648000
+   },
+   {
+    "fecha": "2026-04-21",
+    "venta": 313000,
+    "gasto": 1360000
+   },
+   {
+    "fecha": "2026-04-22",
+    "venta": 454000,
+    "gasto": 112000
+   },
+   {
+    "fecha": "2026-04-23",
+    "venta": 566000,
+    "gasto": 355000
+   },
+   {
+    "fecha": "2026-04-24",
+    "venta": 512950,
+    "gasto": 216000
+   },
+   {
+    "fecha": "2026-04-25",
+    "venta": 619250,
+    "gasto": 190000
+   },
+   {
+    "fecha": "2026-04-26",
+    "venta": 935650,
+    "gasto": 210000
+   },
+   {
+    "fecha": "2026-04-27",
+    "venta": 359000,
+    "gasto": 919320
+   },
+   {
+    "fecha": "2026-04-28",
+    "venta": 412000,
+    "gasto": 58000
+   },
+   {
+    "fecha": "2026-04-29",
+    "venta": 295000,
+    "gasto": 364980
+   },
+   {
+    "fecha": "2026-04-30",
+    "venta": 335000,
+    "gasto": 737911
+   },
+   {
+    "fecha": "2026-05-01",
+    "venta": 759000,
+    "gasto": 119000
+   },
+   {
+    "fecha": "2026-05-02",
+    "venta": 312000,
+    "gasto": 245000
+   },
+   {
+    "fecha": "2026-05-03",
+    "venta": 562000,
+    "gasto": 68000
+   },
+   {
+    "fecha": "2026-05-04",
+    "venta": 610650,
+    "gasto": 1899000
+   },
+   {
+    "fecha": "2026-05-05",
+    "venta": 372700,
+    "gasto": 110000
+   },
+   {
+    "fecha": "2026-05-06",
+    "venta": 560800,
+    "gasto": 1589900
+   },
+   {
+    "fecha": "2026-05-07",
+    "venta": 206000,
+    "gasto": 620000
+   },
+   {
+    "fecha": "2026-05-08",
+    "venta": 480000,
+    "gasto": 486000
+   },
+   {
+    "fecha": "2026-05-09",
+    "venta": 731000,
+    "gasto": 135000
+   },
+   {
+    "fecha": "2026-05-10",
+    "venta": 342000,
+    "gasto": 297000
+   },
+   {
+    "fecha": "2026-05-11",
+    "venta": 458000,
+    "gasto": 1044320
+   },
+   {
+    "fecha": "2026-05-12",
+    "venta": 281000,
+    "gasto": 303630
+   },
+   {
+    "fecha": "2026-05-13",
+    "venta": 235000,
+    "gasto": 799600
+   },
+   {
+    "fecha": "2026-05-14",
+    "venta": 570000,
+    "gasto": 293000
+   },
+   {
+    "fecha": "2026-05-15",
+    "venta": 616000,
+    "gasto": 369000
+   },
+   {
+    "fecha": "2026-05-16",
+    "venta": 549000,
+    "gasto": 70000
+   },
+   {
+    "fecha": "2026-05-17",
+    "venta": 0,
+    "gasto": 270000
+   },
+   {
+    "fecha": "2026-05-18",
+    "venta": 0,
+    "gasto": 100000
+   },
+   {
+    "fecha": "2026-05-19",
+    "venta": 0,
+    "gasto": 1048500
+   },
+   {
+    "fecha": "2026-05-20",
+    "venta": 0,
+    "gasto": 313630
+   },
+   {
+    "fecha": "2026-05-21",
+    "venta": 0,
+    "gasto": 100000
+   },
+   {
+    "fecha": "2026-05-22",
+    "venta": 0,
+    "gasto": 175000
+   },
+   {
+    "fecha": "2026-05-23",
+    "venta": 0,
+    "gasto": 60000
+   },
+   {
+    "fecha": "2026-05-24",
+    "venta": 0,
+    "gasto": 125000
+   },
+   {
+    "fecha": "2026-05-25",
+    "venta": 0,
+    "gasto": 200000
+   },
+   {
+    "fecha": "2026-05-26",
+    "venta": 0,
+    "gasto": 832320
+   },
+   {
+    "fecha": "2026-05-27",
+    "venta": 0,
+    "gasto": 750000
+   },
+   {
+    "fecha": "2026-05-28",
+    "venta": 0,
+    "gasto": 675000
+   },
+   {
+    "fecha": "2026-05-30",
+    "venta": 0,
+    "gasto": 150000
+   },
+   {
+    "fecha": "2026-05-31",
+    "venta": 0,
+    "gasto": 70000
+   },
+   {
+    "fecha": "2026-06-01",
+    "venta": 371000,
+    "gasto": 260300
+   },
+   {
+    "fecha": "2026-06-02",
+    "venta": 385030,
+    "gasto": 0
+   },
+   {
+    "fecha": "2026-06-03",
+    "venta": 248000,
+    "gasto": 155000
+   },
+   {
+    "fecha": "2026-06-04",
+    "venta": 305840,
+    "gasto": 62000
+   },
+   {
+    "fecha": "2026-06-05",
+    "venta": 587000,
+    "gasto": 442000
+   },
+   {
+    "fecha": "2026-06-06",
+    "venta": 451000,
+    "gasto": 145000
+   },
+   {
+    "fecha": "2026-06-07",
+    "venta": 244000,
+    "gasto": 204000
+   },
+   {
+    "fecha": "2026-06-08",
+    "venta": 439350,
+    "gasto": 422990
+   },
+   {
+    "fecha": "2026-06-09",
+    "venta": 518170,
+    "gasto": 720320
+   },
+   {
+    "fecha": "2026-06-10",
+    "venta": 431000,
+    "gasto": 785000
+   },
+   {
+    "fecha": "2026-06-11",
+    "venta": 269000,
+    "gasto": 350000
+   },
+   {
+    "fecha": "2026-06-12",
+    "venta": 585900,
+    "gasto": 169000
+   },
+   {
+    "fecha": "2026-06-13",
+    "venta": 307080,
+    "gasto": 1041620
+   },
+   {
+    "fecha": "2026-06-14",
+    "venta": 382000,
+    "gasto": 262000
+   },
+   {
+    "fecha": "2026-06-15",
+    "venta": 368650,
+    "gasto": 263000
+   },
+   {
+    "fecha": "2026-06-16",
+    "venta": 321000,
+    "gasto": 976000
+   },
+   {
+    "fecha": "2026-06-17",
+    "venta": 204000,
+    "gasto": 538000
+   },
+   {
+    "fecha": "2026-06-18",
+    "venta": 637500,
+    "gasto": 277000
+   },
+   {
+    "fecha": "2026-06-19",
+    "venta": 513000,
+    "gasto": 233000
+   },
+   {
+    "fecha": "2026-06-20",
+    "venta": 317000,
+    "gasto": 734000
+   },
+   {
+    "fecha": "2026-06-21",
+    "venta": 438000,
+    "gasto": 838500
+   },
+   {
+    "fecha": "2026-06-22",
+    "venta": 484000,
+    "gasto": 473000
+   },
+   {
+    "fecha": "2026-06-23",
+    "venta": 302000,
+    "gasto": 875320
+   },
+   {
+    "fecha": "2026-06-24",
+    "venta": 425000,
+    "gasto": 546160
+   },
+   {
+    "fecha": "2026-06-25",
+    "venta": 422000,
+    "gasto": 263000
+   },
+   {
+    "fecha": "2026-06-26",
+    "venta": 684500,
+    "gasto": 258000
+   },
+   {
+    "fecha": "2026-06-27",
+    "venta": 454000,
+    "gasto": 257000
+   },
+   {
+    "fecha": "2026-06-28",
+    "venta": 314650,
+    "gasto": 331000
+   },
+   {
+    "fecha": "2026-06-29",
+    "venta": 587000,
+    "gasto": 444000
+   },
+   {
+    "fecha": "2026-06-30",
+    "venta": 657000,
+    "gasto": 1273790
+   },
+   {
+    "fecha": "2026-07-01",
+    "venta": 0,
+    "gasto": 80000
+   },
+   {
+    "fecha": "2026-07-02",
+    "venta": 0,
+    "gasto": 1600000
+   },
+   {
+    "fecha": "2026-07-03",
+    "venta": 0,
+    "gasto": 80000
+   },
+   {
+    "fecha": "2026-07-04",
+    "venta": 0,
+    "gasto": 113000
+   },
+   {
+    "fecha": "2026-07-05",
+    "venta": 0,
+    "gasto": 60000
+   },
+   {
+    "fecha": "2026-07-06",
+    "venta": 0,
+    "gasto": 70000
+   },
+   {
+    "fecha": "2026-07-12",
+    "venta": 0,
+    "gasto": 560000
+   },
+   {
+    "fecha": "2026-07-13",
+    "venta": 0,
+    "gasto": 270000
+   },
+   {
+    "fecha": "2026-07-14",
+    "venta": 0,
+    "gasto": 150000
+   },
+   {
+    "fecha": "2026-07-15",
+    "venta": 0,
+    "gasto": 35000
+   },
+   {
+    "fecha": "2026-07-17",
+    "venta": 0,
+    "gasto": 600000
+   },
+   {
+    "fecha": "2026-07-19",
+    "venta": 0,
+    "gasto": 410000
+   },
+   {
+    "fecha": "2026-07-20",
+    "venta": 0,
+    "gasto": 576000
+   },
+   {
+    "fecha": "2026-07-21",
+    "venta": 0,
+    "gasto": 362320
+   },
+   {
+    "fecha": "2026-07-23",
+    "venta": 0,
+    "gasto": 264120
+   },
+   {
+    "fecha": "2026-07-25",
+    "venta": 0,
+    "gasto": 40000
+   },
+   {
+    "fecha": "2026-07-26",
+    "venta": 0,
+    "gasto": 145000
+   },
+   {
+    "fecha": "2026-07-27",
+    "venta": 0,
+    "gasto": 50000
+   },
+   {
+    "fecha": "2026-07-28",
+    "venta": 0,
+    "gasto": 60000
+   },
+   {
+    "fecha": "2026-07-29",
+    "venta": 0,
+    "gasto": 1924720
+   },
+   {
+    "fecha": "2026-07-30",
+    "venta": 0,
+    "gasto": 140000
+   },
+   {
+    "fecha": "2026-07-31",
+    "venta": 0,
+    "gasto": 650000
+   },
+   {
+    "fecha": "2026-08-01",
+    "venta": 0,
+    "gasto": 50000
+   }
+  ]
+ }
+}

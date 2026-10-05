@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Data Transporte - Análisis de negocio</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-fixed-dim": "#ffb2b7",
+            "inverse-on-surface": "#2c3039",
+            "surface-container": "#1c2028",
+            "on-primary": "#003640",
+            "surface-container-lowest": "#0a0e16",
+            "inverse-primary": "#00687a",
+            "on-secondary": "#003824",
+            "inverse-surface": "#dfe2ee",
+            "on-secondary-fixed": "#002113",
+            "tertiary-container": "#ff7f8b",
+            "on-primary-fixed": "#001f26",
+            "error": "#ffb4ab",
+            "surface-container-low": "#181c24",
+            "on-tertiary-container": "#7d0023",
+            "surface-variant": "#31353e",
+            "surface-dim": "#0f131c",
+            "primary-fixed-dim": "#4cd7f6",
+            "on-background": "#dfe2ee",
+            "background": "#0f131c",
+            "on-surface-variant": "#bcc9cd",
+            "primary-fixed": "#acedff",
+            "surface": "#0f131c",
+            "on-secondary-fixed-variant": "#005236",
+            "on-tertiary-fixed-variant": "#92002a",
+            "on-surface": "#dfe2ee",
+            "on-error": "#690005",
+            "surface-tint": "#4cd7f6",
+            "secondary": "#4edea3",
+            "on-primary-fixed-variant": "#004e5c",
+            "on-error-container": "#ffdad6",
+            "primary": "#4cd7f6",
+            "surface-bright": "#353942",
+            "tertiary": "#ffb2b7",
+            "surface-container-highest": "#31353e",
+            "tertiary-fixed": "#ffdadb",
+            "on-tertiary": "#67001b",
+            "on-secondary-container": "#00311f",
+            "primary-container": "#06b6d4",
+            "surface-container-high": "#262a33",
+            "secondary-fixed": "#6ffbbe",
+            "secondary-container": "#00a572",
+            "on-tertiary-fixed": "#40000d",
+            "outline": "#869397",
+            "error-container": "#93000a",
+            "outline-variant": "#3d494c",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-container": "#00424f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "space-md": "0.875rem",
+            "margin-md": "1.5rem",
+            "gutter": "1.25rem",
+            "space-lg": "1.25rem",
+            "margin-lg": "2rem",
+            "space-xl": "2rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "label-numeric-lg": ["JetBrains Mono"],
+            "label-badge": ["JetBrains Mono"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "label-numeric-md": ["JetBrains Mono"],
+            "display-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-numeric-lg": ["1.5rem", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-badge": ["0.6875rem", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.45", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.35", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.5rem", { "lineHeight": "1.3", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-lg": ["1.875rem", { "lineHeight": "1.25", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "display-lg-mobile": ["2rem", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-numeric-md": ["1rem", { "lineHeight": "1.25", "letterSpacing": "0em", "fontWeight": "500" }],
+            "display-lg": ["3rem", { "lineHeight": "1.15", "letterSpacing": "-0.03em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary">
+<style>
+  .card{background:rgba(17,24,39,.72);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-top-color:rgba(6,182,212,.2);border-radius:1rem;box-shadow:0 8px 32px -4px rgba(0,0,0,.55)}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .navlink{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;border-radius:.5rem;color:#bcc9cd;transition:all .2s;cursor:pointer}
+  .navlink:hover{background:#1c2028;color:#dfe2ee}
+  .navlink.active{background:#262a33;color:#4cd7f6;font-weight:700}
+  .view{display:none}.view.active{display:flex;flex-direction:column;gap:1.5rem}
+  .seg button{padding:.25rem .75rem;border-radius:.375rem;font-size:.75rem;font-weight:600;color:#bcc9cd}
+  .seg button.on{background:#06b6d4;color:#003640}
+  .hm{display:grid;grid-template-columns:44px repeat(24,minmax(0,1fr));gap:3px;font-size:10px}
+  .hm div{aspect-ratio:1/1;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#0a0e16;font-size:9px}
+  .hm .lab{aspect-ratio:auto;color:#869397;justify-content:flex-start}
+  table.t{width:100%;font-size:.8rem}table.t th{color:#869397;text-align:left;font-weight:600;padding:.4rem .5rem;text-transform:uppercase;font-size:.65rem;letter-spacing:.05em}
+  table.t td{padding:.45rem .5rem;border-top:1px solid rgba(255,255,255,.06)}table.t td.n,table.t th.n{text-align:right}
+  .bar{height:8px;border-radius:9999px;background:#262a33;overflow:hidden}.bar>i{display:block;height:100%;background:linear-gradient(90deg,#06b6d4,#4edea3)}
+  @media(max-width:1023px){aside{display:none}.pl-64{padding-left:0!important}#mnav{display:flex!important}}
+</style>
+
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col justify-between p-4 z-40 bg-surface-container-lowest shadow-md">
+  <div class="flex flex-col gap-6">
+    <div class="flex items-center gap-3 px-2 py-3">
+      <div class="w-10 h-10 rounded-xl bg-primary-container/20 border border-primary/30 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-2xl">local_taxi</span></div>
+      <div><h1 class="font-extrabold text-primary tracking-tight leading-tight">Data Transporte</h1><p class="text-xs text-on-surface-variant">Análisis de negocio</p></div>
+    </div>
+    <nav class="flex flex-col gap-1.5" id="nav"></nav>
+  </div>
+  <div class="flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
+    <div class="text-xs text-on-surface-variant px-2"><span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary mr-1"></span>Datos al <span id="gen" class="mono">—</span></div>
+    <div class="text-[11px] text-outline px-2">Solo datos agregados. Sin nombres ni teléfonos.</div>
+  </div>
+</aside>
+
+<div class="pl-64 flex-1 flex flex-col min-h-screen min-w-0">
+  <div id="mnav" class="hidden gap-1 overflow-x-auto p-3 bg-surface-container-lowest sticky top-0 z-40"></div>
+  <header class="px-8 py-5 flex justify-between items-center w-full max-w-7xl mx-auto gap-4 flex-wrap">
+    <h2 id="titulo" class="text-2xl text-primary font-bold">Resumen</h2>
+    <div class="seg flex items-center bg-surface-container-low rounded-lg p-1 border border-outline-variant/30" id="gran">
+      <button data-g="dia">Día</button><button data-g="semana">Semana</button><button data-g="mes" class="on">Mes</button>
+    </div>
+  </header>
+
+  <main class="flex-1 px-8 pb-10 max-w-7xl mx-auto w-full">
+
+    <!-- RESUMEN -->
+    <section id="v-resumen" class="view active">
+      <div id="kpis" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <div class="grid lg:grid-cols-3 gap-4">
+        <div class="card p-5 lg:col-span-2"><h3 class="font-semibold mb-1">Ingresos por viajes</h3><p class="text-xs text-on-surface-variant mb-3" id="sub-ing"></p><div style="height:280px"><canvas id="c-ing"></canvas></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Medios de pago</h3><div style="height:280px"><canvas id="c-pago"></canvas></div></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Viajes por día de la semana</h3><div style="height:240px"><canvas id="c-dow"></canvas></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Sectores que más se repiten</h3><div id="top-sec" class="flex flex-col gap-3"></div></div>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section id="v-ventas" class="view">
+      <div class="card p-5"><h3 class="font-semibold mb-1">Flujo de ventas (viajes 2025)</h3><p class="text-xs text-on-surface-variant mb-3">Cambia Día / Semana / Mes arriba a la derecha.</p><div style="height:320px"><canvas id="c-flujo"></canvas></div></div>
+      <div class="card p-5"><h3 class="font-semibold mb-1">Ventas vs gastos 2026 (planilla anual)</h3><p class="text-xs text-on-surface-variant mb-3">Meses sin ventas cargadas aparecen en cero.</p><div style="height:300px"><canvas id="c-fin"></canvas></div></div>
+    </section>
+
+    <!-- VIAJES -->
+    <section id="v-viajes" class="view">
+      <div class="card p-5"><h3 class="font-semibold mb-1">Demanda por día y hora</h3><p class="text-xs text-on-surface-variant mb-3">Más claro = más viajes. Útil para decidir turnos y promociones en horas valle.</p><div id="heat" class="hm"></div></div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Por conductor</h3><div id="t-cond"></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Sentido del viaje</h3><div style="height:240px"><canvas id="c-sent"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section id="v-clientes" class="view">
+      <div id="kpi-cli" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+      <div class="card p-5"><h3 class="font-semibold mb-1">Clientes más recurrentes (anónimos)</h3><p class="text-xs text-on-surface-variant mb-3">El detalle con nombre y teléfono queda en privado, solo en el equipo del dueño.</p><div id="t-cli"></div></div>
+    </section>
+
+    <!-- SECTORES -->
+    <section id="v-sectores" class="view">
+      <div class="card p-5"><h3 class="font-semibold mb-3">Viajes e ingresos por sector</h3><div id="t-sec"></div></div>
+    </section>
+
+    <!-- COSTOS -->
+    <section id="v-costos" class="view">
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-3">Gastos 2026 por categoría</h3><div style="height:380px"><canvas id="c-gastos"></canvas></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-3">Resultado por mes 2026</h3><div id="t-mes"></div></div>
+      </div>
+    </section>
+
+    <!-- MARKETING -->
+    <section id="v-marketing" class="view">
+      <div id="ops" class="grid md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- CALIDAD -->
+    <section id="v-calidad" class="view">
+      <div class="card p-5"><h3 class="font-semibold mb-1">Consistencia de los datos</h3><p class="text-xs text-on-surface-variant mb-3">Lo que el proceso automático corrige o no pudo interpretar. Meta: llevar todo a cero cargando mejor las planillas.</p><div id="t-cal"></div></div>
+    </section>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body></html>

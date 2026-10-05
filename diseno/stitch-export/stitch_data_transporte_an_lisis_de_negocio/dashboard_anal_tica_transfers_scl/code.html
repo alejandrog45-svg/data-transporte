@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AndesTransfer AI - SCL Fleet Intelligence &amp; Telemetría</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ffb4ab",
+            "on-secondary": "#003824",
+            "on-background": "#dfe2ee",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary-fixed": "#40000d",
+            "error-container": "#93000a",
+            "on-primary": "#003640",
+            "inverse-on-surface": "#2c3039",
+            "surface-tint": "#4cd7f6",
+            "secondary-fixed": "#6ffbbe",
+            "on-tertiary": "#67001b",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#0f131c",
+            "on-tertiary-container": "#7d0023",
+            "tertiary-fixed": "#ffdadb",
+            "surface-container-highest": "#31353e",
+            "outline-variant": "#3d494c",
+            "on-surface": "#dfe2ee",
+            "outline": "#869397",
+            "primary": "#4cd7f6",
+            "on-error": "#690005",
+            "on-surface-variant": "#bcc9cd",
+            "surface-container-low": "#181c24",
+            "surface-container-high": "#262a33",
+            "tertiary-fixed-dim": "#ffb2b7",
+            "tertiary": "#ffb2b7",
+            "on-primary-fixed": "#001f26",
+            "on-primary-container": "#00424f",
+            "secondary-fixed-dim": "#4edea3",
+            "on-primary-fixed-variant": "#004e5c",
+            "background": "#0f131c",
+            "inverse-surface": "#dfe2ee",
+            "surface-container-lowest": "#0a0e16",
+            "surface-container": "#1c2028",
+            "primary-fixed-dim": "#4cd7f6",
+            "secondary-container": "#00a572",
+            "primary-container": "#06b6d4",
+            "surface-variant": "#31353e",
+            "tertiary-container": "#ff7f8b",
+            "primary-fixed": "#acedff",
+            "inverse-primary": "#00687a",
+            "on-tertiary-fixed-variant": "#92002a",
+            "surface": "#0f131c",
+            "secondary": "#4edea3",
+            "surface-bright": "#353942",
+            "on-secondary-fixed-variant": "#005236",
+            "on-secondary-container": "#00311f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-md": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.875rem",
+            "space-xl": "2rem",
+            "margin": "1rem",
+            "gutter": "1.25rem",
+            "space-xs": "0.25rem",
+            "margin-lg": "2rem",
+            "space-lg": "1.25rem",
+            "gutter-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "label-numeric-lg": ["JetBrains Mono"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-numeric-md": ["JetBrains Mono"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-badge": ["JetBrains Mono"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-numeric-lg": ["1.5rem", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-numeric-md": ["1rem", { "lineHeight": "1.25", "letterSpacing": "0em", "fontWeight": "500" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.5rem", { "lineHeight": "1.3", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.35", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-lg": ["3rem", { "lineHeight": "1.15", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-lg-mobile": ["2rem", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["1.875rem", { "lineHeight": "1.25", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-badge": ["0.6875rem", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.45", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #0b0f17;
+      background-image: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 60%);
+      color: #dfe2ee;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* Precision Glassmorphism & Borders */
+    .glass-telemetry {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-top: 1px solid rgba(6, 182, 212, 0.25);
+      box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.55);
+    }
+    
+    .glass-elevated {
+      background: rgba(24, 28, 36, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(76, 215, 246, 0.25);
+      box-shadow: 0 12px 36px -2px rgba(6, 182, 212, 0.12);
+    }
+
+    .pulse-dot {
+      animation: pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Custom Scrollbar for high density tables and heatmaps */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f131c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #31353e;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4cd7f6;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
+<!-- ======================================================== -->
+<!-- SHARED COMPONENT: SideNavBar (Fixed Left Rail)           -->
+<!-- ======================================================== -->
+<aside class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-between bg-surface-container-low border-r border-outline-variant/30 shadow-2xl shadow-surface-container-lowest/80 z-50">
+<div class="flex flex-col h-full py-4 px-3 space-y-4">
+<!-- Brand & Fleet Identity Header -->
+<div class="px-2 pt-1 pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-container to-secondary flex items-center justify-center shadow-lg shadow-primary-container/30 border border-primary/40 text-surface-container-lowest">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">commute</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">AndesTransfer AI</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary pulse-dot"></span>
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase tracking-wider">SCL Fleet Intelligence</span>
+</div>
+</div>
+</div>
+<!-- Action CTA -->
+<button class="w-full mt-4 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-gradient-to-r from-primary-container to-secondary-container text-on-primary font-body-md font-semibold shadow-md shadow-primary-container/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-body-lg">add_circle</span>
+<span>Nuevo Despacho</span>
+</button>
+</div>
+<!-- Navigation Tabs (8 items as per JSON schema) -->
+<nav class="flex-1 space-y-1 overflow-y-auto pr-1">
+<!-- 1. Resumen (Active as per schema intent) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-highest text-primary font-semibold border-l-2 border-primary shadow-sm active:scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-md text-body-md">Resumen</span>
+</a>
+<!-- 2. Ventas -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span class="font-body-md text-body-md">Ventas</span>
+</a>
+<!-- 3. Viajes -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">commute</span>
+<span class="font-body-md text-body-md">Viajes</span>
+<span class="ml-auto font-label-badge text-label-badge bg-surface-container-high px-1.5 py-0.5 rounded text-primary">1.4k</span>
+</a>
+<!-- 4. Clientes -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Clientes</span>
+</a>
+<!-- 5. Sectores -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-body-md text-body-md">Sectores</span>
+</a>
+<!-- 6. Costos -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Costos</span>
+</a>
+<!-- 7. Marketing -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-body-md text-body-md">Marketing</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-secondary"></span>
+</a>
+<!-- 8. Calidad de datos -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-body-md text-body-md">Calidad de datos</span>
+</a>
+</nav>
+<!-- Footer & Sync System Status -->
+<div class="pt-3 border-t border-outline-variant/30 space-y-2">
+<div class="bg-surface-container-lowest/80 rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-body-md animate-spin" style="animation-duration: 12s;">sync</span>
+<span class="font-label-badge text-label-badge text-on-surface">Sincronización Sheets</span>
+</div>
+<span class="font-label-badge text-[10px] text-secondary bg-secondary/10 px-1.5 py-0.5 rounded border border-secondary/20">OK</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span> Hace 4 min • v2.4.1
+          </p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/50 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Configuración</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- ======================================================== -->
+<!-- MAIN LAYOUT WRAPPER (Offset by sidebar w-64)            -->
+<!-- ======================================================== -->
+<div class="pl-64 flex flex-col min-h-screen">
+<!-- ======================================================== -->
+<!-- SHARED COMPONENT: TopNavBar                              -->
+<!-- ======================================================== -->
+<header class="sticky top-0 z-40 w-full pl-6 pr-6 py-3 bg-surface-container-low/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm shadow-surface-container-lowest/50">
+<div class="flex items-center justify-between gap-4 w-full">
+<!-- Left: Page Title & Airport Context -->
+<div class="flex items-center gap-4">
+<div>
+<div class="flex items-center gap-2">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Panel General de Operaciones y Rendimiento SCL</h1>
+<span class="font-label-badge text-label-badge bg-primary/10 text-primary border border-primary/30 px-2 py-0.5 rounded-full">SCL AIRPORT TERMINAL T1/T2</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Monitoreo telemétrico en tiempo real de flota, ventas y demanda metropolitana</p>
+</div>
+</div>
+<!-- Right Controls: Period Selector, Filters & Actions -->
+<div class="flex items-center gap-3">
+<!-- Sync Google Sheets Status Pill -->
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-lowest border border-secondary/30 text-on-surface text-body-sm">
+<span class="w-2 h-2 rounded-full bg-secondary pulse-dot"></span>
+<span class="font-body-sm text-body-sm">Actualizado desde Google Sheets</span>
+<button class="ml-1 text-on-surface-variant hover:text-primary transition-colors" title="Refrescar sincronización">
+<span class="material-symbols-outlined text-body-md leading-none">refresh</span>
+</button>
+</div>
+<!-- Time Range Segmented Control (Mes active as specified) -->
+<div class="flex items-center p-1 bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<button class="px-3 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-colors">Día</button>
+<button class="px-3 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-colors">Semana</button>
+<button class="px-3 py-1.5 rounded-md bg-surface-container-highest text-primary font-medium text-body-sm shadow-inner">Mes</button>
+<button class="px-3 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-colors">Año</button>
+</div>
+<!-- Secondary Actions & User Profile -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-highest/60 border border-outline-variant/40 text-on-surface text-body-sm transition-all">
+<span class="material-symbols-outlined text-body-md text-primary">download</span>
+<span class="hidden xl:inline">Exportar Reporte</span>
+</button>
+<!-- Notifications with Badge -->
+<button class="relative p-2 rounded-lg bg-surface-container hover:bg-surface-container-highest/50 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-error text-surface-container-lowest font-label-badge text-[10px] flex items-center justify-center font-bold">3</span>
+</button>
+<!-- Dispatch Manager Profile -->
+<div class="flex items-center gap-2 pl-2 ml-1 border-l border-outline-variant/30">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center border border-primary/40 text-primary font-bold text-xs">
+                DS
+              </div>
+<div class="hidden 2xl:flex flex-col text-left">
+<span class="font-body-sm text-xs font-semibold leading-tight text-on-surface">Despacho Central SCL</span>
+<span class="font-label-badge text-[10px] text-on-surface-variant">Jefe de Operaciones</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Secondary Operational Filter Toolbar -->
+<section class="px-6 py-2.5 bg-surface-container-lowest/60 border-b border-outline-variant/20 flex flex-wrap items-center justify-between gap-3 text-body-sm">
+<div class="flex flex-wrap items-center gap-3">
+<span class="font-label-badge text-label-badge text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">tune</span> FILTROS OPERACIONALES:
+        </span>
+<!-- Dropdown 1: Conductores -->
+<div class="relative inline-flex items-center">
+<select class="bg-surface-container-high/90 text-on-surface text-body-sm py-1 pl-3 pr-8 rounded-lg border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer appearance-none">
+<option>Todos los conductores (14 activos)</option>
+<option>Marcelo Valenzuela (Van 04)</option>
+<option>Claudia Araya (Van 08)</option>
+<option>Héctor Soto (Van 02)</option>
+<option>Rodrigo Muñoz (Van 11)</option>
+<option>Gabriel Lagos (Van 06)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 text-on-surface-variant pointer-events-none text-body-md">arrow_drop_down</span>
+</div>
+<!-- Dropdown 2: Medios de Pago -->
+<div class="relative inline-flex items-center">
+<select class="bg-surface-container-high/90 text-on-surface text-body-sm py-1 pl-3 pr-8 rounded-lg border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer appearance-none">
+<option>Todos los medios de pago</option>
+<option>Transferencia Bancaria (48%)</option>
+<option>Webpay / Transbank (34%)</option>
+<option>Efectivo en Ruta (18%)</option>
+<option>Prepago Web Corporativo</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 text-on-surface-variant pointer-events-none text-body-md">arrow_drop_down</span>
+</div>
+<!-- Date Picker Badge -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-surface-container-high border border-outline-variant/40 text-on-surface text-body-sm">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span class="font-label-numeric-md text-xs font-semibold">Mayo 2024 (Mes en curso)</span>
+</div>
+</div>
+<!-- Quick Flight Telemetry Ticker -->
+<div class="hidden lg:flex items-center gap-4 text-xs font-label-numeric-md">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>SCL En Pista: <strong>LA500 (MIA)</strong> Desembarcando</span>
+</div>
+<div class="text-outline-variant">•</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Flota activa: <strong>14/16 Vans</strong></span>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- CONTENT CANVAS (Executive Telemetry Grid)                -->
+<!-- ======================================================== -->
+<main class="flex-1 p-6 space-y-6">
+<!-- ======================================================== -->
+<!-- ROW 1: 5 KPIS PRINCIPALES (Chilenean Transport Metrics)  -->
+<!-- ======================================================== -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- KPI 1: Ventas del mes -->
+<div class="glass-telemetry rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-all duration-300">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant">Ventas del mes</span>
+<span class="flex items-center gap-0.5 font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-xs">trending_up</span> +14.8%
+            </span>
+</div>
+<div class="mt-2">
+<div class="font-label-numeric-lg text-2xl font-bold text-on-surface tracking-tight">$38.450.000 <span class="text-xs font-normal text-on-surface-variant">CLP</span></div>
+<div class="flex items-center justify-between text-body-sm text-[11px] text-on-surface-variant mt-1">
+<span>vs $33.490.000 mes ant.</span>
+<span class="text-primary font-medium">Meta: 96%</span>
+</div>
+</div>
+<!-- Sparkline SVG -->
+<div class="mt-3 h-8 w-full">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<defs>
+<lineargradient id="cyanSpark" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4cd7f6" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#4cd7f6" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,24 Q15,20 30,16 T60,10 T85,6 T100,2" fill="none" stroke="#4cd7f6" stroke-linecap="round" stroke-width="2"></path>
+<path d="M0,24 Q15,20 30,16 T60,10 T85,6 T100,2 L100,28 L0,28 Z" fill="url(#cyanSpark)"></path>
+<circle class="animate-pulse" cx="100" cy="2" fill="#4cd7f6" r="2.5"></circle>
+</svg>
+</div>
+</div>
+<!-- KPI 2: Viajes Totales -->
+<div class="glass-telemetry rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-all duration-300">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant">Viajes Totales</span>
+<span class="flex items-center gap-0.5 font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-xs">trending_up</span> +8.2%
+            </span>
+</div>
+<div class="mt-2">
+<div class="font-label-numeric-lg text-2xl font-bold text-on-surface tracking-tight">1.428 <span class="text-xs font-normal text-on-surface-variant">traslados</span></div>
+<div class="flex flex-col gap-1 mt-2 pt-2 border-t border-outline-variant/20 font-body-sm text-[11px]">
+<div class="flex justify-between text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>SCL ➔ Ciudad:</span>
+<span class="font-label-numeric-md font-semibold text-on-surface">812</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Ciudad ➔ SCL:</span>
+<span class="font-label-numeric-md font-semibold text-on-surface">616</span>
+</div>
+</div>
+</div>
+</div>
+<!-- KPI 3: Ticket Promedio -->
+<div class="glass-telemetry rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-all duration-300">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant">Ticket Promedio</span>
+<span class="flex items-center gap-0.5 font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-xs">trending_up</span> +5.1%
+            </span>
+</div>
+<div class="mt-2">
+<div class="font-label-numeric-lg text-2xl font-bold text-on-surface tracking-tight">$26.925 <span class="text-xs font-normal text-on-surface-variant">CLP</span></div>
+<div class="font-body-sm text-[11px] text-on-surface-variant mt-1">Por servicio estándar / van privada</div>
+</div>
+<div class="mt-3 p-2 bg-surface-container-high/60 rounded-lg flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Aeropuerto Premium</span>
+<span class="font-label-numeric-md text-primary font-semibold">$34.500 CLP</span>
+</div>
+</div>
+<!-- KPI 4: Gastos Operacionales -->
+<div class="glass-telemetry rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-all duration-300">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant">Gastos Operacionales</span>
+<span class="flex items-center gap-0.5 font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-xs">arrow_downward</span> -2.4% opt.
+            </span>
+</div>
+<div class="mt-2">
+<div class="font-label-numeric-lg text-2xl font-bold text-on-surface tracking-tight">$21.147.500 <span class="text-xs font-normal text-on-surface-variant">CLP</span></div>
+<div class="font-body-sm text-[11px] text-on-surface-variant mt-1">TAG autopistas, combustible y mantención</div>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 mt-3">
+<div class="bg-primary h-1.5 rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<!-- KPI 5: Margen Neto -->
+<div class="glass-telemetry rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-secondary/50 transition-all duration-300">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant">Margen Neto</span>
+<span class="flex items-center gap-0.5 font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
+              Saludable (+3.2%)
+            </span>
+</div>
+<div class="mt-2">
+<div class="flex items-baseline gap-2">
+<span class="font-label-numeric-lg text-3xl font-extrabold text-secondary tracking-tight">45.0%</span>
+<span class="font-label-numeric-md text-xs font-semibold text-on-surface">($17.302.500)</span>
+</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant mt-1">Utilidad líquida estimada del periodo</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-xs font-body-sm text-secondary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Eficiencia SCL Fleet</span>
+<span class="font-label-numeric-md">ROI +22%</span>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- ROW 2: GRÁFICOS PRINCIPALES DE VENTAS                    -->
+<!-- ======================================================== -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Grafico 1: Ventas por Día vs Mes Anterior (8 cols) -->
+<div class="lg:col-span-8 glass-telemetry rounded-2xl p-5 flex flex-col justify-between">
+<div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-body-lg">show_chart</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Ventas por Día vs Mes Anterior</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Comparativo diario con picos en fines de semana y bancos de vuelos internacionales SCL</p>
+</div>
+<!-- Legend Chips -->
+<div class="flex items-center gap-4 text-xs font-body-sm">
+<div class="flex items-center gap-2">
+<span class="w-3 h-0.5 bg-primary rounded-full"></span>
+<span class="text-on-surface">Mayo 2024 ($38.4M)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-0.5 border-b border-dashed border-outline rounded-full"></span>
+<span class="text-on-surface-variant">Abril 2024 ($33.5M)</span>
+</div>
+</div>
+</div>
+<!-- SVG Visual Chart Curve Area -->
+<div class="relative w-full h-64 mt-4">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 700 240">
+<defs>
+<!-- Area gradient for this month -->
+<lineargradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4cd7f6" stop-opacity="0.32"></stop>
+<stop offset="70%" stop-color="#4cd7f6" stop-opacity="0.05"></stop>
+<stop offset="100%" stop-color="#4cd7f6" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Subtle Grid lines -->
+<line stroke="#31353e" stroke-dasharray="3 3" stroke-width="0.7" x1="0" x2="700" y1="40" y2="40"></line>
+<line stroke="#31353e" stroke-dasharray="3 3" stroke-width="0.7" x1="0" x2="700" y1="90" y2="90"></line>
+<line stroke="#31353e" stroke-dasharray="3 3" stroke-width="0.7" x1="0" x2="700" y1="140" y2="140"></line>
+<line stroke="#31353e" stroke-dasharray="3 3" stroke-width="0.7" x1="0" x2="700" y1="190" y2="190"></line>
+<!-- Previous Month (Dashed Line) -->
+<path d="M0,160 Q70,140 140,150 T280,120 T420,135 T560,95 T700,105" fill="none" opacity="0.6" stroke="#869397" stroke-dasharray="5 5" stroke-width="2"></path>
+<!-- Current Month Area -->
+<path d="M0,140 Q70,120 140,130 T280,85 T420,95 T560,50 T700,35 L700,220 L0,220 Z" fill="url(#areaGradient)"></path>
+<!-- Current Month Vibrant Curve Line -->
+<path d="M0,140 Q70,120 140,130 T280,85 T420,95 T560,50 T700,35" fill="none" stroke="#4cd7f6" stroke-linecap="round" stroke-width="3"></path>
+<!-- Highlighted Peak Dots -->
+<circle cx="280" cy="85" fill="#0f131c" r="4" stroke="#4cd7f6" stroke-width="2.5"></circle>
+<circle cx="560" cy="50" fill="#0f131c" r="4" stroke="#4cd7f6" stroke-width="2.5"></circle>
+<circle cx="700" cy="35" fill="#4edea3" r="5" stroke="#0f131c" stroke-width="2"></circle>
+</svg>
+<!-- Peak Callout Annotation Overlay -->
+<div class="absolute top-4 right-14 bg-surface-container-high/90 border border-primary/40 px-2.5 py-1.5 rounded-lg shadow-lg backdrop-blur-sm pointer-events-none">
+<span class="font-label-badge text-[10px] text-primary block">Peak Finde Largo (21 Mayo)</span>
+<span class="font-label-numeric-md text-xs font-bold text-on-surface">$2.140.000 CLP / día</span>
+</div>
+</div>
+<!-- X-Axis Labels (Days) -->
+<div class="flex justify-between text-[11px] font-label-numeric-md text-on-surface-variant pt-2 border-t border-outline-variant/20">
+<span>Día 01</span>
+<span>Día 05</span>
+<span>Día 10</span>
+<span>Día 15 (Quincena)</span>
+<span>Día 20</span>
+<span>Día 25</span>
+<span>Día 30 (Hoy)</span>
+</div>
+</div>
+<!-- Grafico 2: Ventas Mensuales Últimos 6 meses (4 cols) -->
+<div class="lg:col-span-4 glass-telemetry rounded-2xl p-5 flex flex-col justify-between">
+<div class="pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-body-lg">bar_chart</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Ventas Semestrales</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Progresión mensual en Millones de CLP</p>
+</div>
+<!-- Custom Modern Bar Chart -->
+<div class="h-64 flex items-end justify-between gap-3 pt-6 pb-2 px-1">
+<!-- Dic -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">$32M</span>
+<div class="w-full bg-surface-container-highest rounded-t-lg relative overflow-hidden transition-all group-hover:bg-primary/30" style="height: 65%;">
+<div class="absolute bottom-0 w-full bg-primary/40 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="font-label-badge text-xs text-on-surface-variant">Dic</span>
+</div>
+<!-- Ene -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">$35M</span>
+<div class="w-full bg-surface-container-highest rounded-t-lg relative overflow-hidden transition-all group-hover:bg-primary/30" style="height: 74%;">
+<div class="absolute bottom-0 w-full bg-primary/60 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="font-label-badge text-xs text-on-surface-variant">Ene</span>
+</div>
+<!-- Feb -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">$34M</span>
+<div class="w-full bg-surface-container-highest rounded-t-lg relative overflow-hidden transition-all group-hover:bg-primary/30" style="height: 70%;">
+<div class="absolute bottom-0 w-full bg-primary/50 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="font-label-badge text-xs text-on-surface-variant">Feb</span>
+</div>
+<!-- Mar -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">$36.2M</span>
+<div class="w-full bg-surface-container-highest rounded-t-lg relative overflow-hidden transition-all group-hover:bg-primary/30" style="height: 78%;">
+<div class="absolute bottom-0 w-full bg-primary/70 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="font-label-badge text-xs text-on-surface-variant">Mar</span>
+</div>
+<!-- Abr -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">$33.5M</span>
+<div class="w-full bg-surface-container-highest rounded-t-lg relative overflow-hidden transition-all group-hover:bg-primary/30" style="height: 68%;">
+<div class="absolute bottom-0 w-full bg-primary/60 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="font-label-badge text-xs text-on-surface-variant">Abr</span>
+</div>
+<!-- Mayo (Current Highlight) -->
+<div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+<span class="font-label-numeric-md text-xs font-bold text-secondary">$38.4M</span>
+<div class="w-full bg-gradient-to-t from-primary-container to-secondary rounded-t-lg shadow-lg shadow-primary/20 relative" style="height: 92%;">
+<span class="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></span>
+</div>
+<span class="font-label-badge text-xs font-bold text-primary">Mayo</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-body-sm text-[11px] text-on-surface-variant">
+<span>Crecimiento semestral acumulado:</span>
+<span class="font-label-numeric-md text-secondary font-bold">+20.1%</span>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- ROW 3: HEATMAP DE DEMANDA & MEDIOS DE PAGO               -->
+<!-- ======================================================== -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Heatmap: Día de Semana vs Hora (8 cols) -->
+<div class="lg:col-span-8 glass-telemetry rounded-2xl p-5">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-body-lg">grid_view</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Heatmap de Demanda: Día vs Hora de Salida / Llegada SCL</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Concentración horaria para asignación predictiva de chóferes y turnos de vans</p>
+</div>
+<!-- Intensity Scale -->
+<div class="flex items-center gap-2 text-xs font-body-sm">
+<span class="text-on-surface-variant">Baja</span>
+<div class="flex gap-1">
+<span class="w-3.5 h-3.5 rounded bg-surface-container-high border border-outline-variant/40"></span>
+<span class="w-3.5 h-3.5 rounded bg-cyan-950 border border-cyan-800/40"></span>
+<span class="w-3.5 h-3.5 rounded bg-cyan-700"></span>
+<span class="w-3.5 h-3.5 rounded bg-primary"></span>
+<span class="w-3.5 h-3.5 rounded bg-secondary"></span>
+</div>
+<span class="text-secondary font-semibold">Peak SCL</span>
+</div>
+</div>
+<!-- Heatmap Grid Matrix (24h grouped in 6 blocks of 4h for clean responsive display) -->
+<div class="mt-4 overflow-x-auto">
+<div class="min-w-[620px]">
+<!-- Column headers (Hours) -->
+<div class="grid grid-cols-13 gap-1 mb-2 text-center font-label-numeric-md text-[10px] text-on-surface-variant">
+<div class="text-left font-body-sm">Día</div>
+<div>04-06</div>
+<div>06-08</div>
+<div>08-10</div>
+<div>10-12</div>
+<div>12-14</div>
+<div>14-16</div>
+<div>16-18</div>
+<div>18-20</div>
+<div>20-22</div>
+<div>22-00</div>
+<div>00-02</div>
+<div>02-04</div>
+</div>
+<!-- Lunes -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Lun</span>
+<div class="h-6 rounded bg-primary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold" title="Salidas Internacionales">High</div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold" title="Peak Vuelos Negocios">Peak</div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+</div>
+<!-- Martes -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Mar</span>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+</div>
+<!-- Miércoles -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Mié</span>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+</div>
+<!-- Jueves -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Jue</span>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+</div>
+<!-- Viernes -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Vie</span>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+</div>
+<!-- Sábado -->
+<div class="grid grid-cols-13 gap-1 mb-1.5 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Sáb</span>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+</div>
+<!-- Domingo -->
+<div class="grid grid-cols-13 gap-1 items-center text-xs">
+<span class="font-body-sm text-on-surface font-medium">Dom</span>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+<div class="h-6 rounded bg-surface-container-high"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-secondary flex items-center justify-center font-label-badge text-[9px] text-surface-container-lowest font-bold">Peak</div>
+<div class="h-6 rounded bg-primary"></div>
+<div class="h-6 rounded bg-cyan-700"></div>
+<div class="h-6 rounded bg-cyan-950"></div>
+</div>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between text-xs text-on-surface-variant gap-2">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary">lightbulb</span>
+<span>Peak crítico identificado: <strong>Viernes 17:00 a 21:00</strong> y <strong>Domingo 19:00 a 23:00</strong> (Arribos Internacionales LATAM/Iberia).</span>
+</span>
+<span class="font-label-badge text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">+18 Vans requeridas</span>
+</div>
+</div>
+<!-- Gráfico 5: Medios de Pago Donut (4 cols) -->
+<div class="lg:col-span-4 glass-telemetry rounded-2xl p-5 flex flex-col justify-between">
+<div class="pb-3 border-b border-outline-variant/20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-body-lg">pie_chart</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Medios de Pago</h3>
+</div>
+<button class="font-label-badge text-[10px] text-primary hover:underline flex items-center gap-1">
+                Conciliar <span class="material-symbols-outlined text-xs">sync_alt</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Distribución de ingresos recaudados en CLP</p>
+</div>
+<!-- Donut SVG and Center Value -->
+<div class="relative flex items-center justify-center my-3">
+<svg class="w-44 h-44 -rotate-90 transform" viewbox="0 0 100 100">
+<!-- Background Ring -->
+<circle cx="50" cy="50" fill="transparent" r="38" stroke="#1c2028" stroke-width="12"></circle>
+<!-- Segment 1: Transferencia Bancaria 48% (stroke-dasharray 48 52 -> perimeter ~ 238.76) -->
+<!-- perimeter = 2 * PI * 38 = 238.76 -->
+<circle cx="50" cy="50" fill="transparent" r="38" stroke="#4cd7f6" stroke-dasharray="114.6 124.16" stroke-dashoffset="0" stroke-width="12"></circle>
+<!-- Segment 2: Tarjeta Débito/Crédito 34% (81.18) -->
+<circle cx="50" cy="50" fill="transparent" r="38" stroke="#4edea3" stroke-dasharray="81.18 157.58" stroke-dashoffset="-114.6" stroke-width="12"></circle>
+<!-- Segment 3: Efectivo 18% (42.98) -->
+<circle cx="50" cy="50" fill="transparent" r="38" stroke="#ffb2b7" stroke-dasharray="42.98 195.78" stroke-dashoffset="-195.78" stroke-width="12"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-label-badge text-[10px] text-on-surface-variant uppercase">Total Recaudado</span>
+<span class="font-label-numeric-lg text-lg font-bold text-on-surface">$38.45M</span>
+<span class="font-label-badge text-[9px] text-secondary">100% Conciliado</span>
+</div>
+</div>
+<!-- Legend with values -->
+<div class="space-y-2 pt-2 border-t border-outline-variant/20 text-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="text-on-surface">Transferencia Bancaria</span>
+</div>
+<div class="text-right">
+<span class="font-label-numeric-md font-semibold text-on-surface">$18.450.000</span>
+<span class="text-on-surface-variant text-[11px] ml-1">(48%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="text-on-surface">Tarjeta Transbank / Web</span>
+</div>
+<div class="text-right">
+<span class="font-label-numeric-md font-semibold text-on-surface">$13.073.000</span>
+<span class="text-on-surface-variant text-[11px] ml-1">(34%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="text-on-surface">Efectivo en Ruta / Van</span>
+</div>
+<div class="text-right">
+<span class="font-label-numeric-md font-semibold text-on-surface">$6.927.000</span>
+<span class="text-on-surface-variant text-[11px] ml-1">(18%)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- ROW 4: TOP 10 DESTINOS Y RANKING DE CONDUCTORES          -->
+<!-- ======================================================== -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Top 10 Destinos y Sectores Frecuentes (6 cols) -->
+<div class="lg:col-span-6 glass-telemetry rounded-2xl p-5">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-body-lg">location_on</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Top 10 Destinos y Sectores SCL</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rutas con mayor frecuencia y facturación en el Gran Santiago</p>
+</div>
+<span class="font-label-badge text-label-badge bg-surface-container-highest px-2 py-1 rounded text-on-surface">1.428 Viajes</span>
+</div>
+<div class="mt-4 space-y-3">
+<!-- 1. Las Condes -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm text-xs">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="font-label-numeric-md text-primary font-bold">1.</span> Las Condes / El Golf (Hotelería &amp; Hub Financiero)
+                </span>
+<span class="font-label-numeric-md font-bold text-primary">312 viajes <span class="text-on-surface-variant font-normal">(21.8%)</span></span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-gradient-to-r from-primary to-primary-container h-2 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- 2. Providencia -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm text-xs">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="font-label-numeric-md text-primary font-bold">2.</span> Providencia / Tobalaba / Costanera Center
+                </span>
+<span class="font-label-numeric-md font-bold text-on-surface">245 viajes <span class="text-on-surface-variant font-normal">(17.1%)</span></span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-primary/80 h-2 rounded-full" style="width: 78.5%"></div>
+</div>
+</div>
+<!-- 3. Vitacura -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm text-xs">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="font-label-numeric-md text-primary font-bold">3.</span> Vitacura / Santa María de Manquehue
+                </span>
+<span class="font-label-numeric-md font-bold text-on-surface">198 viajes <span class="text-on-surface-variant font-normal">(13.8%)</span></span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-primary/70 h-2 rounded-full" style="width: 63.4%"></div>
+</div>
+</div>
+<!-- 4. Santiago Centro -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm text-xs">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="font-label-numeric-md text-primary font-bold">4.</span> Santiago Centro / Hoteles Cívicos
+                </span>
+<span class="font-label-numeric-md font-bold text-on-surface">180 viajes <span class="text-on-surface-variant font-normal">(12.6%)</span></span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-primary/60 h-2 rounded-full" style="width: 57.6%"></div>
+</div>
+</div>
+<!-- 5. Lo Barnechea -->
+<div class="space-y-1">
+<div class="flex justify-between text-body-sm text-xs">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="font-label-numeric-md text-primary font-bold">5.</span> Lo Barnechea / La Dehesa
+                </span>
+<span class="font-label-numeric-md font-bold text-on-surface">142 viajes <span class="text-on-surface-variant font-normal">(9.9%)</span></span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-primary/50 h-2 rounded-full" style="width: 45.5%"></div>
+</div>
+</div>
+<!-- 6 to 10 Compact Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-outline-variant/20 text-xs">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/40">
+<span class="text-on-surface font-medium">6. Ñuñoa / Plaza Ñuñoa</span>
+<span class="font-label-numeric-md font-bold text-secondary">98 v.</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/40">
+<span class="text-on-surface font-medium">7. Ciudad Empresarial</span>
+<span class="font-label-numeric-md font-bold text-secondary">85 v.</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/40">
+<span class="text-on-surface font-medium">8. Chicureo / Colina</span>
+<span class="font-label-numeric-md font-bold text-secondary">64 v.</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/40">
+<span class="text-on-surface font-medium">9. La Florida</span>
+<span class="font-label-numeric-md font-bold text-secondary">58 v.</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-high/40 sm:col-span-2">
+<span class="text-on-surface font-medium">10. Peñalolén / Las Pircas</span>
+<span class="font-label-numeric-md font-bold text-secondary">46 viajes</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ranking Rendimiento por Conductor (6 cols) -->
+<div class="lg:col-span-6 glass-telemetry rounded-2xl p-5 flex flex-col justify-between">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-body-lg">shield_person</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Rendimiento y Calidad de Conductores</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Top chóferes del mes por volumen, satisfacción NPS y facturación</p>
+</div>
+<span class="font-label-badge text-label-badge text-secondary bg-secondary/10 px-2 py-1 rounded border border-secondary/20">Flota SCL</span>
+</div>
+<!-- Drivers List -->
+<div class="mt-4 space-y-3">
+<!-- Driver 1: Marcelo Valenzuela -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/40 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 border border-primary text-primary font-bold flex items-center justify-center font-label-numeric-md">
+                  MV
+                </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold text-on-surface">Marcelo Valenzuela</span>
+<span class="font-label-badge text-[10px] bg-secondary/20 text-secondary px-1.5 py-0.2 rounded font-bold">Top #1</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-0.5">
+<span>Van Mercedes Sprinter (ST-402)</span>
+<span class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 4.98
+                    </span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-numeric-md font-bold text-on-surface">194 viajes</div>
+<div class="font-label-numeric-md text-xs text-primary font-semibold">$5.420.000 CLP</div>
+</div>
+</div>
+<!-- Driver 2: Claudia Araya -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/40 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/20 border border-secondary text-secondary font-bold flex items-center justify-center font-label-numeric-md">
+                  CA
+                </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold text-on-surface">Claudia Araya</span>
+<span class="font-label-badge text-[10px] bg-primary/20 text-primary px-1.5 py-0.2 rounded font-bold">Top #2</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-0.5">
+<span>Hyundai H1 Ejecutiva (KV-883)</span>
+<span class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 4.96
+                    </span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-numeric-md font-bold text-on-surface">182 viajes</div>
+<div class="font-label-numeric-md text-xs text-primary font-semibold">$4.980.000 CLP</div>
+</div>
+</div>
+<!-- Driver 3: Héctor Soto -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/40 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface font-bold flex items-center justify-center font-label-numeric-md">
+                  HS
+                </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold text-on-surface">Héctor Soto</span>
+<span class="font-label-badge text-[10px] bg-surface-container-highest text-on-surface-variant px-1.5 py-0.2 rounded font-bold">Top #3</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-0.5">
+<span>Ford Transit Pasajeros (TR-119)</span>
+<span class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 4.92
+                    </span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-numeric-md font-bold text-on-surface">167 viajes</div>
+<div class="font-label-numeric-md text-xs text-primary font-semibold">$4.510.000 CLP</div>
+</div>
+</div>
+<!-- Driver 4: Gabriel Lagos -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/40 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface font-bold flex items-center justify-center font-label-numeric-md">
+                  GL
+                </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold text-on-surface">Gabriel Lagos</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-0.5">
+<span>Peugeot Traveller VIP (PW-205)</span>
+<span class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span> 4.89
+                    </span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-numeric-md font-bold text-on-surface">153 viajes</div>
+<div class="font-label-numeric-md text-xs text-primary font-semibold">$4.120.000 CLP</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant">
+<span>Puntualidad global de flota: <strong class="text-secondary">98.4%</strong> en puerta SCL</span>
+<a class="text-primary hover:underline font-semibold flex items-center gap-1" href="#">Ver los 14 chóferes <span class="material-symbols-outlined text-xs">arrow_forward</span></a>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- ROW 5: ESTRUCTURA DE COSTOS Y GASTOS (Tabla Detallada)   -->
+<!-- ======================================================== -->
+<section class="glass-telemetry rounded-2xl p-5">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-body-lg">receipt_long</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Estructura de Costos y Gastos Operacionales</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Desglose transparente de partidas críticas para la rentabilidad de transfers</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-badge text-label-badge bg-surface-container-highest px-2.5 py-1 rounded text-on-surface">Total: $21.147.500 CLP</span>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/40 text-xs text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filtrar partida
+            </button>
+</div>
+</div>
+<div class="mt-4 overflow-x-auto">
+<table class="w-full text-left text-body-sm">
+<thead class="text-xs uppercase font-label-badge text-on-surface-variant border-b border-outline-variant/30">
+<tr>
+<th class="py-3 px-3">Categoría de Gasto</th>
+<th class="py-3 px-3">Proveedor / Entidad</th>
+<th class="py-3 px-3">Monto (CLP)</th>
+<th class="py-3 px-3">% del Total</th>
+<th class="py-3 px-3">Variación Mes Ant.</th>
+<th class="py-3 px-3 text-right">Estado Conciliación</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm">
+<!-- Row 1: Combustible -->
+<tr class="hover:bg-surface-container-highest/40 transition-colors">
+<td class="py-3 px-3 font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">local_gas_station</span> Combustible Diésel / Flota
+                </td>
+<td class="py-3 px-3 text-on-surface-variant">Convenio Copec Voltex / Shell Card</td>
+<td class="py-3 px-3 font-label-numeric-md font-bold text-on-surface">$7.850.000</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<span class="font-label-numeric-md font-semibold text-primary">37.1%</span>
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 37.1%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-secondary font-label-numeric-md font-medium">-1.8% (Rutas optimizadas)</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-label-badge text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">
+<span class="material-symbols-outlined text-[11px]">check_circle</span> Facturado
+                  </span>
+</td>
+</tr>
+<!-- Row 2: Sueldos y Honorarios -->
+<tr class="hover:bg-surface-container-highest/40 transition-colors">
+<td class="py-3 px-3 font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">badge</span> Sueldos y Honorarios Chóferes
+                </td>
+<td class="py-3 px-3 text-on-surface-variant">Nómina 14 Conductores + 2 Despachadores</td>
+<td class="py-3 px-3 font-label-numeric-md font-bold text-on-surface">$6.100.000</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<span class="font-label-numeric-md font-semibold text-primary">28.8%</span>
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 28.8%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant font-label-numeric-md font-medium">+4.0% (Bono nocturno SCL)</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-label-badge text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">
+<span class="material-symbols-outlined text-[11px]">check_circle</span> Liquidado
+                  </span>
+</td>
+</tr>
+<!-- Row 3: TAG y Peajes -->
+<tr class="hover:bg-surface-container-highest/40 transition-colors">
+<td class="py-3 px-3 font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">toll</span> TAG y Peajes Concesionados
+                </td>
+<td class="py-3 px-3 text-on-surface-variant">Costanera Norte, Vespucio Nte/Sur, AMB</td>
+<td class="py-3 px-3 font-label-numeric-md font-bold text-on-surface">$3.240.000</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<span class="font-label-numeric-md font-semibold text-primary">15.3%</span>
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 15.3%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-on-surface-variant font-label-numeric-md font-medium">+1.2%</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-label-badge text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">
+<span class="material-symbols-outlined text-[11px]">check_circle</span> Débito Automático
+                  </span>
+</td>
+</tr>
+<!-- Row 4: Publicidad Google Ads -->
+<tr class="hover:bg-surface-container-highest/40 transition-colors">
+<td class="py-3 px-3 font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">campaign</span> Publicidad Digital &amp; Ads
+                </td>
+<td class="py-3 px-3 text-on-surface-variant">Google Ads SEM ("transfer santiago aeropuerto")</td>
+<td class="py-3 px-3 font-label-numeric-md font-bold text-on-surface">$2.150.000</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<span class="font-label-numeric-md font-semibold text-primary">10.2%</span>
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 10.2%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-secondary font-label-numeric-md font-medium">-5.5% (CPA optimizado)</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-label-badge text-[10px] text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">
+<span class="material-symbols-outlined text-[11px]">check_circle</span> Conciliado
+                  </span>
+</td>
+</tr>
+<!-- Row 5: Mantenciones preventivas -->
+<tr class="hover:bg-surface-container-highest/40 transition-colors">
+<td class="py-3 px-3 font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">build</span> Mantención Flota &amp; Neumáticos
+                </td>
+<td class="py-3 px-3 text-on-surface-variant">Taller Autorizado Kaufmann &amp; Repuestos</td>
+<td class="py-3 px-3 font-label-numeric-md font-bold text-on-surface">$1.807.500</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<span class="font-label-numeric-md font-semibold text-primary">8.5%</span>
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 8.5%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3 text-tertiary font-label-numeric-md font-medium">+2.8% (Revisión técnica)</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-label-badge text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+<span class="material-symbols-outlined text-[11px]">pending</span> En Proceso
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- ROW 6: AI OPERATIONS & MARKETING INTELLIGENCE (Destacado)-->
+<!-- ======================================================== -->
+<section class="glass-elevated rounded-2xl p-6 relative overflow-hidden border-primary/40 shadow-2xl">
+<!-- Ambient background glow element -->
+<div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+<!-- Section Header -->
+<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-outline-variant/30 relative z-10">
+<div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h3 class="font-headline-lg text-xl font-bold text-on-surface">Oportunidades de Marketing y Crecimiento de Flota</h3>
+<span class="font-label-badge text-label-badge bg-primary-container text-on-primary-fixed font-bold px-2.5 py-0.5 rounded-full shadow-sm">AI Telemetry Insight</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Acciones predictivas calculadas automáticamente para maximizar ocupación y ventas de flota en SCL</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-badge text-label-badge text-secondary bg-secondary/10 px-3 py-1 rounded-full border border-secondary/30">
+              Impacto Potencial: +$4.950.000 CLP / mes
+            </span>
+</div>
+</div>
+<!-- 3 Opportunity Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6 relative z-10">
+<!-- Card 1: Clientes Corporativos -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 border border-outline-variant/40 hover:border-primary/60 transition-all flex flex-col justify-between group">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">corporate_fare</span>
+</span>
+<span class="font-label-badge text-[11px] text-secondary bg-secondary/10 px-2 py-0.5 rounded font-semibold">+2.8M CLP</span>
+</div>
+<h4 class="font-headline-md text-base font-bold text-on-surface group-hover:text-primary transition-colors">Clientes Corporativos y Frecuentes</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
+<strong class="text-on-surface">84 pasajeros</strong> registran más de 3 viajes al mes entre El Golf / Nueva Las Condes y SCL sin convenio corporativo formal.
+              </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Probabilidad Cierre: <strong>76%</strong></span>
+<span class="text-primary font-semibold group-hover:underline">Ver lista clientes →</span>
+</div>
+</div>
+<!-- Card 2: Horas Valle -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 border border-outline-variant/40 hover:border-primary/60 transition-all flex flex-col justify-between group">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-lg bg-secondary/20 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">schedule</span>
+</span>
+<span class="font-label-badge text-[11px] text-primary bg-primary/10 px-2 py-0.5 rounded font-semibold">Ocupación +24%</span>
+</div>
+<h4 class="font-headline-md text-base font-bold text-on-surface group-hover:text-secondary transition-colors">Horas Valle de Flota (11:00 - 15:00)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
+                La ocupación cae al <strong class="text-on-surface">38%</strong> los martes y miércoles. Sugerencia: 15% de descuento en transfers de regreso para vuelos vespertinos nacionales.
+              </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Impacto: <strong>+42 viajes/sem</strong></span>
+<span class="text-secondary font-semibold group-hover:underline">Activar tarifa dinámica →</span>
+</div>
+</div>
+<!-- Card 3: Sectores con Fuerte Demanda Insatisfecha -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 border border-outline-variant/40 hover:border-primary/60 transition-all flex flex-col justify-between group">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="w-8 h-8 rounded-lg bg-tertiary/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">explore</span>
+</span>
+<span class="font-label-badge text-[11px] text-tertiary bg-tertiary/10 px-2 py-0.5 rounded font-semibold">+42% No Concretados</span>
+</div>
+<h4 class="font-headline-md text-base font-bold text-on-surface group-hover:text-tertiary transition-colors">Demanda Insatisfecha Chicureo / La Dehesa</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
+                Chicureo y La Dehesa presentan alta tasa de rebote por falta de vans en base oriente. Sugerencia: Posicionar 2 vans fijas en nodo Lo Barnechea.
+              </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Campaña Google Ads: <strong>Lista</strong></span>
+<span class="text-tertiary font-semibold group-hover:underline">Configurar georuta →</span>
+</div>
+</div>
+</div>
+<!-- Highlighted WhatsApp Dispatch CTA Bar -->
+<div class="mt-6 p-4 rounded-xl bg-gradient-to-r from-surface-container to-surface-container-high border border-secondary/30 flex flex-wrap items-center justify-between gap-4 relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary border border-secondary/40">
+<span class="material-symbols-outlined text-2xl">chat</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h5 class="font-body-md font-bold text-on-surface">Campaña Directa WhatsApp Business API</h5>
+<span class="font-label-badge text-[10px] bg-secondary text-on-secondary px-2 py-0.5 rounded font-bold">Plantilla lista con 84 destinatarios</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mensaje automático con beneficio de facturación a 30 días para ejecutivos con alta tasa de viaje a SCL.</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-body-sm transition-all border border-outline-variant/40">
+              Editar Mensaje
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-secondary to-primary-container text-on-primary font-body-md font-bold shadow-lg shadow-secondary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-xl">send</span>
+<span>Preparar promoción por WhatsApp</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Footer Info -->
+<footer class="pt-6 pb-2 text-center text-xs text-on-surface-variant font-body-sm flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-outline-variant/20">
+<div>
+<span>© 2024 AndesTransfer AI • Plataforma de Inteligencia Telemétrica SCL Santiago</span>
+</div>
+<div class="flex items-center gap-4 text-xs font-label-numeric-md">
+<span>Latencia Google Sheets: <strong>140ms</strong></span>
+<span>•</span>
+<span>Servidores: <strong>AWS Santiago (scl-1)</strong></span>
+<span>•</span>
+<span class="text-secondary font-semibold">Estado: Operacional 100%</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>
