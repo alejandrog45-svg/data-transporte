@@ -25,7 +25,15 @@ COMUNAS = ["Santiago Centro", "Las Condes", "Providencia", "Ñuñoa", "Vitacura"
            "La Florida", "Puente Alto", "San Bernardo", "Estación Central", "Peñalolén", "Macul", "Padre Hurtado",
            "Lo Prado", "La Pintana", "Chicureo", "Pirque", "Lampa", "La Granja", "Quinta Normal", "Cerrillos",
            "Renca", "Conchalí", "San Joaquín", "La Cisterna", "El Bosque", "Peñaflor", "Paine", "Valparaíso",
-           "Viña del Mar", "Limache", "Casablanca"]
+           "Viña del Mar", "Limache", "Casablanca", "Pedro Aguirre Cerda", "San Ramón", "Lo Espejo", "Buin",
+           "Talagante", "Calera de Tango", "Cerro Navia", "Concón", "Rancagua", "Santa Cruz", "Til Til", "Batuco",
+           "San José de Maipo", "Isla de Maipo", "Melipilla", "El Monte", "San Antonio", "Curacaví", "María Pinto",
+           "Lo Barnechea", "Ñuñoa", "San Ramon", "Calera"]
+
+# palabras clave -> sector (hoteles, clinicas, metros, avenidas conocidas)
+ALIAS = [("CLINICA ALEMANA", "Vitacura"), ("PLAZA SAN FRANCISCO", "Santiago Centro"), ("ALAMEDA", "Santiago Centro"),
+         ("METRO PAJARITOS", "Estación Central"), ("MONTICELLO", "Casino Monticello (Mostazal)"),
+         ("BARRIO BELLAVISTA", "Providencia"), ("LA DEHESA", "Lo Barnechea"), ("COSTANERA", "Providencia")]
 
 
 def norm(s):
@@ -39,9 +47,16 @@ COM_N = [(norm(c), c) for c in sorted(COMUNAS, key=len, reverse=True)]
 def sector(*textos):
     for t in textos:
         n = norm(t)
-        if not n or n.startswith("AEROP"):
+        if not n or n.startswith("AEROP") or n.startswith("AEREOP"):
+            continue
+        if re.search(r"\bDOMICILIOS?\b", n):
+            return "Varios domicilios"
+        if re.match(r"^(CONTACT|CONFIRM|AGENDAD|RETORN|ORIGEN|DESTINO|UBERTRANSFER|\.$)", n):
             continue
         for k, v in COM_N:
+            if k in n:
+                return v
+        for k, v in ALIAS:
             if k in n:
                 return v
         if re.search(r"\bSTGO\b|\bSANTIAGO\b", n):
@@ -68,12 +83,39 @@ def medio_pago(v):
     return "Otro"
 
 
+# Unificacion de nombres de conductores (variantes y errores de tipeo). Orden importa.
+COND_REGLAS = [
+    (r"EXTERNO", "Externo"),
+    (r"^(STEFANO|ESTEFANO|STEFAN0)\b", "Stefano"),
+    (r"^RAFAEL\b", "Rafael"),
+    (r"^(JONATAN|JONATHAN|JONTHAN|JONATAHAN|JOATHAN) (S\b|SANDOVAL)", "Jonatan Sandoval"),
+    (r"^(JONATAN|JONATHAN) (B\b|BRICENO)", "Jonatan Briceño"),
+    (r"^(HANZ|HANS)\b", "Hanz"),
+    (r"^(BRAYAN|BRYAN)\b", "Brayan"),
+    (r"^(EDGARDO|EGDARDO)\b", "Edgardo"),
+    (r"^(LUIS MURILLO|LUS MURILLO)", "Luis Murillo"),
+    (r"^LUIS CEBALLOS", "Luis Ceballos"),
+    (r"^ALEX\b", "Alex"),
+    (r"^MIGUEL\b", "Miguel"),
+    (r"^ALEJANDRO\b", "Alejandro"),
+    (r"^CRISTIAN TORRES", "Cristian Torres"),
+    (r"^CRISTIAN\b", "Cristian"),
+    (r"^PABLO\b", "Pablo"),
+    (r"^RODRIGO\b", "Rodrigo"),
+    (r"^DIEGO\b", "Diego"),
+    (r"^MAURICIO\b", "Mauricio"),
+]
+
+
 def conductor(v):
     n = norm(v)
-    if not n or n in (".", "-"):
+    n = re.sub(r"\bNULO\b", "", n).strip()
+    n = re.sub(r"\bSIN COMISION\b", "", n).strip()
+    if not n or n in (".", "-", "CONDUCTOR", "SIN CONDUCTOR", "NOCHE"):
         return "Sin dato"
-    if n.startswith("EXTERNO"):
-        return "Externo"
+    for rx, nombre in COND_REGLAS:
+        if re.search(rx, n):
+            return nombre
     return n.title()
 
 
@@ -120,6 +162,8 @@ def viajes(path):
                 continue
             vistos.add(clave)
             tarifa = num(r[8])
+            if re.search(r"\bNULO\b", norm(r[9])):
+                calidad["marcados_nulo"] += 1
             if tarifa is None:
                 calidad["sin_tarifa"] += 1
             hora = r[2].hour if hasattr(r[2], "hour") else None
@@ -130,6 +174,7 @@ def viajes(path):
             sale_aero = norm(origen).startswith("AEROP")
             filas.append(dict(
                 fecha=f, hora=hora, pax=num(r[3]) or 0, tarifa=tarifa or 0,
+                monto=0 if medio_pago(r[10]) == "No cobrado" else (tarifa or 0),
                 conductor=conductor(r[9]), pago=medio_pago(r[10]),
                 sentido="Desde aeropuerto" if sale_aero else ("Hacia aeropuerto" if norm(destino).startswith("AEROP") else "Otro"),
                 sector=sector(destino if sale_aero else origen, origen, destino),
@@ -145,8 +190,26 @@ def agg(filas, key):
     d = collections.defaultdict(lambda: [0, 0.0])
     for x in filas:
         d[key(x)][0] += 1
+        d[key(x)][1] += x["monto"]
+    return d
+
+
+def agg_t(filas, key):
+    d = collections.defaultdict(lambda: [0, 0.0])
+    for x in filas:
+        d[key(x)][0] += 1
         d[key(x)][1] += x["tarifa"]
     return d
+
+
+def cubo(filas):
+    """Filas agregadas por (fecha, hora, conductor, pago, sector, sentido). Sin nombres ni telefonos."""
+    d = collections.defaultdict(lambda: [0, 0.0, 0.0, 0])
+    for x in filas:
+        k = (x["fecha"].isoformat(), x["hora"], x["conductor"], x["pago"], x["sector"], x["sentido"])
+        d[k][0] += 1; d[k][1] += x["monto"]; d[k][2] += x["pax"]; d[k][3] += 1 if x["monto"] > 0 else 0
+    cols = ["fecha", "hora", "conductor", "pago", "sector", "sentido", "viajes", "monto", "pax", "cobrados"]
+    return dict(cols=cols, rows=[list(k) + [v[0], round(v[1]), round(v[2]), v[3]] for k, v in sorted(d.items(), key=lambda kv: (kv[0][0], kv[0][1] if kv[0][1] is not None else -1))])
 
 
 def tabla(d, n=None, orden="n"):
@@ -206,8 +269,8 @@ def main():
     ap.add_argument("--fin-json", default=None, help="JSON del Apps Script (hojas 2026)")
     a = ap.parse_args()
     filas, cal = viajes(a.viajes)
-    total = sum(x["tarifa"] for x in filas if x["pago"] != "No cobrado")
-    cobrados = [x for x in filas if x["pago"] != "No cobrado" and x["tarifa"] > 0]
+    total = sum(x["monto"] for x in filas)
+    cobrados = [x for x in filas if x["monto"] > 0]
     por_mes = agg(filas, lambda x: x["fecha"].month)
     por_dia = agg(filas, lambda x: x["fecha"].isoformat())
     por_dow = agg(filas, lambda x: x["fecha"].weekday())
@@ -248,13 +311,14 @@ def main():
             por_dow=[dict(nombre=DOW[k], viajes=v[0], monto=round(v[1])) for k, v in sorted(por_dow.items())],
             heatmap=dict(dias=DOW, horas=list(range(24)), valores=heat),
             conductores=tabla(agg(filas, lambda x: x["conductor"]), 12, "monto"),
-            pagos=tabla(agg(filas, lambda x: x["pago"])),
+            pagos=tabla(agg_t(filas, lambda x: x["pago"])),
             sectores=tabla(agg(filas, lambda x: x["sector"]), 15),
             sentido=tabla(agg(filas, lambda x: x["sentido"])),
             clientes=dict(unicos=len(cli), recurrentes=len(recurrentes),
                           viajes_de_recurrentes=sum(c["n"] for c in recurrentes),
                           top_anonimo=[dict(id=f"Cliente {i+1:02d}", viajes=c["n"], monto=round(c["monto"]))
                                        for i, c in enumerate(recurrentes[:10])])),
+        cubo=cubo(filas),
         finanzas=dict(meses=meses_fin, dias=dias_fin))
     (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print("viajes:", len(filas), "| ingresos:", data["viajes"]["ingresos"], "| calidad:", data["meta"]["calidad"])
