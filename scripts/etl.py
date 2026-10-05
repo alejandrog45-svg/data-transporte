@@ -4,7 +4,7 @@ Datos personales (nombre/telefono) NUNCA van al JSON publico. Los clientes
 recurrentes se guardan en data/privado/ (ignorado por git) para uso interno.
 Uso: E:\\python-portable\\python.exe scripts\\etl.py
 """
-import json, re, hashlib, unicodedata, collections, csv, datetime as dt
+import json, re, hashlib, unicodedata, collections, csv, sys, argparse, datetime as dt
 from pathlib import Path
 import openpyxl
 
@@ -100,8 +100,8 @@ def num(v):
     return None
 
 
-def viajes():
-    wb = openpyxl.load_workbook(VIAJES_XLSX, read_only=True, data_only=True)
+def viajes(path):
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     calidad = collections.Counter()
     filas, vistos, dups = [], set(), []
     for ws in wb.worksheets:
@@ -155,13 +155,19 @@ def tabla(d, n=None, orden="n"):
     return rows[:n] if n else rows
 
 
-def finanzas():
-    wb = openpyxl.load_workbook(FIN_XLSX, read_only=True, data_only=True)
+def hojas_fin(xlsx=None, json_path=None):
+    """Devuelve [(titulo, filas)] desde un xlsx local o desde el JSON del Apps Script."""
+    if json_path:
+        return [(h["title"], [tuple(r) for r in h["values"]]) for h in json.loads(Path(json_path).read_text(encoding="utf-8"))]
+    wb = openpyxl.load_workbook(xlsx, read_only=True, data_only=True)
+    return [(ws.title, [tuple(r) for r in ws.iter_rows(values_only=True)]) for ws in wb.worksheets]
+
+
+def finanzas(hojas):
     meses, dias, calidad = [], [], collections.Counter()
-    for ws in wb.worksheets:
-        n = norm(ws.title)
+    for titulo, rows in hojas:
+        n = norm(titulo)
         mes = next((v for k, v in MESES.items() if k in n), None)
-        rows = [tuple(r) for r in ws.iter_rows(values_only=True)]
         if not mes or len(rows) < 3:
             continue
         head = [norm(h) for h in rows[1]]
@@ -194,7 +200,12 @@ def finanzas():
 
 
 def main():
-    filas, cal = viajes()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--viajes", default=str(VIAJES_XLSX))
+    ap.add_argument("--fin-xlsx", default=str(FIN_XLSX))
+    ap.add_argument("--fin-json", default=None, help="JSON del Apps Script (hojas 2026)")
+    a = ap.parse_args()
+    filas, cal = viajes(a.viajes)
     total = sum(x["tarifa"] for x in filas if x["pago"] != "No cobrado")
     cobrados = [x for x in filas if x["pago"] != "No cobrado" and x["tarifa"] > 0]
     por_mes = agg(filas, lambda x: x["fecha"].month)
@@ -215,7 +226,12 @@ def main():
         w.writerow(["nombre", "telefono", "viajes", "monto_clp"])
         for c in recurrentes:
             w.writerow([c["nombre"], c["tel"], c["n"], round(c["monto"])])
-    meses_fin, dias_fin, cal_fin = finanzas()
+    if a.fin_json or Path(a.fin_xlsx).exists():
+        meses_fin, dias_fin, cal_fin = finanzas(hojas_fin(a.fin_xlsx, a.fin_json))
+    else:  # sin fuente de finanzas: conserva lo ultimo publicado
+        prev = json.loads((OUT / "data.json").read_text(encoding="utf-8"))
+        meses_fin, dias_fin, cal_fin = prev["finanzas"]["meses"], prev["finanzas"]["dias"], collections.Counter(prev["meta"]["calidad"]["finanzas"])
+        print("AVISO: sin fuente de finanzas, se conserva la anterior")
     data = dict(
         meta=dict(generado=dt.datetime.now().isoformat(timespec="seconds"),
                   fuentes=["PLANILLA MATRIZ (viajes 2025)", "AÑO 2026 (ventas y gastos)"],

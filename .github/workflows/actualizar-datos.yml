@@ -1,0 +1,42 @@
+name: Actualizar datos
+on:
+  schedule:
+    - cron: "0 11 * * *"   # todos los dias 08:00 Chile
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: actualizar-datos
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install openpyxl
+      - name: Descargar planillas (solo lectura)
+        env:
+          VIAJES_SHEET_ID: ${{ secrets.VIAJES_SHEET_ID }}
+          FIN_WEBAPP_URL: ${{ secrets.FIN_WEBAPP_URL }}
+        run: |
+          set -e
+          curl -sSL --fail -o "$RUNNER_TEMP/viajes.xlsx" "https://docs.google.com/spreadsheets/d/${VIAJES_SHEET_ID}/export?format=xlsx"
+          ARGS="--viajes $RUNNER_TEMP/viajes.xlsx"
+          if [ -n "$FIN_WEBAPP_URL" ]; then
+            curl -sSL --fail -o "$RUNNER_TEMP/fin.json" "$FIN_WEBAPP_URL"
+            ARGS="$ARGS --fin-json $RUNNER_TEMP/fin.json"
+          fi
+          mkdir -p data
+          echo "ARGS=$ARGS" >> "$GITHUB_ENV"
+      - name: Procesar (solo agregados)
+        run: |
+          python scripts/etl.py $ARGS > /dev/null
+          python scripts/build_site.py
+      - name: Publicar si hubo cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/data.json docs/data.json
+          git diff --cached --quiet && echo "sin cambios" && exit 0
+          git commit -m "Datos actualizados automaticamente"
+          git push
