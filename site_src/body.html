@@ -6,6 +6,17 @@
   .navlink:hover{background:#1c2028;color:#dfe2ee}
   .navlink.active{background:#262a33;color:#4cd7f6;font-weight:700}
   .fsel{background:#0a0e16;color:#dfe2ee;border:1px solid rgba(255,255,255,.12);border-radius:.5rem;padding:.35rem .6rem;font-size:.8rem;max-width:200px}
+  #modal{display:none;position:fixed;inset:0;z-index:60;align-items:center;justify-content:center}
+  #modal.open{display:flex}
+  #modal .bk{position:absolute;inset:0;background:rgba(5,8,14,.72);backdrop-filter:blur(3px)}
+  #modal .sheet{position:relative;width:min(980px,96vw);max-height:92vh;overflow:auto;background:#0f131c;border:1px solid rgba(76,215,246,.25);border-radius:1rem;box-shadow:0 24px 64px -12px rgba(0,0,0,.85);padding:1.25rem}
+  #modal .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem;position:sticky;top:-1.25rem;background:#0f131c;padding:.25rem 0 .5rem;z-index:2}
+  #modal .x{border:1px solid rgba(255,255,255,.15);border-radius:.5rem;padding:.25rem .5rem;color:#dfe2ee}
+  tr[data-cond],tr[data-sec],[data-sec],.hm [data-d]{cursor:pointer}
+  tr[data-cond]:hover,tr[data-sec]:hover{background:rgba(76,215,246,.07)}
+  .hm [data-d]:hover{outline:1px solid #4cd7f6}
+  .hint{font-size:.7rem;color:#869397}
+  @media(max-width:640px){#modal{align-items:flex-end}#modal .sheet{width:100vw;max-height:94vh;border-radius:1rem 1rem 0 0}}
   .view{display:none}.view.active{display:flex;flex-direction:column;gap:1.5rem}
   .seg button{padding:.25rem .75rem;border-radius:.375rem;font-size:.75rem;font-weight:600;color:#bcc9cd}
   .seg button.on{background:#06b6d4;color:#003640}
@@ -68,12 +79,16 @@
     <section id="v-resumen" class="view active">
       <div id="kpis" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
       <div class="grid lg:grid-cols-3 gap-4">
-        <div class="card p-5 lg:col-span-2"><h3 class="font-semibold mb-1">Ingresos por viajes</h3><p class="text-xs text-on-surface-variant mb-3" id="sub-ing"></p><div style="height:280px"><canvas id="c-ing"></canvas></div></div>
+        <div class="card p-5 lg:col-span-2"><h3 class="font-semibold mb-1">Ingresos por viajes <span class="hint">· toca una barra para ver el detalle</span></h3><p class="text-xs text-on-surface-variant mb-3" id="sub-ing"></p><div style="height:280px"><canvas id="c-ing"></canvas></div></div>
         <div class="card p-5"><h3 class="font-semibold mb-3">Medios de pago</h3><div style="height:280px"><canvas id="c-pago"></canvas></div></div>
       </div>
       <div class="grid lg:grid-cols-2 gap-4">
         <div class="card p-5"><h3 class="font-semibold mb-3">Viajes por día de la semana</h3><div style="height:240px"><canvas id="c-dow"></canvas></div></div>
         <div class="card p-5"><h3 class="font-semibold mb-3">Sectores que más se repiten</h3><div id="top-sec" class="flex flex-col gap-3"></div></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-5"><h3 class="font-semibold mb-1">Viajes por hora del día</h3><p class="hint mb-2">Toca una barra para ver el detalle de esa hora.</p><div style="height:240px"><canvas id="c-hora"></canvas></div></div>
+        <div class="card p-5"><h3 class="font-semibold mb-1">Ingresos por conductor (Top 8)</h3><p class="hint mb-2">Toca una barra para ver el detalle del conductor.</p><div style="height:240px"><canvas id="c-cond"></canvas></div></div>
       </div>
     </section>
 
@@ -145,6 +160,13 @@
       <div class="card p-5"><h3 class="font-semibold mb-1">Verificación de consistencia</h3><p class="text-xs text-on-surface-variant mb-3">Cuadre de totales entre menús, conservación de registros y revisión de datos personales.</p><div id="t-ver"></div></div>
     </section>
   </main>
+</div>
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t">
+  <div class="bk" data-close></div>
+  <div class="sheet">
+    <div class="hd"><div><h3 id="modal-t" class="text-xl font-bold text-primary"></h3><p id="modal-s" class="text-xs text-on-surface-variant"></p></div><button class="x" data-close aria-label="Cerrar"><span class="material-symbols-outlined">close</span></button></div>
+    <div id="modal-b" class="flex flex-col gap-4"></div>
+  </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="app.js"></script>
