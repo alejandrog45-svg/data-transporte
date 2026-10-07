@@ -1,41 +1,41 @@
 {
  "meta": {
-  "generado": "2026-10-06T17:07:06",
+  "generado": "2026-10-07T17:43:58",
   "fuentes": [
    "PLANILLA MATRIZ (viajes, mayo-octubre 2026)",
    "AÑO 2026 (ventas y gastos)"
   ],
   "anio_viajes": 2026,
-  "hoy": "2026-10-06",
+  "hoy": "2026-10-07",
   "periodo_viajes": [
    "2026-05-05",
-   "2026-10-06"
+   "2026-10-07"
   ],
   "calidad": {
    "viajes": {
-    "hojas_procesadas": 172,
-    "filas_leidas": 2388,
+    "hojas_procesadas": 175,
+    "filas_leidas": 2400,
     "duplicados_eliminados": 12,
-    "hojas_con_total": 153,
-    "hojas_total_coincide": 140,
-    "sin_tarifa": 33,
-    "sin_hora": 37,
-    "anulados": 47,
+    "hojas_con_total": 154,
+    "hojas_total_coincide": 141,
+    "sin_tarifa": 30,
+    "sin_hora": 41,
+    "anulados": 48,
     "hojas_con_dia_semana": 4,
-    "hojas_sin_total": 19,
+    "hojas_sin_total": 21,
     "hojas_ignoradas": 1
    },
    "finanzas": {
     "texto_en_gastos(xxx)": 46
    },
-   "sin_sector": 72,
-   "pago_sin_dato": 56
+   "sin_sector": 70,
+   "pago_sin_dato": 50
   },
   "verificaciones": [
    {
     "control": "Conservacion de registros",
     "ok": true,
-    "detalle": "2388 leidas = 2283 viajes + 47 anulados + 46 reservas futuras + 12 duplicados",
+    "detalle": "2400 leidas = 2295 viajes + 48 anulados + 45 reservas futuras + 12 duplicados",
     "critico": true
    },
    {
@@ -47,67 +47,67 @@
    {
     "control": "Reservas futuras separadas de los viajes realizados",
     "ok": true,
-    "detalle": "46 reservas hasta 2026-12-19",
+    "detalle": "45 reservas hasta 2026-12-19",
     "critico": false
    },
    {
     "control": "Viajes: total = suma por mes = suma por dia",
     "ok": true,
-    "detalle": "2283 viajes",
+    "detalle": "2295 viajes",
     "critico": true
    },
    {
     "control": "Viajes: total = suma por dia de semana",
     "ok": true,
-    "detalle": "2283 viajes",
+    "detalle": "2295 viajes",
     "critico": true
    },
    {
     "control": "Viajes: total = suma por medio de pago",
     "ok": true,
-    "detalle": "2283 viajes",
+    "detalle": "2295 viajes",
     "critico": true
    },
    {
     "control": "Viajes: total = suma por sector",
     "ok": true,
-    "detalle": "2283 viajes",
+    "detalle": "2295 viajes",
     "critico": true
    },
    {
     "control": "Viajes: total = suma por conductor",
     "ok": true,
-    "detalle": "2283 viajes",
+    "detalle": "2295 viajes",
     "critico": true
    },
    {
     "control": "Cubo de datos = totales (viajes e ingresos)",
     "ok": true,
-    "detalle": "2283 viajes. $83.541.000",
+    "detalle": "2295 viajes. $83.876.000",
     "critico": true
    },
    {
     "control": "Ingresos = suma por mes = suma por dia",
     "ok": true,
-    "detalle": "$83.541.000",
+    "detalle": "$83.876.000",
     "critico": true
    },
    {
     "control": "Anulados no suman a ventas",
     "ok": true,
-    "detalle": "47 anulados",
+    "detalle": "48 anulados",
     "critico": true
    },
    {
     "control": "Convenios no suman a ventas",
     "ok": true,
-    "detalle": "152 convenios",
+    "detalle": "155 convenios",
     "critico": true
    },
    {
     "control": "Clientes: viajes por cliente = viajes con telefono",
     "ok": true,
-    "detalle": "1423 clientes",
+    "detalle": "1429 clientes",
     "critico": true
    },
    {
@@ -131,7 +131,7 @@
    {
     "control": "Fechas de viajes dentro del periodo y no futuras",
     "ok": true,
-    "detalle": "2026-05-05 a 2026-10-06",
+    "detalle": "2026-05-05 a 2026-10-07",
     "critico": true
    },
    {
@@ -149,7 +149,7 @@
    {
     "control": "Sin nombres ni telefonos de clientes en el JSON publico",
     "ok": true,
-    "detalle": "1360 nombres y 1423 telefonos revisados (se omiten nombres iguales a un conductor o sector publico), 0 coincidencias",
+    "detalle": "1367 nombres y 1429 telefonos revisados (se omiten nombres iguales a un conductor o sector publico), 0 coincidencias",
     "critico": true
    },
    {
@@ -185,7 +185,7 @@
    {
     "control": "Total diario de cada hoja vs suma de sus viajes (la planilla incluye convenios)",
     "ok": false,
-    "detalle": "140 de 153 hojas cuadran exacto; 19 hojas sin total propio. Difieren: 07 MAYO (suma 454.000 vs total 226.000); 20 MAYO (suma 774.000 vs total 533.000); 24 MAYO (suma 737.000 vs total 500.000); 31 MAYO (suma 461.000 vs total 409.000); 04 JUNIO (suma 540.680 vs total 367.840); 06 JUNIO (suma 544.000 vs total 511.000) y 7 mas",
+    "detalle": "141 de 154 hojas cuadran exacto; 21 hojas sin total propio. Difieren: 07 MAYO (suma 454.000 vs total 226.000); 20 MAYO (suma 774.000 vs total 533.000); 24 MAYO (suma 737.000 vs total 500.000); 31 MAYO (suma 461.000 vs total 409.000); 04 JUNIO (suma 540.680 vs total 367.840); 06 JUNIO (suma 544.000 vs total 511.000) y 7 mas",
     "critico": false
    },
    {
@@ -197,12 +197,12 @@
   ]
  },
  "viajes": {
-  "total": 2283,
-  "ingresos": 83541000,
-  "venta_bruta": 88718000,
-  "ticket_promedio": 39800,
-  "convenios": 152,
-  "pasajeros": 5957,
+  "total": 2295,
+  "ingresos": 83876000,
+  "venta_bruta": 89145000,
+  "ticket_promedio": 39752,
+  "convenios": 155,
+  "pasajeros": 6003,
   "por_mes": [
    {
     "mes": 5,
@@ -237,8 +237,8 @@
    {
     "mes": 10,
     "nombre": "Oct",
-    "viajes": 88,
-    "monto": 3660320
+    "viajes": 100,
+    "monto": 3995320
    }
   ],
   "por_dia": [
@@ -1014,8 +1014,13 @@
    },
    {
     "fecha": "2026-10-06",
-    "viajes": 17,
+    "viajes": 15,
     "monto": 483080
+   },
+   {
+    "fecha": "2026-10-07",
+    "viajes": 14,
+    "monto": 335000
    }
   ],
   "por_dow": [
@@ -1026,13 +1031,13 @@
    },
    {
     "nombre": "Mar",
-    "viajes": 288,
+    "viajes": 286,
     "monto": 8859630
    },
    {
     "nombre": "Mié",
-    "viajes": 320,
-    "monto": 10522790
+    "viajes": 334,
+    "monto": 10857790
    },
    {
     "nombre": "Jue",
@@ -1119,7 +1124,7 @@
      24
     ],
     [
-     9,
+     8,
      11,
      16,
      25,
@@ -1137,38 +1142,38 @@
      9,
      8,
      6,
-     15,
-     6,
+     16,
+     5,
      5,
      11,
      10,
-     26
+     27
     ],
     [
-     5,
+     6,
      18,
      14,
+     21,
      20,
      20,
+     31,
      18,
-     29,
-     17,
-     29,
-     9,
+     30,
+     11,
      10,
      5,
      3,
-     3,
+     4,
      4,
      9,
      11,
      12,
-     14,
+     15,
      9,
      13,
-     8,
      9,
-     27
+     9,
+     28
     ],
     [
      4,
@@ -1279,13 +1284,13 @@
   "conductores": [
    {
     "nombre": "Rafael",
-    "viajes": 801,
-    "monto": 28984960
+    "viajes": 800,
+    "monto": 28944960
    },
    {
     "nombre": "Stefano",
-    "viajes": 577,
-    "monto": 24161270
+    "viajes": 579,
+    "monto": 24228270
    },
    {
     "nombre": "Externo",
@@ -1294,13 +1299,13 @@
    },
    {
     "nombre": "Jonatan Sandoval",
-    "viajes": 116,
-    "monto": 3647200
+    "viajes": 118,
+    "monto": 3682200
    },
    {
     "nombre": "Hanz",
-    "viajes": 86,
-    "monto": 2635810
+    "viajes": 87,
+    "monto": 2660810
    },
    {
     "nombre": "Brayan",
@@ -1328,26 +1333,26 @@
     "monto": 1564000
    },
    {
+    "nombre": "Luis Murillo",
+    "viajes": 39,
+    "monto": 1168000
+   },
+   {
     "nombre": "Edgardo",
     "viajes": 27,
     "monto": 1109600
-   },
-   {
-    "nombre": "Luis Murillo",
-    "viajes": 37,
-    "monto": 1080000
    }
   ],
   "pagos": [
    {
     "nombre": "Efectivo",
-    "viajes": 1128,
-    "monto": 39499100
+    "viajes": 1134,
+    "monto": 39697100
    },
    {
     "nombre": "Transferencia",
-    "viajes": 696,
-    "monto": 30429890
+    "viajes": 704,
+    "monto": 30718890
    },
    {
     "nombre": "Tarjeta",
@@ -1356,18 +1361,18 @@
    },
    {
     "nombre": "Convenio",
-    "viajes": 108,
-    "monto": 3396000
+    "viajes": 111,
+    "monto": 3488000
    },
    {
     "nombre": "Otro",
-    "viajes": 86,
-    "monto": 4521350
+    "viajes": 87,
+    "monto": 4556350
    },
    {
     "nombre": "Sin dato",
-    "viajes": 56,
-    "monto": 1526160
+    "viajes": 50,
+    "monto": 1339160
    },
    {
     "nombre": "Convenio (pago diferido)",
@@ -1378,13 +1383,13 @@
   "sectores": [
    {
     "nombre": "Santiago Centro",
-    "viajes": 223,
-    "monto": 7198730
+    "viajes": 226,
+    "monto": 7275730
    },
    {
     "nombre": "Las Condes",
-    "viajes": 218,
-    "monto": 8929510
+    "viajes": 220,
+    "monto": 9007510
    },
    {
     "nombre": "Providencia",
@@ -1393,12 +1398,12 @@
    },
    {
     "nombre": "Ñuñoa",
-    "viajes": 177,
-    "monto": 6856500
+    "viajes": 178,
+    "monto": 6891500
    },
    {
     "nombre": "Quilicura",
-    "viajes": 162,
+    "viajes": 165,
     "monto": 811000
    },
    {
@@ -1412,14 +1417,14 @@
     "monto": 2385200
    },
    {
-    "nombre": "Sin identificar",
-    "viajes": 72,
-    "monto": 2814300
-   },
-   {
     "nombre": "Vitacura",
     "viajes": 70,
     "monto": 2587140
+   },
+   {
+    "nombre": "Sin identificar",
+    "viajes": 70,
+    "monto": 2814300
    },
    {
     "nombre": "Colina",
@@ -1455,33 +1460,33 @@
   "sentido": [
    {
     "nombre": "Hacia aeropuerto",
-    "viajes": 1348,
-    "monto": 46394810
+    "viajes": 1358,
+    "monto": 46701810
    },
    {
     "nombre": "Otro",
-    "viajes": 469,
+    "viajes": 470,
     "monto": 18897600
    },
    {
     "nombre": "Desde aeropuerto",
-    "viajes": 466,
-    "monto": 18248590
+    "viajes": 467,
+    "monto": 18276590
    }
   ],
   "clientes": {
-   "unicos": 1423,
-   "recurrentes": 418,
-   "viajes_de_recurrentes": 1256,
+   "unicos": 1429,
+   "recurrentes": 419,
+   "viajes_de_recurrentes": 1263,
    "top_anonimo": [
     {
      "id": "Cliente 01",
-     "viajes": 72,
+     "viajes": 73,
      "monto": 38000
     },
     {
      "id": "Cliente 02",
-     "viajes": 63,
+     "viajes": 65,
      "monto": 0
     },
     {
@@ -1816,6 +1821,10 @@
    [
     "2026-10-06",
     0
+   ],
+   [
+    "2026-10-07",
+    0
    ]
   ],
   [
@@ -2069,6 +2078,14 @@
    ],
    [
     "2026-10-06",
+    0
+   ],
+   [
+    "2026-10-07",
+    0
+   ],
+   [
+    "2026-10-07",
     0
    ]
   ],
@@ -2862,6 +2879,36 @@
   ],
   [
    [
+    "2026-05-20",
+    26000
+   ],
+   [
+    "2026-06-17",
+    26000
+   ],
+   [
+    "2026-07-15",
+    26000
+   ],
+   [
+    "2026-07-29",
+    26000
+   ],
+   [
+    "2026-08-12",
+    26000
+   ],
+   [
+    "2026-09-09",
+    26000
+   ],
+   [
+    "2026-10-07",
+    28000
+   ]
+  ],
+  [
+   [
     "2026-07-31",
     41650
    ],
@@ -2940,32 +2987,6 @@
    [
     "2026-08-28",
     68000
-   ]
-  ],
-  [
-   [
-    "2026-05-20",
-    26000
-   ],
-   [
-    "2026-06-17",
-    26000
-   ],
-   [
-    "2026-07-15",
-    26000
-   ],
-   [
-    "2026-07-29",
-    26000
-   ],
-   [
-    "2026-08-12",
-    26000
-   ],
-   [
-    "2026-09-09",
-    26000
    ]
   ],
   [
@@ -3102,6 +3123,28 @@
    [
     "2026-09-03",
     28000
+   ]
+  ],
+  [
+   [
+    "2026-07-29",
+    26000
+   ],
+   [
+    "2026-08-19",
+    26000
+   ],
+   [
+    "2026-09-02",
+    26000
+   ],
+   [
+    "2026-09-30",
+    26000
+   ],
+   [
+    "2026-10-07",
+    26000
    ]
   ],
   [
@@ -3394,24 +3437,6 @@
    [
     "2026-07-24",
     35000
-   ]
-  ],
-  [
-   [
-    "2026-07-29",
-    26000
-   ],
-   [
-    "2026-08-19",
-    26000
-   ],
-   [
-    "2026-09-02",
-    26000
-   ],
-   [
-    "2026-09-30",
-    26000
    ]
   ],
   [
@@ -3714,6 +3739,20 @@
    [
     "2026-05-24",
     48000
+   ]
+  ],
+  [
+   [
+    "2026-05-27",
+    45000
+   ],
+   [
+    "2026-05-30",
+    42000
+   ],
+   [
+    "2026-10-07",
+    35000
    ]
   ],
   [
@@ -4162,20 +4201,6 @@
    [
     "2026-10-01",
     26000
-   ]
-  ],
-  [
-   [
-    "2026-10-01",
-    60000
-   ],
-   [
-    "2026-10-06",
-    0
-   ],
-   [
-    "2026-10-06",
-    60000
    ]
   ],
   [
@@ -4796,16 +4821,6 @@
    [
     "2026-05-28",
     34000
-   ]
-  ],
-  [
-   [
-    "2026-05-27",
-    45000
-   ],
-   [
-    "2026-05-30",
-    42000
    ]
   ],
   [
@@ -6351,6 +6366,16 @@
   [
    [
     "2026-08-14",
+    25000
+   ],
+   [
+    "2026-10-07",
+    25000
+   ]
+  ],
+  [
+   [
+    "2026-08-14",
     30000
    ],
    [
@@ -6656,6 +6681,16 @@
    [
     "2026-09-07",
     46000
+   ]
+  ],
+  [
+   [
+    "2026-09-02",
+    26000
+   ],
+   [
+    "2026-10-07",
+    26000
    ]
   ],
   [
@@ -7301,6 +7336,16 @@
   [
    [
     "2026-10-01",
+    60000
+   ],
+   [
+    "2026-10-06",
+    60000
+   ]
+  ],
+  [
+   [
+    "2026-10-01",
     42000
    ],
    [
@@ -7316,16 +7361,6 @@
    [
     "2026-10-06",
     35000
-   ]
-  ],
-  [
-   [
-    "2026-10-02",
-    42000
-   ],
-   [
-    "2026-10-06",
-    0
    ]
   ],
   [
@@ -11357,12 +11392,6 @@
   [
    [
     "2026-08-14",
-    25000
-   ]
-  ],
-  [
-   [
-    "2026-08-14",
     40000
    ]
   ],
@@ -11928,12 +11957,6 @@
    [
     "2026-09-02",
     32000
-   ]
-  ],
-  [
-   [
-    "2026-09-02",
-    26000
    ]
   ],
   [
@@ -13253,6 +13276,12 @@
   [
    [
     "2026-10-02",
+    42000
+   ]
+  ],
+  [
+   [
+    "2026-10-02",
     26000
    ]
   ],
@@ -13416,6 +13445,42 @@
    [
     "2026-10-06",
     40000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    25000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    25000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    35000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    40000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    32000
+   ]
+  ],
+  [
+   [
+    "2026-10-07",
+    38000
    ]
   ]
  ],
@@ -42712,32 +42777,6 @@
    ],
    [
     "2026-10-06",
-    null,
-    "Sin dato",
-    "Sin dato",
-    "Sin identificar",
-    "Otro",
-    2,
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    "2026-10-06",
-    0,
-    "Sin dato",
-    "Sin dato",
-    "Providencia",
-    "Otro",
-    1,
-    45000,
-    8,
-    1,
-    45000
-   ],
-   [
-    "2026-10-06",
     3,
     "Rafael",
     "Transferencia",
@@ -42844,7 +42883,7 @@
     "2026-10-06",
     16,
     "Stefano",
-    "Sin dato",
+    "Transferencia",
     "Las Condes",
     "Desde aeropuerto",
     1,
@@ -42855,6 +42894,227 @@
    ],
    [
     "2026-10-06",
+    18,
+    "Alex",
+    "Convenio",
+    "Quilicura",
+    "Otro",
+    1,
+    0,
+    10,
+    0,
+    25000
+   ],
+   [
+    "2026-10-06",
+    18,
+    "Stefano",
+    "Transferencia",
+    "Providencia",
+    "Otro",
+    1,
+    45000,
+    8,
+    1,
+    45000
+   ],
+   [
+    "2026-10-06",
+    19,
+    "Cristian",
+    "Transferencia",
+    "Chicureo",
+    "Hacia aeropuerto",
+    1,
+    40000,
+    4,
+    1,
+    40000
+   ],
+   [
+    "2026-10-06",
+    23,
+    "Cristian",
+    "Transferencia",
+    "Providencia",
+    "Otro",
+    1,
+    45000,
+    8,
+    1,
+    45000
+   ],
+   [
+    "2026-10-06",
+    23,
+    "Luis Murillo",
+    "Efectivo",
+    "San Ramón",
+    "Desde aeropuerto",
+    1,
+    60000,
+    9,
+    1,
+    60000
+   ],
+   [
+    "2026-10-06",
+    23,
+    "Jonatan Sandoval",
+    "Convenio",
+    "Quilicura",
+    "Otro",
+    1,
+    0,
+    5,
+    0,
+    42000
+   ],
+   [
+    "2026-10-07",
+    0,
+    "Luis Murillo",
+    "Efectivo",
+    "Pedro Aguirre Cerda",
+    "Desde aeropuerto",
+    1,
+    28000,
+    1,
+    1,
+    28000
+   ],
+   [
+    "2026-10-07",
+    3,
+    "Cristian",
+    "Efectivo",
+    "Recoleta",
+    "Hacia aeropuerto",
+    1,
+    25000,
+    2,
+    1,
+    25000
+   ],
+   [
+    "2026-10-07",
+    5,
+    "Cristian",
+    "Efectivo",
+    "Santiago Centro",
+    "Hacia aeropuerto",
+    1,
+    25000,
+    2,
+    1,
+    25000
+   ],
+   [
+    "2026-10-07",
+    5,
+    "Cristian",
+    "Transferencia",
+    "Santiago Centro",
+    "Hacia aeropuerto",
+    1,
+    26000,
+    1,
+    1,
+    26000
+   ],
+   [
+    "2026-10-07",
+    6,
+    "Hanz",
+    "Efectivo",
+    "Lo Prado",
+    "Hacia aeropuerto",
+    1,
+    25000,
+    1,
+    1,
+    25000
+   ],
+   [
+    "2026-10-07",
+    6,
+    "Jonatan Sandoval",
+    "Efectivo",
+    "Ñuñoa",
+    "Hacia aeropuerto",
+    1,
+    35000,
+    2,
+    1,
+    35000
+   ],
+   [
+    "2026-10-07",
+    7,
+    "Cristian",
+    "Transferencia",
+    "Santiago Centro",
+    "Hacia aeropuerto",
+    1,
+    26000,
+    1,
+    1,
+    26000
+   ],
+   [
+    "2026-10-07",
+    8,
+    "Alex",
+    "Convenio",
+    "Quilicura",
+    "Otro",
+    1,
+    0,
+    10,
+    0,
+    25000
+   ],
+   [
+    "2026-10-07",
+    9,
+    "Cristian",
+    "Transferencia",
+    "Las Condes",
+    "Hacia aeropuerto",
+    1,
+    40000,
+    4,
+    1,
+    40000
+   ],
+   [
+    "2026-10-07",
+    9,
+    "Stefano",
+    "Transferencia",
+    "La Reina",
+    "Hacia aeropuerto",
+    1,
+    32000,
+    2,
+    1,
+    32000
+   ],
+   [
+    "2026-10-07",
+    13,
+    "Stefano",
+    "Otro",
+    "Pudahuel",
+    "Hacia aeropuerto",
+    1,
+    35000,
+    2,
+    1,
+    35000
+   ],
+   [
+    "2026-10-07",
     18,
     "Stefano",
     "Convenio",
@@ -42867,46 +43127,20 @@
     25000
    ],
    [
-    "2026-10-06",
-    19,
-    "Stefano",
+    "2026-10-07",
+    21,
     "Sin dato",
-    "Providencia",
-    "Otro",
-    1,
-    45000,
-    8,
-    1,
-    45000
-   ],
-   [
-    "2026-10-06",
-    19,
-    "Rafael",
     "Sin dato",
-    "Chicureo",
+    "Las Condes",
     "Hacia aeropuerto",
     1,
-    40000,
-    4,
+    38000,
+    3,
     1,
-    40000
+    38000
    ],
    [
-    "2026-10-06",
-    23,
-    "Sin dato",
-    "Sin dato",
-    "San Ramón",
-    "Desde aeropuerto",
-    1,
-    60000,
-    9,
-    1,
-    60000
-   ],
-   [
-    "2026-10-06",
+    "2026-10-07",
     23,
     "Sin dato",
     "Convenio",
@@ -43545,6 +43779,19 @@
     2,
     0,
     0
+   ],
+   [
+    "2026-10-07",
+    4,
+    "Hanz",
+    "Efectivo",
+    "Santiago Centro",
+    "Hacia aeropuerto",
+    1,
+    0,
+    1,
+    0,
+    0
    ]
   ]
  },
@@ -43564,177 +43811,21 @@
   ],
   "rows": [
    [
-    "2026-10-07",
-    null,
-    "Sin dato",
-    "Sin dato",
-    "Sin identificar",
-    "Otro",
-    1,
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    "2026-10-07",
-    0,
-    "Sin dato",
-    "Sin dato",
-    "Providencia",
-    "Otro",
-    1,
-    45000,
-    8,
-    1,
-    45000
-   ],
-   [
-    "2026-10-07",
-    3,
-    "Sin dato",
-    "Sin dato",
-    "Recoleta",
-    "Hacia aeropuerto",
-    1,
-    25000,
+    "2026-10-08",
     2,
-    1,
-    25000
-   ],
-   [
-    "2026-10-07",
-    5,
-    "Sin dato",
-    "Sin dato",
-    "Santiago Centro",
-    "Hacia aeropuerto",
-    2,
-    51000,
-    3,
-    2,
-    51000
-   ],
-   [
-    "2026-10-07",
-    6,
-    "Sin dato",
-    "Tarjeta",
-    "Lo Prado",
-    "Hacia aeropuerto",
-    1,
-    25000,
-    1,
-    1,
-    25000
-   ],
-   [
-    "2026-10-07",
-    6,
-    "Sin dato",
-    "Sin dato",
-    "Ñuñoa",
-    "Hacia aeropuerto",
-    1,
-    35000,
-    2,
-    1,
-    35000
-   ],
-   [
-    "2026-10-07",
-    7,
-    "Sin dato",
-    "Sin dato",
-    "Santiago Centro",
-    "Hacia aeropuerto",
-    1,
-    26000,
-    1,
-    1,
-    26000
-   ],
-   [
-    "2026-10-07",
-    8,
-    "Sin dato",
-    "Convenio",
-    "Quilicura",
-    "Otro",
-    1,
-    0,
-    10,
-    0,
-    25000
-   ],
-   [
-    "2026-10-07",
-    9,
-    "Sin dato",
-    "Sin dato",
-    "La Reina",
-    "Hacia aeropuerto",
-    1,
-    32000,
-    2,
-    1,
-    32000
-   ],
-   [
-    "2026-10-07",
-    13,
-    "Sin dato",
-    "Otro",
-    "Pudahuel",
-    "Hacia aeropuerto",
-    1,
-    35000,
-    2,
-    1,
-    35000
-   ],
-   [
-    "2026-10-07",
-    18,
-    "Sin dato",
-    "Convenio",
-    "Quilicura",
-    "Otro",
-    1,
-    0,
-    10,
-    0,
-    25000
-   ],
-   [
-    "2026-10-07",
-    21,
     "Sin dato",
     "Sin dato",
     "Las Condes",
     "Hacia aeropuerto",
     1,
-    38000,
-    3,
+    32000,
     1,
-    38000
-   ],
-   [
-    "2026-10-07",
-    23,
-    "Sin dato",
-    "Convenio",
-    "Quilicura",
-    "Otro",
     1,
-    0,
-    5,
-    0,
-    42000
+    32000
    ],
    [
     "2026-10-08",
-    null,
+    4,
     "Sin dato",
     "Transferencia",
     "Providencia",
@@ -43744,6 +43835,19 @@
     1,
     1,
     27000
+   ],
+   [
+    "2026-10-08",
+    4,
+    "Sin dato",
+    "Sin dato",
+    "Huechuraba",
+    "Desde aeropuerto",
+    1,
+    30000,
+    0,
+    1,
+    30000
    ],
    [
     "2026-10-08",
@@ -43783,6 +43887,19 @@
     3,
     1,
     28000
+   ],
+   [
+    "2026-10-08",
+    16,
+    "Sin dato",
+    "Sin dato",
+    "Lo Barnechea",
+    "Hacia aeropuerto",
+    1,
+    40000,
+    1,
+    1,
+    40000
    ],
    [
     "2026-10-08",
@@ -43851,6 +43968,19 @@
    ],
    [
     "2026-10-10",
+    14,
+    "Sin dato",
+    "Sin dato",
+    "Providencia",
+    "Otro",
+    1,
+    120000,
+    8,
+    1,
+    120000
+   ],
+   [
+    "2026-10-10",
     17,
     "Sin dato",
     "Sin dato",
@@ -43877,6 +44007,19 @@
    ],
    [
     "2026-10-11",
+    1,
+    "Sin dato",
+    "Sin dato",
+    "Puente Alto",
+    "Otro",
+    1,
+    80000,
+    0,
+    1,
+    80000
+   ],
+   [
+    "2026-10-11",
     4,
     "Sin dato",
     "Sin dato",
@@ -43892,7 +44035,7 @@
     "2026-10-11",
     21,
     "Sin dato",
-    "Sin dato",
+    "Transferencia",
     "La Reina",
     "Desde aeropuerto",
     1,
@@ -44006,6 +44149,19 @@
     30000
    ],
    [
+    "2026-10-21",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Las Condes",
+    "Desde aeropuerto",
+    1,
+    43000,
+    4,
+    1,
+    43000
+   ],
+   [
     "2026-10-22",
     null,
     "Sin dato",
@@ -44017,6 +44173,32 @@
     1,
     1,
     27000
+   ],
+   [
+    "2026-10-23",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Las Condes",
+    "Otro",
+    1,
+    40000,
+    6,
+    1,
+    40000
+   ],
+   [
+    "2026-10-23",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Huechuraba",
+    "Otro",
+    1,
+    40000,
+    6,
+    1,
+    40000
    ],
    [
     "2026-10-23",
@@ -44085,6 +44267,32 @@
    ],
    [
     "2026-10-24",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Las Condes",
+    "Otro",
+    1,
+    50000,
+    10,
+    1,
+    50000
+   ],
+   [
+    "2026-10-24",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Huechuraba",
+    "Otro",
+    1,
+    50000,
+    10,
+    1,
+    50000
+   ],
+   [
+    "2026-10-24",
     3,
     "Sin dato",
     "Sin dato",
@@ -44095,6 +44303,45 @@
     2,
     1,
     46000
+   ],
+   [
+    "2026-10-25",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Las Condes",
+    "Otro",
+    1,
+    50000,
+    10,
+    1,
+    50000
+   ],
+   [
+    "2026-10-25",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Huechuraba",
+    "Otro",
+    1,
+    50000,
+    10,
+    1,
+    50000
+   ],
+   [
+    "2026-10-26",
+    null,
+    "Sin dato",
+    "Sin dato",
+    "Las Condes",
+    "Hacia aeropuerto",
+    1,
+    43000,
+    4,
+    1,
+    43000
    ],
    [
     "2026-11-21",
