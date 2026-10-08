@@ -29,9 +29,12 @@ jobs:
           mkdir -p data
           echo "ARGS=$ARGS" >> "$GITHUB_ENV"
       - name: Procesar (solo agregados)
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
-          python scripts/etl.py $ARGS > /dev/null
-          python scripts/build_site.py
+          set -o pipefail
+          python -u scripts/etl.py $ARGS
+          python -u scripts/build_site.py
       - name: Publicar si hubo cambios
         run: |
           git config user.name "github-actions[bot]"
