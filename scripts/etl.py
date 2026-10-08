@@ -9,8 +9,8 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parents[1]
-VIAJES_XLSX = ROOT / "PLANILLA  MATRIZ  MARZO 2025.xlsx"
-FIN_XLSX = ROOT / "AÑO 2026.xlsx"
+VIAJES_XLSX = ROOT / "data" / "fuentes" / "PLANILLA  MATRIZ  MARZO 2025.xlsx"
+FIN_XLSX = ROOT / "data" / "fuentes" / "AÑO 2026.xlsx"
 OUT = ROOT / "data"
 OUT.mkdir(exist_ok=True)
 (OUT / "privado").mkdir(exist_ok=True)
